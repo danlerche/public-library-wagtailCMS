@@ -27,8 +27,9 @@ To Install:
 2) Download the repository
 3) navigate to the repo in the command line (cd public-library-wagtailCMS)
 4) pip install -r requirements.txt
-5) python manage.py createsuperuser
-6) python manage.py runserver
+5) python manage.py migrate
+6) python manage.py createsuperuser
+7) python manage.py runserver
 
 First Steps: 
 1) Navigate to http://localhost:8000 on a web browser to check out the front end. 
