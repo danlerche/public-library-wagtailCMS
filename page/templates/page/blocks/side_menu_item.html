@@ -1,0 +1,13 @@
+ {% if value.pdf_document.url is not None %}
+  <li class="nav-item">
+    <a class="nav-link active" href="{{ value.pdf_document.url }}">{{ value.pdf_document }}</a>
+  </li>
+ {% elif value.external_url is not None %}
+  <li class="nav-item">
+    <a class="nav-link" href="{{ value.external_url }}">{{ value.external_url_link_title }}</a>
+  </li>
+  {% elif value.page_link is not None %}
+  <li class="nav-item">
+    <a class="nav-link" href="{{ value.page_link.url }}">{{ value.page_link }}</a>
+  </li>
+{% endif %}

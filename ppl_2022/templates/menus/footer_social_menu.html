@@ -1,0 +1,6 @@
+{% load static wagtailcore_tags menu_tags %}
+<div class="row">
+{% for item in menu_items %}
+  <div class="col"><a class="nav-link" href="{{ item.href }}"><i class="{{ item.handle }}" aria-hidden="True"></i><span class="d-none">{{ item.text }}</span></a></div>
+  {% endfor %}
+</div>

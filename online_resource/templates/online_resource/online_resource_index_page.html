@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block body_class %}template-onlineresourceindexpage{% endblock %}
+
+{% block content %}
+<div class="container">
+<div class="row">
+  <div class="main-title mt-4 mb-4">
+    <h1>{{ page.title }}</h1>
+  </div>
+  <div id="content-left" class="col-xl-9">
+  <div class="row h-auto">
+  <div id="checkBoxCategory" class="card form-check col-xl-12 h-auto d-inline-block">
+    <div class="row">
+      <div class="fw-bold category-title mb-1">Database Categories</div>
+       {% for cat in categories %}
+    <div class="form-check col-6">
+      <input type="checkbox" class="db-checkbox form-check-input" onclick="toggle('#contentArea .cat-id-{{ cat.id }}', this); defaultShow();" value="{{ cat.name|slugify }}" id="category-{{ cat.name|slugify }}" onChange="defaultHideIfChecked()">
+    <label class="form-check-label" for="category-{{ cat.name|slugify }}"> {{ cat.name }}</label>
+    </div>
+      {% endfor %}
+    </div>
+ </div>
+ <div id="contentAreaDefault" class="content col-12 mt-4 h-100">
+        {% for resource in resource_by_category %}
+        <div class="category border-bottom row mb-3 {% for cat in resource.categories.all %}cat-id-{{ cat.id }} {% endfor %}">
+        <div class="col-2">
+          <div class="resource-image mt-2 mb-2">
+            <a href="{{ resource.online_resource_url }}">{% image resource.resource_image class="img-fluid" width-150 %}</a>
+          </div>
+        </div>
+        <div class="col-10">
+        <h2><a href="{{ resource.online_resource_url }}">{{ resource.title }}</a></h2>
+        {{ resource.online_resource_description|richtext }}
+        <p>{{ resource.tutorial_link|safe }}</p>
+        </div>
+        </div>
+        {% endfor %}
+  </div>
+
+  <div id="contentArea" class="content col-12 mt-4 h-100" style="display: none;">
+        {% for resource in resource_by_category %}
+        <div class="category border-bottom row mb-3 {% for cat in resource.categories.all %}cat-id-{{ cat.id }} {% endfor %}" style="display: none;">
+        <div class="col-2">
+          <div class="resource-image mt-2 mb-2">
+            <a href="{{ resource.online_resource_url }}">{% image resource.resource_image class="img-fluid" width-150 %}</a>
+          </div>
+        </div>
+        <div class="col-10">
+        <h2><a href="{{ resource.online_resource_url }}">{{ resource.title }}</a></h2>
+        {{ resource.online_resource_description|richtext }}
+        <p>{{ resource.tutorial_link|safe }}</p>
+        </div>
+        </div>
+        {% endfor %}
+  </div>
+</div><!--content left row-->
+</div>
+<div id="content-right" class="col-3 d-none d-lg-block mb-2">
+  <div id="featuredResource">
+  <div class="card">
+  <div id="featuredResourceTitle" class="pt-1 pb-1"><h3>Featured Resource</h3></div>
+  {% for post in online_resource_pages %}
+  {% if post.specific.featured == True %}
+    <div class="card-body">
+      <a href="{{ post.specific.online_resource_url }}">{% image post.specific.resource_image width-150 as db_feat_img %}
+    <img src="{{ db_feat_img.url }}" width="{{ db_feat_img.width }}" alt="{{ post.title }}" class="img-fluid">
+      </a>
+      <div class="mt-1 card-text">{{ post.specific.featured_description|richtext }}</div>
+      <a href="{{ post.specific.online_resource_url }}" class="btn btn-primary">Access {{ post.title }}</a>
+    </div>
+  </div>
+  {% endif %}
+  {% endfor %}
+  </div>
+  {{ page.niche_academy|safe}}
+</div>
+
+</div><!--row-->
+</div>
+{% endblock %}
+{% block extra_js %}
+<script async src="https://my.nicheacademy.com/api/widgets/pentictonlibrary"></script>
+{% endblock %}

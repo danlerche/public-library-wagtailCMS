@@ -1,0 +1,56 @@
+#ticker-form {max-height: 20px;}
+#alertBanner p {margin-top: 6px;}
+.alert-green {
+  background-color: #2DB34B;
+}
+.alert-red {
+  background-color: #d72811;
+}
+
+.alert-text {margin-top: 2px;}
+.alert-text  a {
+  color: #0066b3;
+}
+
+
+.alert-item-green, .alert-item-red {
+/*
+max-height: 45px;
+*/
+}
+.alert-item-green, .alert-item-green p, .alert-item-green .alert-date, .alert-item-red, .alert-item-red p {
+    color: #fff !important;
+    font-size: 18px !important;
+    font-weight: bold;
+}
+
+.news-flash {
+  top: 0;
+  width: 100%;
+  min-height: 60px;
+  /*z-index: 555; */
+ }
+
+ .news-flash.is-shown {
+    opacity: 1;
+    pointer-events: auto;
+
+}
+
+.alert-on-off {
+position: relative;
+top: -18px;
+}
+
+.alert-item-green .alert-on-off button {font-size: 2.5em; color: #dedede !important; background-color: transparent; border: none;}
+.alert-item-green .alert-on-off button:hover {color: #f8f9fa !important;}
+.alert-item-red .alert-on-off button {font-size: 2.5em; color: #fff !important; background-color: transparent; border: none;}
+.alert-item-red .alert-on-off button:hover {color: #dedede !important;}
+
+
+.close-icon {
+  position: relative;
+  left: 108px;
+  top: 10px;
+  z-index: 600;
+}

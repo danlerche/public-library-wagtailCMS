@@ -1,0 +1,7 @@
+{% load widget_tweaks %}
+<div class="form-group">
+    {{ field.label_tag }}:
+    {% render_field field class="form-control" %}
+    {% if field.help_text %}<small class="form-text text-muted">{{ field.help_text }}</small>{% endif %}
+    {{ field.errors }}
+</div>

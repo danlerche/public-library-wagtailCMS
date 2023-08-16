@@ -1,0 +1,26 @@
+{% load wagtailcore_tags %}
+<div class="row">
+<div class="event-listing pt-2">
+<div class="col-xl-7 pt-2">
+{% for events in upcoming_events_homepage_card %}
+{# need a template tag that views if the start date is earlier than today's date. If so, display the next time in the series #}
+<div class="col mb-5">
+<div class="row">
+<div class="col-xl-1">
+<div class="date-icon">
+  <div class="date-icon-month">{{ events.start_date|date:"b"|upper }}</div>
+  <div class="date-icon-day">{{ events.start_date|date:"d" }}</div>
+</div>
+</div>
+<h3 class="col-xl-11"><a href="{{ events.url }}">{{ events.title }}</a></h3>
+</div>
+
+<div class="col-xl-11 offset-xl-1">
+  <div class="date">{{ events.time_from|date:"g:i A" }} - {{ events.time_to|date:"g:i A" }} | {{ events.start_date }}</div>
+{% if events.repeats != None %} <div class="rule mb-1">Repeats {{ events.repeats|lower }} through {{ events.until }}</div>{% endif %}
+</div>
+</div>
+{% endfor %}
+</div>
+</div>
+</div>

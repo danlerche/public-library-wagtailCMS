@@ -1,0 +1,38 @@
+<div id="hoursFooter">
+
+{% for business_hours in business_hour %}
+{% if business_hours.day_of_the_week == 6 %}
+<div>Sunday {% if business_hours.open_closed == 1 %}
+{{ business_hours.time_from|date:"g:i A" }} - {{ business_hours.time_to|date:"g:i A" }}</div>{% else %}Closed </div>{% endif %}
+{% endif %}
+{% endfor %}
+
+{% for business_hours in business_hour %}
+
+{% if business_hours.day_of_the_week == 0 %}
+<div>Monday {% if business_hours.open_closed == 1 %}{{ business_hours.time_from|date:"g:i A" }} - {{ business_hours.time_to|date:"g:i A" }}</div>{% else %}Closed </div>{% endif %}
+{% endif %}
+{% endfor %}
+
+{% for business_hours in business_hour %}
+
+{% if business_hours.day_of_the_week == 1 %}
+<div>Tuesday {% if business_hours.open_closed == 1 %}{{ business_hours.time_from|date:"g:i A" }} - {{ business_hours.time_to|date:"g:i A" }}</div>{% else %}Closed </div>{% endif %}
+
+{% elif business_hours.day_of_the_week == 2 %}
+<div>Wednesday {% if business_hours.open_closed == 1 %}{{ business_hours.time_from|date:"g:i A" }} - {{ business_hours.time_to|date:"g:i A" }}</div>{% else %}Closed </div>{% endif %}
+
+
+{% elif business_hours.day_of_the_week == 3 %}
+<div>Thursday {% if business_hours.open_closed == 1 %}{{ business_hours.time_from|date:"g:i A" }} - {{ business_hours.time_to|date:"g:i A" }}</div>{% else %}Closed </div>{% endif %}
+
+
+{% elif business_hours.day_of_the_week == 4 %}
+<div>Friday {% if business_hours.open_closed == 1 %}{{ business_hours.time_from|date:"g:i A" }} - {{ business_hours.time_to|date:"g:i A" }}</div>{% else %}Closed </div>{% endif %}
+
+
+{% elif business_hours.day_of_the_week == 5 %}
+<div>Saturday {% if business_hours.open_closed == 1 %}{{ business_hours.time_from|date:"g:i A" }} - {{ business_hours.time_to|date:"g:i A" }}</div>{% else %}Closed </div>{% endif %}
+{% endif %}
+{% endfor %}
+</div>

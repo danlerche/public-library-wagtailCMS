@@ -1,0 +1,56 @@
+{% load library_programs_tags %}
+<div id="addToCalendar">
+<div id="addToCalendarSelect" class="dropdown mt-2">
+  <button class="cal-button" type="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-calendar3"></i>
+    Add To Calendar
+  </button>
+  <ul id="calMethod" class="dropdown-menu">
+    <li><form id="icsDownloadForm" action="" method="get">  
+  {% csrf_token %}
+      <input type="hidden" name="format" value='ical'>
+      <button class="dropdown-item" type="submit" value="Submit">iCalendar/Outlook</button>
+</form>
+</li>
+ <li><button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#googleCalendarModal">
+  Google Calendar</button></li>
+  <li><button class="dropdown-item" type="button" data-bs-toggle="modal" data-bs-target="#yahooCalendarModal">
+  Yahoo Calendar</button></li>
+  </ul>
+</div>
+<div class="modal fade" id="googleCalendarModal" tabindex="-1" aria-labelledby="googleCalendarModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Add To Google Calendar</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h2>{{ page.title }}</h2>
+        <p>Click the links below to add this event to your calendar:</p>
+        {% add_google_calendar page.id %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="yahooCalendarModal" tabindex="-1" aria-labelledby="yahooCalendarModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Add To Yahoo Calendar</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <h2>{{ page.title }}</h2>
+        <p>Click the links below to add this event to your calendar:</p>
+        {% add_yahoo_calendar page.id %}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

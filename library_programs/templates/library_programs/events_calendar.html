@@ -1,0 +1,67 @@
+{% load wagtailcore_tags static library_programs_tags %}
+<link rel='stylesheet' type='text/css' href="{% static 'css/fullcalendar.css' %}" />
+<script src="{% static 'js/fullcalendar.js' %}"></script>
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var calendarEl = document.getElementById('calendar');
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+    themeSystem: 'bootstrap5',
+      headerToolbar: {
+        left: 'dayGridMonth,listYear',
+        center: 'title',
+        right: 'prevYear,prev,next,nextYear'
+      },
+      businessHours: [ // specify an array instead
+  {
+    daysOfWeek: [ 1, 3, 5, 6 ], // Monday, Wednesday, Friday, Saturday
+    startTime: '09:30',
+    endTime: '17:00'
+  },
+  {
+    daysOfWeek: [ 2, 4 ], // Tuesday, Thursday
+    startTime: '9:30',
+    endTime: '20:30'
+  }
+],
+eventTimeFormat: {
+  hour: 'numeric',
+  minute: '2-digit',
+  meridiem: 'short',
+},
+      editable: true,
+      initialView: 'dayGridMonth',
+      events: [
+            {% for all_events in all_events %}
+            {% for all_events_orm in all_events_orm %}
+            {% if all_events_orm.id == all_events.id %}
+            {
+                title: "{{ all_events_orm.title }}",
+                start: '{{ all_events.event_date|date:"o-m-d"}}T{{ all_events_orm.time_from|date:"H:i:s" }}',
+                end: '{{ all_events.event_date|date:"o-m-d"}}T{{ all_events_orm.time_to|date:"H:i:s" }}',
+                url: '{{ all_events_orm.url }}',
+                className: '{% for age in all_events_orm.age_range.all %}{% if forloop is not None %}{% if forloop.first == forloop.last %}{{ age.audience_name|slugify }}{% elif forloop.counter > 1 %}all-ages{% endif %}{% endif %}{% endfor %}',
+            },
+            {% endif %}
+            {% endfor %}
+            {% endfor %}
+
+        ]
+    });
+    calendar.render();
+  });
+
+$("#calendar .fc-event-time").insertAfter("#calendar .fc-event-title");
+</script>
+
+<div class="row">
+<div class="event-listing pt-2">
+<div class="col-xl-12 pt-2">
+<div id="calendar" class="d-none d-lg-block mb-4"></div>
+<div id="mobileCalendar" class="d-lg-none">
+{% all_upcoming_events %}
+</div>
+
+
+</div>
+</div>
+</div>

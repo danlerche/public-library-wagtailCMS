@@ -1,0 +1,8 @@
+{% load static wagtailcore_tags menu_tags %}
+<div class="accordion-body">
+<div class="list-group list-group-flush">
+{% for item in menu_items %}
+  <a href="{{ item.href }}" class="list-group-item list-group-item-action">{{ item.text }}</a>
+{% endfor %}
+</div>
+</div>

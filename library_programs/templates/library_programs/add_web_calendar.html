@@ -1,0 +1,21 @@
+{% load tz %}
+
+<div class="mt-4">
+{% for rd in repeating_dates_per_event %}
+{% for event_info in current_event_orm %}
+<div>
+<a href="https://www.google.com/calendar/render?action=TEMPLATE&text={{ event_info.title }}&dates={{ rd.event_date|date:'Ymd' }}T{{ event_info.time_from|date:'His' }}/{{ rd.event_date|date:'Ymd' }}T{{ event_info.time_to|date:'His' }}&ctz=America/Vancouver&details={{ event_info.description }}&location={{ event_info.location }}" class="mt-2 btn btn-primary">Add to Google Calendar for {{ rd.event_date }}</a>
+</div>
+{% endfor %}
+{% endfor %}
+</div>
+
+<div class="mt-4">
+{% for rd in repeating_dates_per_event %}
+{% for event_info in current_event_orm %}
+<div>
+<a href="http://calendar.yahoo.com/?v=60&TITLE={{ event_info.title }}&ST={{ rd.event_date|date:'Ymd' }}T{{ event_info.time_from|date:'His' }}&DUR={{ dur }}&DESC={{ event_info.description|striptags }}&in_loc={{ event_info.location }}" class="mt-2 btn btn-primary">Add to Yahoo Calendar for {{ rd.event_date }}</a>
+</div>
+{% endfor %}
+{% endfor %}
+</div>

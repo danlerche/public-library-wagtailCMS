@@ -1,0 +1,4 @@
+{% load static wagtailcore_tags menu_tags %}
+{% for item in menu_items %}
+<a href="{{ item.href }}" class="btn {% btn-primary-green mx-2"><i class="bi bi-person-fill"></i> {{ item.text }}</a>
+{% endfor %}

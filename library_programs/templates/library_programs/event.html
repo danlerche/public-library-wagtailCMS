@@ -1,0 +1,141 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags wagtailuserbar wagtailimages_tags humanize crispy_forms_tags honeypot_tags library_programs_tags tz %}
+{% include_block page.content %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/honeypot.css' %}">
+{% endblock extra_css %}
+{% block extra_js %}
+<script src="{% static 'js/honeypot.js' %}"></script>
+{% endblock extra_js %}
+
+{% block content %}
+
+<div class="container event-page">
+<div class="row">
+<div id="contentArea" class="content col-md-12 pb-2 pt-2 mb-2 mt-1">
+<div class="row">
+<div class="main-title mt-1 mb-3">
+<h1>{{ page.title }}</h1>
+</div>
+</div>
+<div class="row">
+  <div class="col-9 event-image d-lg-none mb-2">
+    {% image page.event_image class="img-fluid card-img-top" fill-215x130-c100 %}
+  </div>
+<div class="col-xl-6">
+  <div class="event mb-2 row">
+  <div class="event-icon col-xl-2 col-2">
+    <i class="bi bi-calendar4-week"></i>
+  </div>
+  <div class="event-date-time-info col-md-10 col-10">
+  {% if page.repeats != None %}
+  <div class="date-rule">{% if page.repeats == 'WEEKLY' %}Every {{ page.event_date|date:"l" }}
+  {% elif page.repeats == 'DAILY' %}Every Day
+  {% elif page.repeats == 'MONTHLY' %}Occurs on the {{ page.event_date|date:"jS" }} day of every month
+  {% elif page.repeats == 'CUSTOM' %}Occurs on the {% if page.week_interval == -1%}last {% else %}{{ page.week_interval|ordinal }}{% endif %} {{ page.weekday|naturalday }} of every month
+  {% endif %}
+  </div>
+  <div class="event-date">From {{ page.event_date|date:"F d, o " }} to {{ page.until|date:"F d, o" }}</div>
+  {% else %}
+  <div class="event-date">{{ page.event_date|date:"F d, o " }}</div>
+  {% endif %}
+  <div class="event-time">{{ page.time_from|date:"g:i A" }} - {{ page.time_to|date:"g:i A" }}</div>
+  {# If there are no repeating dates it's assumed there are no exception dates either #}
+  {% if page.repeats != None %}
+  <div class="exception-dates">
+  {% for ed in page.exception_dates.all %}
+  {# Display if there is only one exception date #}
+  {% if forloop.last == True and forloop.counter == 1%}
+  <strong>No program on {{ ed.exception_date|date:"F d" }}</strong>
+  {% endif %}
+  {# Display if there are multiple exception dates #}
+  {% if forloop.last == True and forloop.counter > 1%}
+ <strong>No programs on:
+  {# Need to loop through the items again to make a new display #}
+  {# dictsort displays exception dates in chronilogical order #}
+  {% for ed in page.exception_dates.all|dictsort:"exception_date" %}
+  {% if forloop.first %}
+  {# include a comma after the first exception date #}
+ {{ ed.exception_date|date:"F d" }},
+   {# include commas after every exception date except the last one #}
+   {% elif forloop.first != True and forloop.last != True %}
+   {# include a comma after the first exception date #}
+  {{ ed.exception_date|date:"F d" }},
+    {% elif forloop.last %}
+    {{ ed.exception_date|date:"F d" }}</strong>
+    {% endif %}
+  {% endfor %}
+  {% endif %}
+  {% endfor %}
+  </div>
+  {% endif %}
+
+  {% now 'c' as today_dt %}
+  {% with today=today_dt %}
+  {% if event_date_time|date:"c" < today and page.until == None or page.until|date:"c" < today and page.until != None %}
+  <div class="mt-2 alert alert-danger">This event is in the past</div>
+  {% endif %}
+  {% endwith %}
+  
+{% if page.until == None and page.event_date|date:"c" >= page.today|date:"c" or page.until != None and page.until|date:"c" >= page.today|date:"c" %}
+{% block add_to_calendar %}
+  {% include "library_programs/add_to_calendar.html" %}
+{% endblock %}
+{% endif %}
+
+
+</div>
+
+</div>
+<div class="desc mt-2">
+    {{ page.description|richtext }}
+</div>
+{% regroup page.age_range.all by audience_name as audience %}
+{% for aud in audience %}
+{% if forloop is not None %}
+{% if forloop.first %}
+<div class="audience mb-2">Audience: {% endif %}{% if forloop.last %}
+  {{ aud.grouper }}{% else %}{{ aud.grouper }}, {% endif %}{% if forloop.last %}
+</div>
+{% endif %}
+{% endif %}
+{% endfor %}
+
+{% for age in page.age_range.all %}
+{% if forloop is not None %}
+{% if forloop.first %}
+<div class="cal-name mb-2">Age Group:
+{% endif %}
+{% if forloop.last %}{{ age }} {% else %}{{ age }}, {% endif %}
+{% endif %}
+{% endfor %}
+{% if forloop.last %}
+</div>
+{% endif %}
+{% if page.event_category != None %}
+<div class="cal-name mb-2">Category: {{ page.event_category }}</div>
+{% endif %}
+</div>
+</div>
+<div class="col-xl-6 event-image d-none d-lg-block">
+  {% image page.event_image class="img-fluid card-img-top" fill-635x385-c100 %}
+</div>
+<div>
+  {% if self.form_page %}
+  <hr>
+  <div class="web-form mt-2">
+  <h2 class="">{{ self.form_page.title }}</h2>
+    <form action="{% pageurl self.form_page %}" method="POST" class="col-xl-6 mb-2">
+      {% honeypot_fields form_page.honeypot %}
+        {% csrf_token %}
+        {{ form|crispy }}
+        <input type="submit" class="btn btn-primary mt-2" value="{% if form_page.submit_button_text == '' %}Submit{% else %}{{ form_page.submit_button_text }}{% endif %}">
+    </form>
+  </div>
+  {% endif %}
+</div>
+</div>
+</div>
+</div>
+</div>
+{% endblock %}

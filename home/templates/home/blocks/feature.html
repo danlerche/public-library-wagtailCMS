@@ -1,0 +1,15 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+<div class="card">
+  <a href="{% if value.feature_document is not None %}{{ value.feature_document.url }}{% else %}{{ value.page.url }}{% endif %}"
+  title="{% if value.feature_document is not None %}{{ value.feature_document }}
+  {% else %}{{ value.page }}{% endif %}">
+  <div class="feature-image">
+  {% image value.feature_image class="img-fluid card-img-top" fill-420x225-c100 %}
+  </div>
+  <div class="feature-text ms-4 mt-2">
+  <div class="card-title feature-title">{% if value.feature_text != '' %}{{ value.feature_text }}
+    {% elif value.feature_document is not None %}{{ value.feature_document }}
+    {% else %}{{ value.page }}{% endif %}</div>
+  </div>
+  </a>
+</div>

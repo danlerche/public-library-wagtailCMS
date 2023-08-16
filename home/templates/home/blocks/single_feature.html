@@ -1,0 +1,27 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+{% if value.enabled %}
+<div id="singleFeature">
+<div class="row mb-1 mt-2">
+<div class="card">
+<div class="card-body row">
+<div class="col-md-5 col-12">
+<a href="{{ value.page.url }}" aria-hidden="true" role="presentation" tabindex="-1">
+  {% image value.single_feature_image class="img-fluid" fill-540x350-c100 %}
+</a>
+</div>
+<div class="col-md-7 col-12">
+<a href="{{ value.page.url }}">
+<div class="card-body">
+<h2>{% if value.override_title != '' %}{{ value.override_title }}
+  {% else %}{{ value.page }}{% endif %}</h2>
+<p>{{ value.single_feature_description }}</p>
+<div href="{{ value.page.url }}" class="btn btn-primary">Read More</div>
+</div>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+{% endif %}

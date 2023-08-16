@@ -1,0 +1,40 @@
+{% load static wagtailcore_tags menu_tags %}
+{% for item in menu_items %}
+
+{% if forloop.last == True and forloop.counter == 1 %}
+{% for item in menu_items %}
+<div class="col-12">
+<div class="menu-heading fw-bold"><a href="{{ item.href }}">{{ item.text }}</a></div>
+{% sub_menu item template="menus/level_3.html" %}
+</div>
+{% endfor %}
+{% endif %}
+
+{% if forloop.last == True and forloop.counter == 2 %}
+{% for item in menu_items %}
+<div class="col-6">
+<div class="menu-heading fw-bold"><a href="{{ item.href }}">{{ item.text }}</a></div>
+{% sub_menu item template="menus/level_3.html" %}
+</div>
+{% endfor %}
+{% endif %}
+
+{% if forloop.last == True and forloop.counter == 3 %}
+{% for item in menu_items %}
+<div class="col-xl-4 col-md-12 col-12">
+<div class="menu-heading fw-bold"><a href="{{ item.href }}">{{ item.text }}</a></div>
+{% sub_menu item template="menus/level_3.html" %}
+</div>
+{% endfor %}
+{% endif %}
+
+{% if forloop.last == True and forloop.counter == 4 %}
+{% for item in menu_items %}
+<div class="col-xl-3">
+<div class="menu-heading fw-bold"><a href="{{ item.href }}">{{ item.text }}</a></div>
+{% sub_menu item template="menus/level_3.html" %}
+</div>
+{% endfor %}
+{% endif %}
+
+{% endfor %}

@@ -1,0 +1,11 @@
+{% load tz %}
+
+<div class="mt-4">
+{% for rd in repeating_dates_per_event %}
+{% for event_info in current_event_orm %}
+<div class="date-entry mt-2">
+<i class="bi bi-calendar-check"></i> <a href="http://calendar.yahoo.com/?v=60&TITLE={{ event_info.title }}&ST={{ rd.event_date|date:'Ymd' }}T{{ event_info.time_from|date:'His' }}&DUR={{ dur }}&DESC={{ event_info.description|striptags }}&in_loc={{ event_info.location }}" target="_blank">{{ rd.event_date }}</a>
+</div>
+{% endfor %}
+{% endfor %}
+</div>

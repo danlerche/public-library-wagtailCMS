@@ -1,0 +1,11 @@
+<div class="row">
+{% if column.value == 'block_quote' %}
+<p>The if value is true</p>
+{% endif %}
+
+{% for col in value.column %}
+<div class="col-sm">
+{{ col }}
+</div>
+{% endfor %}
+</div>

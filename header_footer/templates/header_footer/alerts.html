@@ -1,0 +1,33 @@
+{% load static wagtailcore_tags %}
+{% for alert in alert %}
+{% if alert.enable_alert == True %}
+<div class="modal fade" id="modalAlert" tabindex="-1" aria-label="service alert">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+      {{ alert.alert_text |richtext }}
+      </div>
+      <div class="modal-footer">
+        <form action="/ticker/" id="ticker-form" method="POST" class="alert-on-off collapse alert-item-green show">
+        {% csrf_token %}
+        {{ close_ticker_form }}
+        <button type="submit" value="Submit" class="btn btn-primary mb-2" data-bs-dismiss="modal">Close</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}
+{% endfor %}
+
+
+<script src="{% static 'js/alert.js' %}" type="text/javascript"></script>
+<script>
+  {% if close_ticker == True %}
+   $('#modalAlert').removeClass('show');
+  {% elif close_ticker == False %}
+  $(document).ready(function() {
+    $('#modalAlert').modal('show');
+  });
+  {% endif %}
+</script>

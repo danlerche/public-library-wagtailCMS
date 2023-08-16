@@ -1,0 +1,7 @@
+{% load static wagtailcore_tags wagtailimages_tags %}
+
+{% for logos in logo %}
+
+{% image logos.logo_image class="img-fluid" height-100 %}
+
+{% endfor %}

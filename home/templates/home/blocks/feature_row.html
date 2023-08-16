@@ -1,0 +1,39 @@
+<div class="row">
+<h2 class="mb-4">{{ value.feature_row_title }}</h2>
+
+{% for feature in value.feature_body %}
+
+{% if forloop.last == True and forloop.counter == 1 %}
+{% for feature in value.feature_body %}
+<div id="feature-{{ forloop.counter }}" class="col-12 feature-box">
+{{ feature }}
+</div>
+{% endfor %}
+{% endif %}
+
+{% if forloop.last == True and forloop.counter == 2 %}
+{% for feature in value.feature_body %}
+<div id="feature-{{ forloop.counter }}" class="col-xl-6 col-md-6 col-12 feature-box">
+{{ feature }}
+</div>
+{% endfor %}
+{% endif %}
+
+{% if forloop.last == True and forloop.counter == 3 %}
+{% for feature in value.feature_body %}
+<div id="feature-{{ forloop.counter }}" class="col-xl-4 col-md-4 col-12 feature-box">
+{{ feature }}
+</div>
+{% endfor %}
+{% endif %}
+
+{% if forloop.last == True and forloop.counter == 4 %}
+{% for feature in value.feature_body %}
+<div id="feature-{{ forloop.counter }}" class="col-xl-3 col-md-6 col-12 feature-box">
+{{ feature }}
+</div>
+{% endfor %}
+{% endif %}
+
+{% endfor %}
+</div>

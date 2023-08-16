@@ -1,0 +1,12 @@
+{% load wagtailcore_tags menu_tags %}
+{% for footer in footer_column|dictsort:"order" %}
+{% if forloop.first %}
+<div class="col-lg-3 col-md-6 col-12 mb-2" tabindex="0">
+    {{ footer.footer_col }}
+</div>
+{% else %}
+<div class="col-lg-3 col-md-6 col-12 mb-2">
+    {{ footer.footer_col }}
+</div>
+{% endif %}
+{% endfor %}

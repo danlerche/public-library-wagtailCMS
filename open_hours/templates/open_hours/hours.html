@@ -1,0 +1,54 @@
+<div id="OpenHoursAlert" class="pt-2 pb-2">
+
+<div class="container">
+
+{% for enable_messages in enable_message_display %}
+
+{% if enable_messages.enable_message_display == True %}
+{% for multiday_holiday in multiday_holiday %}
+
+<div id="hoursMessage" class="text-center">The library is closed from {{ multiday_holiday.closed_date_from }} to {{ multiday_holiday.closed_date_to }} for the {{ multiday_holiday.closed_date_name }}. See {% for branch_info in branch_info %}<a href="{{ branch_info.hours_page.url }}">hours</a>{% endfor %}</div>
+{% empty %}
+
+{% for multiday_alt_hour in multiday_alt_hour %}
+{% if minutes_remaining != '' %}
+<div id="hoursMessage" class="text-center">The library closes <span id="time">{{ minutes_remaining|add:"1" }}</span> minutes. See <a href="{{ open_hours.branch_info.hours_page.url }}">hours</a></div>
+{% else %}
+<div id="hoursMessage" class="text-center">The library is open from <a href="{{ multiday_alt_hour.branch_info.hours_page.url }}">{{ multiday_alt_hour.time_from|date:"g:i A" }} - {{ multiday_alt_hour.time_to|date:"g:i A" }}</a> for {{ multiday_alt_hour.closed_date_name }} </div>
+{% endif %}
+{% empty %}
+
+{% for closed_holidays in closed_holiday %}
+{# checks to see if the library is closed all day #}
+<div id="hoursMessage" class="text-center">The library is closed for {{ closed_holidays.closed_date_name }}. View {% for branch_info in branch_info %}<a href="{{ branch_info.hours_page.url }}">hours</a>{% endfor %}</div>
+
+{% empty %}
+{% for alt_hours in alt_hour %}
+
+{% if minutes_remaining != '' %}
+{% include 'open_hours/countdown.html' %}
+{% else %}
+<div id="hoursMessage" class="text-center">The library is open from <a href="{{ alt_hours.branch_info.hours_page.url }}">{{ alt_hours.time_from|date:"g:i A" }} - {{ alt_hours.time_to|date:"g:i A" }}</a> for {{ alt_hours.closed_date_name }} </div>
+{% endif %}
+{% empty %}
+
+{# validates regular hours in the system #}
+{% for open_hours in open_hour %}
+{{ close_times }}
+
+{% if minutes_remaining != '' %}
+{% include 'open_hours/countdown.html' %}
+{% else %}
+<div id="hoursMessage" class="text-center">Today's Hours: <a href="{{ open_hours.branch_info.hours_page.url }}">{{ open_hours.time_from|date:"g:i A" }} - {{ open_hours.time_to|date:"g:i A" }}</a></div>
+{% endif %}
+{% empty %}
+<div id="hoursMessage" class="text-center">The Library is currently closed. See {% for branch_info in branch_info %}<a href="{{ branch_info.hours_page.url }}">hours</a>{% endfor %}</div>
+{% endfor %}
+{% endfor %}
+{% endfor %}
+{% endfor %}
+{% endfor %}
+{% endif %}
+{% endfor %}
+</div>
+</div>

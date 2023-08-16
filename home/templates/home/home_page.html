@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags wagtailimages_tags library_programs_tags %}
+
+{% block body_class %}template-homepage{% endblock %}
+
+{% block extra_css %}
+{% endblock extra_css %}
+
+{% block content %}
+<div id="homepage" class="mb-1">
+{% for block in page.content %}
+{% if block.block_type == 'background_image_w_searchbar' %}
+{% include_block block %}
+<div class="container-lg content mt-1">
+<div class="row">
+<div class="col-12">
+{% elif block.block_type == 'single_feature' %}
+{% include_block block %}
+{% elif block.block_type == 'aspen_carousel' %}
+<div id="carousel">
+<div class="row">
+<div id="AspenCarouselContainer" class="mt-2 mb-1">
+{% include_block block %}
+</div>
+</div>
+</div>
+{% elif block.block_type == 'upcoming_events_features' and block.value == True %}
+<div #programs class="row mb-1 mt-2">
+<div id="programsHomepageFeature" class="col-xl-9 col-md-12">
+<div class="row">
+<h2 class="mb-4">Upcoming Programs and Events</h2>
+{% next_three_events_feature %}
+</div>
+</div>
+<div id="Upcoming" class="col-xl-3 col-md-12">
+{% next_four_events_list %}
+</div>
+</div>
+{% elif block.block_type == 'feature_row' %}
+<div id="features">
+<div class="row mb-1 mt-2">
+{% include_block block %}
+</div>
+</div>
+{% endif %}
+{% endfor %}
+</div>
+</div>
+</div>
+</div>
+<script>
+  /* adjusts the background image height depending on if the feature is present or not */
+   if ($('#singleFeature').length) { $('#backgroundImage').css('height','370px' );}
+   else {$('#backgroundImage').css('height','350px' );}
+</script>
+
+{% endblock content %}

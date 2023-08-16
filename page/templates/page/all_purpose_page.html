@@ -1,0 +1,164 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags wagtailuserbar menu_tags wagtailimages_tags open_hours_tags library_programs_tags get_images_tags crispy_forms_tags honeypot_tags %}
+{% include_block page.content %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/honeypot.css' %}">
+{% endblock extra_css %}
+{% block extra_js %}
+<script src="{% static 'js/honeypot.js' %}"></script>
+{% endblock extra_js %}
+
+{% block content %}
+<div class="container">
+<div class="row">
+<div id="contentArea" class="content col-12">
+<div class="row">
+<div class="main-title mt-4 mb-4"><h1>{{ page.title }}</h1></div>
+
+<div id="contentBody" class="mb-2">
+
+{% for block in page.content %}
+{% if block.block_type == 'heading' %}
+<section class="block-heading-area"><h2>{% include_block block %}</h2></section>
+
+{% elif block.block_type == 'image' %}
+<section class="block-image mb-2">
+{% image block.value original class="img-fluid" %}
+</section>
+
+{% elif block.block_type == 'half_size_image' %}
+<section class="block-image mb-2">
+{% image block.value width-648 class="img-fluid" %}
+</section>
+
+{% elif block.block_type == 'full_width_image' %}
+<section class="block-image mb-2">
+{% image block.value width-1296 class="img-fluid" %}
+</section>
+
+{% elif block.block_type == 'image_carousel' %}
+<section class="block-image-carousel mb-2">
+{% get_images_by_collection block.value %}
+</section>
+
+{% elif block.block_type == 'EmailBlock' %}
+<section class="block-email">
+<a href="mailto:{% include_block block %}?subject=Referring to page {{ page.title }}">
+{% include_block block %}
+</a>
+</section>
+
+{% elif block.block_type == 'ppl_map' and block.value == True %}
+<section class="block-map mb-2">
+<iframe marginwidth="0" marginheight="0" scrolling="no" width="425" height="350" frameborder="0"
+src="https://www.google.com/maps/d/embed?mid=1Y8Ajzgh-icL5icy_DtdByBbPgz_gJDK-&ehbc=0066B3" width="640" height="480"></iframe>
+</section>
+{% elif block.block_type == 'ppl_map' and block.value == False %}
+
+{% elif block.block_type == 'holds_locker_map' and block.value == True %}
+<section class="block-map mb-2">
+<iframe marginwidth="0" marginheight="0" scrolling="no" width="425" height="350" frameborder="0" src="https://www.google.com/maps/d/embed?mid=1w5U6pf29Jhy8qOYuLxoY-1NYleOViO0&ehbc=0066B3" width="640" height="480"></iframe>
+</section>
+{% elif block.block_type == 'holds_locker_map' and block.value == False %}
+
+{% elif block.block_type == 'PhoneNumberBlock' %}
+
+<section class="tel mb-2">
+<a href="tel:{% include_block block %}">{% include_block block %}</a>
+</section>
+{% elif block.block_type == 'map' %}
+
+{% include_block block %}
+
+{% elif block.block_type == 'URLBlock' %}
+
+<a href="{% include_block block %}">{% include_block block %}</a>
+
+{% elif block.block_type == 'BlockQuoteBlock' %}
+
+{% include_block block %}
+
+{% elif block.block_type == 'show_business_hours' and block.value == True %}
+{% business_hours %}
+
+{% elif block.block_type == 'events_calendar' and block.value == True %}
+{% events_calendar %}
+
+{% elif block.block_type == 'all_upcoming_events' and block.value == True %}
+{% all_upcoming_events %}
+
+{% elif block.block_type == 'events_by_category' %}
+{% filtered_upcoming_events_by_cat block.value %}
+
+{% elif block.block_type == 'events_by_audience' %}
+{% filtered_upcoming_events_by_audience block.value %}
+
+{% elif block.block_type == 'show_business_hours' and block.value == False %}
+
+{% elif block.block_type == 'show_next_closure' and block.value == True %}
+{% next_closure %}
+
+{% elif block.block_type == 'show_next_closure' and block.value == False %}
+
+{% elif block.block_type == 'show_all_closures' and block.value == True %}
+{% all_closures %}
+
+{% elif block.block_type == 'show_all_closures' and block.value == False %}
+
+{% elif block.block_type == 'accordion' %}
+<div class="row mb-2">
+{% include_block block %}
+</div>
+
+{% elif block.block_type == 'bookClub' %}
+	{% if forloop.first %}
+	<div id="accordion">
+	{% endif %}
+
+{% include_block block %}
+
+{# book club template is under basic_page/templates/basic_page/blocks/book_club.html #}
+
+{% elif block.block_type == 'ebooks_card' %}
+<section class="block-ebooks_card">
+{% include_block block %}
+</section>
+
+{% elif block.block_type == 'side_menu' %}
+</div>
+<div class="side-menu col-xl-3">
+{% include_block block %}
+</div>
+<script>
+$('#contentBody').addClass('col-xl-9');
+</script>
+
+{% else %}
+<section class="block-{{ block.block_type }}">
+{% include_block block %}
+</section>
+
+{% endif %}
+{% endfor %}
+
+  {% if self.form_page %}
+  <hr>
+  <div class="web-form mt-2">
+  <h2 class="">{{ self.form_page.title }}</h2>
+    <form action="{% pageurl self.form_page %}" method="POST" class="col-xl-6 mb-2">
+      {% honeypot_fields form_page.honeypot %}
+        {% csrf_token %}
+        {{ form|crispy }}
+        <input type="submit" class="btn btn-primary mt-2" value="{% if form_page.submit_button_text == '' %}Submit{% else %}{{ form_page.submit_button_text }}{% endif %}">
+    </form>
+  </div>
+  {% endif %}
+
+</div><!--end content-body-->
+
+</div>
+</div><!--content area-->
+</div><!--end container-->
+</div><!--end row-->
+</div>
+{% endblock %}

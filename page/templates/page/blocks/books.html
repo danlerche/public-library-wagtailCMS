@@ -1,0 +1,11 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+
+<h3>{{ value.book_name }}</h3>
+<div><strong>{{ value.author_name }}</strong></div>
+<div>Reading Date: {{ value.reading_date }}</div>
+<div class="row">
+<div class="col-2">{% image value.book_cover fill-200x300 class="img-fluid" %}</div>
+<div class="col-10">{{ value.book_description }}</div>
+</div>
+
+

@@ -1,0 +1,110 @@
+{% load static wagtailcore_tags wagtailuserbar header_footer_tags menu_tags open_hours_tags %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>
+            {% block title %}
+                {% if page.seo_title %}{{ page.seo_title }}{% else %}{{ page.title }}{% endif %}
+            {% endblock %}
+            {% block title_suffix %}
+                {% wagtail_site as current_site %}
+                {% if current_site and current_site.site_name %}- {{ current_site.site_name }}{% endif %}
+            {% endblock %}
+        </title>
+        <meta name="description" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <!-- Matomo -->
+        <script>
+          var _paq = window._paq = window._paq || [];
+          /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+          _paq.push(["setDomains", ["*.penticton.libraries.coop","*.pentictonlibrary.ca"]]);
+          _paq.push(['trackPageView']);
+          _paq.push(['enableLinkTracking']);
+          (function() {
+            var u="https://matomo.libraries.coop/";
+            _paq.push(['setTrackerUrl', u+'matomo.php']);
+            _paq.push(['setSiteId', '225']);
+            var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+           g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+          })();
+        </script>
+<!-- End Matomo Code -->
+
+        {# Global stylesheets #}
+        <link rel="shortcut icon" type="image/png" href="{% static 'favicon.ico' %}"/>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/table-to-json@1.0.0/lib/jquery.tabletojson.min.js" integrity="sha256-H8xrCe0tZFi/C2CgxkmiGksqVaxhW0PFcUKZJZo1yNU=" crossorigin="anonymous"></script>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/ppl_2022.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/aspen_carousel.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/mega_menu.css' %}">
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick-theme.css"/>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/slick_settings.css' %}">
+
+        {% block extra_css %}
+            {# Override this in templates to add extra stylesheets #}
+        {% endblock %}
+    </head>
+<body id="background" class="{% block body_class %}{% endblock %}">
+  <div id="skipContentWrapper" class="nocontent" role="navigation" aria-label="Skip to content navigation">
+      <a id="skipContentLink" title="Skip Navigation and go to Content" href="#mainContent">Skip to Content</a>
+  </div>
+  <div id="alertArea">
+  {% popup_alert %}
+  </div>
+  {% open_hours %}
+        {% wagtailuserbar %}
+<header class="container content">
+  <div class="row d-none d-lg-block">
+    <div id="topMenu" class="d-flex justify-content-end">
+    {% flat_menu 'top' template="menus/top_menu.html" %}
+   </div>
+  </div>
+  <div class="flex-header d-flex justify-content-between">
+    <div id="logoArea" class="flex-grow-2">
+      <h1><a class="navbar-brand" href="/">{% logo %}</a></h1>
+    </div>
+    <div id="logInButton" class="d-lg-none bd-hightlight align-self-center">
+      {% flat_menu 'top' template="menus/top_menu.html" %}
+    </div>
+    <div class="bd-hightlight align-self-center">
+      {% main_menu max_levels=3 template="menus/main_menu.html" sub_menu_templates="menus/menu_dropdown.html, level_3.html" %}
+    </div>
+  </div>
+</header>
+<main id="mainContent">
+  <a class="btn btn-primary" id="btn-back-to-top" href="#background" label="back to the top button">
+    <i class="bi bi-arrow-up"></i>
+    <span class="d-none">back to the top</span>
+  </a>
+        {% block content %}
+        {% endblock %}
+</main>
+
+<footer>
+<div class="container">
+<div id="footerContent" class="row">
+
+{% footer_column %}
+
+</div>
+
+
+</div>
+</footer>
+        {# Global javascript #}
+          <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="{% static 'js/mega_menu.js' %}"></script>
+        <script type="text/javascript" src="{% static 'js/ppl_2022.js' %}"></script>
+        {% block extra_js %}
+            {# Override this in templates to add extra javascript #}
+        {% endblock %}
+</body>
+</html>

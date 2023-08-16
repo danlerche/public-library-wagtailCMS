@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block content %}
+<div class="container">
+<div class="row">
+
+<div class="main-title mt-4 mb-4">
+    <h1>{{ page.title }}</h1>
+</div>
+
+<div class="lead">{{ page.intro|richtext }}</div>
+
+<div class="col-9">
+<div class="row">
+{% for person in page.get_children %}
+<div class="col-xl-4 col-12 mb-2">
+<div class="person card">
+   {% image person.specific.image class="img-fluid card-img-top blue-border" fill-304x291-c100 %}
+  <div class="card-body">
+    <h2 class="name card-title">{{ person.title }}</h2>
+    <div class="position card-title">{{ person.specific.position }}</div>
+    <p class="card-text">{{ person.specific.introduction }}</p>
+    <a href="{{ person.specific.url }}" class="btn btn-primary">Read More</a>
+  </div>
+</div>
+</div>
+{% endfor %}
+</div>
+</div>
+
+<div id="boardMinutes" class="side-menu col-md-3 col-12">
+{% for block in page.side_menu %}
+{% include_block block %}
+{% endfor %}
+</div>
+
+
+</div>
+</div>
+{% endblock %}

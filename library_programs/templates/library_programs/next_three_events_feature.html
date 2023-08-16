@@ -1,0 +1,27 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% for next_events in next_three_events_feature %}
+{% for all_events_orm in all_events_orm|dictsort:"time_from" %}
+{% if all_events_orm.id == next_events.id %}
+<div class="col-md-4 col-12 mb-2">
+<div class="card">
+  <a href="{{ all_events_orm.url }}" title="{{ all_events_orm.title }}">
+  {% image all_events_orm.event_image class="img-fluid card-img-top" fill-315x230-c100 %}
+  <div class="event-info row mt-3">
+  <div class="col-12 col-md-4 col-lg-1 col-xl-2">
+  <div class="date-icon" aria-label="month and date of the event">
+  <div class="date-icon-day" aria-label="the {{ next_events.event_date|date:'dS' }}">{{ next_events.event_date|date:"d" }}</div>
+  <div class="date-icon-month" aria-label="of {{ next_events.event_date|date:'F' }}">{{ next_events.event_date|date:"M"|upper  }}</div>
+  </div>
+  </div>
+  <div class="col-8 col-md-8 title-time">
+    <div class="card-title"><strong>{{ all_events_orm.title|truncatechars:30 }}</strong></div>
+    <div class="time">{{ all_events_orm.time_from|date:"g:i A"  }} - {{ all_events_orm.time_to|date:"g:i A"  }}</div>
+</div>
+</div>
+</a>
+</div>
+</div>
+{% endif %}
+{% endfor %}
+{% endfor %}

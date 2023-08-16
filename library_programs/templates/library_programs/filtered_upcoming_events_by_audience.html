@@ -1,0 +1,33 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+{% for nd in next_date|dictsort:'next_date' %}
+{% for events in filtered_upcoming_events %}
+{% if nd.id == events.id %}
+<section class="block-events-by-audience">
+<div class="card mb-3 pb-3">
+  <div class="row g-0">
+    <div class="col-xl-2 col-md-3 col-4">
+      <a href="{{ events.url }}">{% image events.event_image class="img-fluid rounded-start" fill-310x230-c100 min-200x200 %}</a>
+    </div>
+    <div class="col-xl-10 col-md-9 col-md-8 col-8">
+      <div class="card-body">
+        <a href="{{ events.url }}" class="card-title"><h2>{{ events.title }}</h2></a>
+        <div class="card-text next-up"><strong>Next program:
+          {% with td_date=today|date:"Y-m-d" %}
+          {% if td_date == nd.next_date|date:"Y-m-d" %}Today{% else %}{{ nd.next_date|date:"l, F d" }}{% endif %}
+          {% endwith %}</strong>
+        </div>
+        <div class="card-text time">{{ events.time_from|date:'g:i A' }} - {{ events.time_to|date:'g:i A' }}</div>
+        {% for age in events.age_range.all %}
+        {% if forloop is not None %}
+        {% if forloop.first %}<div class="card-text age-range">Age range: {% endif %}
+          {% if forloop.last %}{{ age.age_range }} {% else %}{{ age.age_range }}, {% endif %}
+          {% if forloop.last %}</div>{% endif %}{% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+{% endif %}
+{% endfor %}
+{% endfor %}

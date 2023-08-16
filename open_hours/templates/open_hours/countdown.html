@@ -1,0 +1,31 @@
+{% load static wagtailcore_tags %}
+<div id="OpenHoursAlert">The library closes in <span id="time">{% if seconds_remaining == 00 %} {{ minutes_remaining }}{% else %}{{ minutes_remaining|add:"1" }}{% endif %}</span> minutes. See <a href="{{ open_hours.branch_info.hours_page.url }}">hours</a></div>
+<script>
+var template_minutes_remain = {{ minutes_remaining|add:"1" }};
+var minutes_to_seconds = template_minutes_remain * 60;
+var template_seconds_remain = {{ seconds_remaining }};
+var time_remain = minutes_to_seconds + template_seconds_remain;
+
+function startTimer(duration, display) {
+    var timer = duration, minutes, seconds;
+    setInterval(function () {
+        minutes = parseInt(timer / 60, 10);
+        seconds = parseInt(timer % 60, 10);
+
+        minutes = minutes < 10 ? "0" + minutes : minutes;
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+
+        display.textContent = minutes /* uncomment to add seconds+ ":" + seconds */;
+
+        if (--timer < 0) {
+            timer = duration;
+        }
+    }, 1000);
+}
+
+window.onload = function () {
+    var minutes_remain = Math.ceil(time_remain),
+        display = document.querySelector('#time');
+    startTimer(minutes_remain, display);
+};
+</script>

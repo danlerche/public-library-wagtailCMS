@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+{% block content %}
+
+<div class="container">
+<div class="row">
+<div id="contentArea" class="content col-xl-12">
+<div class="main-title mt-4 mb-4"><h2>{{ page.title }}</h2></div>
+
+    {{ page.additional_text|richtext }}
+
+
+
+{% regroup page.get_children|dictsort:"specific.policy_category.policy_category" by specific.policy_category as pol_cat_list %}
+
+{% for policy_category, policy in pol_cat_list %}
+<h3>{{ policy_category.policy_category }}</h3>
+{% for pol in policy %}
+
+<p><a href="{% pageurl pol %}">{{ pol.title}}</a></p>
+
+{% endfor %}
+{% endfor %}
+
+</div>
+</div>
+</div>
+
+{% endblock %}

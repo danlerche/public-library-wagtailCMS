@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+{% block body_class %}template-online_resourcepage{% endblock %}
+
+{% block content %}
+
+<div class="container">
+<div class="row">
+<div id="contentArea" class="content col-12">
+<div class="row">
+<div class="main-title mt-4 mb-4"><h1>{{ page.title }}</h1></div>
+
+<div id="contentBody" class="mb-2">
+
+<div class="intro">{{ page.intro }}</div>
+
+{{ page.online_resource_description|richtext }}
+
+{% with categories=page.categories.all %}
+    {% if categories %}
+  <ul><h2>Categories</h2>
+
+        {% for category in categories %}
+            <li>{{ category.name }}</li>
+          {% endfor %}
+  </ul>
+    {% endif %}
+{% endwith %}
+
+     <p><a href="{{ page.get_parent.url }}">Return to online resources</a></p>
+
+</div>
+</div><!--content area-->
+</div><!--end container-->
+</div><!--end row-->
+</div>
+{% endblock %}
+<!--title-->
+<!--Description-->
+<!--Category-->
+<!--online_resource URL-->

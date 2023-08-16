@@ -1,0 +1,10 @@
+.carouselScrollerTitleLabel {font-size: 16px;}
+.horizontalCarouselSpotlightWrapper .jcarousel-control-prev, 
+.horizontalCarouselSpotlightWrapper .jcarousel-control-next {height: 75%;}
+.nav-tabs > li.active > a {font-weight: bold;}
+.listTitle.resultInformationLabel {font-size: 14px;}
+.embeddedCollectionSpotlightBody .nav-tabs li a {color: #4E4C4F !important; font-size: 15px !important;}
+.embeddedCollectionSpotlight .tab-content {padding: 10px 10px 34px 10px;}
+.embeddedCollectionSpotlight .jcarousel-wrapper {margin: 0px;}
+.embeddedCollectionSpotlight .titleScrollerViewMore {margin-top: 10px;}
+.embeddedCollectionSpotlight .titleScrollerViewMore a {color: #0066B3;}

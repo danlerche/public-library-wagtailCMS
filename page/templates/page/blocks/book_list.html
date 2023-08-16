@@ -1,0 +1,13 @@
+{% load wagtailcore_tags %}
+
+<h3>{{ value.book_list_name }}</h3>
+
+{% for books in value.item.all %}
+
+<h4><a href="{{ value.query_url.catalogue_link_prefix }}{{ books.isbn }}">{{ books.book_title }}</a></h4>
+
+<a href="{{ value.query_url.catalogue_link_prefix }}{{ books.isbn }}"><img src="{{ value.query_url.image_link_prefix }}{{ books.isbn }}/LC.jpg" alt="Cover image for {{ books.book_title }}"></a>
+
+
+{% endfor %}
+

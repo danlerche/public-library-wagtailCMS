@@ -1,0 +1,19 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+<div class="card mb-2">
+<a href="{{ value.ebook_url }}" title="{{ value.ebook_title }}">
+<div class="feature-image">
+{% image value.ebook_image class="img-fluid card-img-top" fill-304x92-c100 %}
+</div>
+</a>
+<div class="card-body">
+{{ value.ebook_description }}
+<p>{{ value.tutorial_link|safe }}</p>
+{% if value.app_link is not None %}
+<div id="ebook_app_link">
+{% for app_links in value.app_link %}
+{{ app_links }}
+{% endfor %}
+</div>
+{% endif %}
+</div>
+</div>

@@ -1,0 +1,10 @@
+{% load static wagtailcore_tags menu_tags %}
+<nav id="footerMenu">
+  <ul class="nav justify-content">
+{% for item in menu_items %}
+    <li class="nav-item">
+      <a class="nav-link" href="{{ item.href }}">{{ item.text }}</a>
+    </li>
+  {% endfor %}
+  </ul>
+</nav>

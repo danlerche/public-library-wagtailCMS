@@ -1,0 +1,81 @@
+{% load static wagtailcore_tags menu_tags %}
+
+{# changes the bootstrap column row depending on how many mega menu categories there are #}
+{% load static wagtailcore_tags menu_tags %}
+{% for item in menu_items %}
+
+{# find the last forloop index #}
+{% if forloop.last == True %}
+{# hack to divide columns into two #}
+{% widthratio forloop.counter 2 1 as mk_menu_col %}
+{# Hack to convert to integer as withratio doesn't seem to work with if statements. #}
+
+{% if forloop.counter|divisibleby:2 %}
+{% with menu_col=mk_menu_col|add:0 %}
+
+{% for item in menu_items %}
+{% if forloop.counter <= menu_col %}
+{% if forloop.first %}
+<div class="col-xl-6 col-md-6 col-12 mb-3 mb-lg-0">
+<div class="list-group list-group-flush">
+{% endif %}
+  <a href="{{ item.href }}" class="list-group-item list-group-item-action">{{ item.text }}</a>
+{% if forloop.counter == menu_col %}
+</div>
+</div>
+{% endif %}
+{% endif %}
+
+{% if forloop.counter > menu_col %}
+
+{% if forloop.counter == menu_col|add:1 %}
+<div class="col-xl-6 col-md-6 col-12 mb-3 mb-lg-0">
+<div class="list-group list-group-flush">
+{% endif %}
+<a href="{{ item.href }}" class="list-group-item list-group-item-action">{{ item.text }}</a>
+{% if forloop.last %}
+</div>
+</div>
+{% endif %}
+{% endif %}
+
+
+{% endfor %}
+{% endwith %}
+
+{% else %}
+{% with menu_col=mk_menu_col|add:0 %}
+
+{% for item in menu_items %}
+{% if forloop.counter <= menu_col %}
+{% if forloop.first %}
+<div class="col-xl-6 col-md-6 col-12 mb-3 mb-lg-0">
+<div class="list-group list-group-flush">
+{% endif %}
+  <a href="{{ item.href }}" class="list-group-item list-group-item-action">{{ item.text }}</a>
+{% if forloop.counter == menu_col %}
+</div>
+</div>
+{% endif %}
+{% endif %}
+
+{% if forloop.counter > menu_col %}
+
+{% if forloop.counter == menu_col|add:1 %}
+<div class="col-xl-6 col-md-6 col-12 mb-3 mb-lg-0">
+<div class="list-group list-group-flush">
+{% endif %}
+<a href="{{ item.href }}" class="list-group-item list-group-item-action">{{ item.text }}</a>
+{% if forloop.last %}
+</div>
+</div>
+{% endif %}
+{% endif %}
+
+
+{% endfor %}
+
+{% endwith %}
+{% endif %}
+{% endif %}
+{% endfor %}

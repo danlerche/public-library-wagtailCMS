@@ -1,0 +1,12 @@
+{% for next_closure in next_closure %}
+{% if next_closure.closed_date_from == next_closure.closed_date_to %}
+<div>The library will be closed on {{ next_closure.closed_date_from|date:"l, F n" }} for {{ next_closure.closed_date_name }}.</div>
+<div>Please see our {% for branch_info in branch_info %}<a href="{{ branch_info.closed_holiday_page.url }}">holiday Hours</a>{% endfor %} for a full listing of holiday closures.</div>
+
+{% elif next_closure.closed_date_from != next_closure.closed_date_to %}
+<div class="holiday_hours">The library will be closed from {{ next_closure.closed_date_from|date:"l, F n Y" }} to {{ next_closure.closed_date_to|date:"l, F n Y" }} for {{ next_closure.closed_date_name }}.</div>
+<div>Please see our {% for branch_info in branch_info %}<a href="{{ branch_info.closed_holiday_page.url }}">holiday Hours</a>{% endfor %} for a full listing of holiday closures.</div>
+{% endif %}
+{% empty %}
+<div>There are no upcoming scheduled closures.</div>
+{% endfor %}

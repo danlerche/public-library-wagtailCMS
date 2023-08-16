@@ -1,0 +1,8 @@
+<div class="branch-info mt-4">
+{% for branch_info in branch_info %}
+<div>{{ branch_info.street_number }} {{ branch_info.street_name }}</div>
+<div>{{ branch_info.city}}, {{ branch_info.province_state }} {{ branch_info.postal_code }}</div>
+<div class="mt-4">
+</div>
+{% endfor %}
+</div>

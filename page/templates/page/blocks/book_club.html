@@ -1,0 +1,23 @@
+<div id="bookClub" class="card mt-2 mb-2">
+<div class="card-header" id="{{ value.book_club_name|slugify }}">
+<h4 class="mb-0">{{ value.book_club_name }}</h4>
+<div>{{ value.book_club_day_of_the_week }}</div>
+<div>Reading Time: {{ value.book_club_time }}</div>
+<div class="container mt-2">
+<div class="row">
+<div class="col-12 col-xl-2"><a data-bs-toggle="collapse" href=".multi-collapse-{{ value.book_club_name|slugify }}" aria-expanded="false" aria-controls="{{ value.book_club_name|slugify }}">
+<i class="fa fa-book"></i> Reading List</a></div>
+<div class="col-12 col-xl-4">
+<a href="{{ value.book_club_PDF.url }}"><i class="fa fa-file-pdf-o"></i> Download the schedule</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="collapse multi-collapse-{{ value.book_club_name|slugify }}" id="{{ value.book_club_name|slugify }}">
+  	<div class="card card-body">
+		{{ value.books }}
+		{# template in basic_page/templates/basic_page/blocks/books.html #}
+     </div>
+</div>

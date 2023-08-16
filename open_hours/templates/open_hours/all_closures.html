@@ -1,0 +1,30 @@
+<div id="closures"></div>
+<h2>Holiday Hours</h2>
+{% with current_year=today|date:"Y" %}
+{% for all_closures in all_closures %}
+
+{# shows true for single event all day closures #}
+{% if all_closures.all_day == True and all_closures.closed_date_from == all_closures.closed_date_to %}
+<div class="holiday_hours">{{ all_closures.closed_date_from|date:"l, F d, Y" }} ({{ all_closures.closed_date_name }}):<strong> Closed</strong></div>
+
+
+{# shows true for multiday all day closures #}
+{% elif all_closures.all_day == True and all_closures.closed_date_from != all_closures.closed_date_to %}
+<div class="holiday_hours">{{ all_closures.closed_date_name }}: <strong>Closed from {{ all_closures.closed_date_from|date:"F d, Y" }} through {{ all_closures.closed_date_to|date:"F d, Y" }}</strong></div>
+
+
+{# shows true for single event alternate hours #}
+{% elif all_closures.all_day == False and all_closures.closed_date_from == all_closures.closed_date_to %}
+<div class="holiday_hours">{{ all_closures.closed_date_from|date:"l, F d, Y" }} ({{ all_closures.closed_date_name }}): <strong>Open {{ all_closures.time_from|date:"g:i a" }} to {{ all_closures.time_to|date:"g:i a" }}</strong></div>
+
+
+{# shows true for multiday alternate hours #}
+{% elif all_closures.all_day == False and all_closures.closed_date_from != all_closures.closed_date_to %}
+<div class="holiday_hours">From {{ all_closures.closed_date_from|date:"F d, Y" }} through {{ all_closures.closed_date_to|date:"F d, Y" }}:<strong> Open {{ all_closures.time_from|date:"g:i a" }} to {{ all_closures.time_to|date:"g:i a" }} for {{ all_closures.closed_date_name }} </strong></div>
+
+{% endif %}
+{% empty %}
+{# returns true if there are no closures entered, or if all closures are in the past #}
+<div class="holiday_hours">There are no upcoming scheduled closures.</div>
+{% endfor %}
+{% endwith %}

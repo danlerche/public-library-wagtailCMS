@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags static widget_tweaks crispy_forms_tags honeypot_tags %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/honeypot.css' %}">
+{% endblock extra_css %}
+{% block extra_js %}
+<script src="{% static 'js/honeypot.js' %}"></script>
+{% endblock extra_js %}
+
+{% block content %}
+<div class="container">
+<div class="row">
+<div id="contentArea" class="content col-xl-12">
+<div class="main-title mt-4 mb-4"><h1>{{ page.title }}</h1></div>
+
+  <p>{{ page.intro|richtext}}</p>
+
+      <form action="{% pageurl page %}" method="POST" class="col-xl-6 mb-2">
+        {% honeypot_fields page.honeypot %}
+            {% csrf_token %}
+            {{ form|crispy }}
+            <input type="submit" class="btn btn-primary mt-2" value="{% if page.submit_button_text == '' %}Submit{% else %}{{ page.submit_button_text }}{% endif %}">
+      </form>
+</div>
+</div>
+</div>
+
+<script>
+$(".dateinput").prop('type', 'date'); 
+$(".datetimeinput").prop('type', 'datetime-local'); 
+
+</script>
+
+{% endblock %}

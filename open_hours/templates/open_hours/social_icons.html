@@ -1,0 +1,5 @@
+<nav class="social-nav nav">
+{% for social in social_media %}
+<a class="social-nav-link" href="{{ social.social_media_link }}"><span class="screen-only">{{ social.social_media_name }}</span><i class="{{ social.social_media_icon }}" aria-hidden="True"></i></a>
+{% endfor %}
+</nav>

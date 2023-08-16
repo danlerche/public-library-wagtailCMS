@@ -1,0 +1,47 @@
+<div class="row">
+{% for ebook in value.ebooks_body %}
+{% if forloop.last == True and forloop.counter == 1 %}
+{% for ebook in value.ebooks_body %}
+<div id="feature-{{ forloop.counter }}" class="col-12">
+{{ ebook }}
+</div>
+{% endfor %}
+{% endif %}
+
+{% if forloop.last == True and forloop.counter == 2 %}
+{% for ebook in value.ebooks_body %}
+<div id="feature-{{ forloop.counter }}" class="col-xl-6 col-md-6 col-12">
+{{ ebook }}
+</div>
+{% endfor %}
+{% endif %}
+
+{% if forloop.last == True and forloop.counter == 3 %}
+{% for ebook in value.ebooks_body %}
+<div id="feature-{{ forloop.counter }}" class="col-xl-4 col-md-4 col-12">
+{{ ebook }}
+</div>
+{% endfor %}
+{% endif %}
+
+{% if forloop.last == True and forloop.counter == 4 %}
+{% for ebook in value.ebooks_body %}
+<div id="feature-{{ forloop.counter }}" class="col-xl-3 col-md-6 col-12">
+{{ ebook }}
+</div>
+{% endfor %}
+{% endif %}
+
+{% if forloop.last == True and forloop.counter >= 5 %}
+{% for ebook in value.ebooks_body %}
+<div id="feature-{{ forloop.counter }}" class="col-xl-4 col-md-6 col-12">
+{{ ebook }}
+</div>
+{% endfor %}
+{% endif %}
+
+{% endfor %}
+</div>
+{% block extra_js %}
+<script async src="https://my.nicheacademy.com/api/widgets/pentictonlibrary"></script>
+{% endblock %}

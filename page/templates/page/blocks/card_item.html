@@ -1,0 +1,16 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+<div class="card">
+	{% image value.card_image class="img-fluid card-img-top" fill-420x225-c100 %}
+  <div class="card-body">
+  	{% if value.card_description != '' %}
+  	<p class="card-text">{{ value.card_description }}</p>
+  	{% endif %}
+  	{% if value.card_page is not None and value.card_alt_title == '' %}
+    <a href="{{ value.card_page.url }}" class="btn btn-primary">{{ value.card_page }}</a>
+    {% elif value.card_page is not None and value.card_alt_title != '' %}
+    <a href="{{ value.card_page.url }}" class="btn btn-primary">{{ value.card_alt_title }}</a>
+    {% elif value.card_page is None and value.card_external_url != '' and value.card_alt_title != '' %}
+    <a href="{{ value.card_external_url }}" class="btn btn-primary">{{ value.card_alt_title }}</a>
+    {% endif %}
+  </div>
+</div>

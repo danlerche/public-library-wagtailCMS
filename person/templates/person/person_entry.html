@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block content %}
+
+<div class="container">
+<div class="row">
+<div class="person main-title mt-4 mb-4">
+  <h1>{{ page.title }}</h1>
+  <h2>{{ page.position }}</h2>
+</div>
+
+<div class="row mb-2">
+  <div class="col-md-3 col-12">
+    {% image page.image class="img-fluid" fill-250x240 %}
+  </div>
+  <div class="col-md-9 col-12 mt-1">
+    {{ page.biography|richtext }}
+  </div>
+</div>
+
+</div>
+</div>
+{% endblock %}

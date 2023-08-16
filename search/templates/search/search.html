@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags wagtailuserbar menu_tags wagtailimages_tags open_hours_tags library_programs_tags %}
+{% include_block page.content %}
+
+{% block body_class %}template-searchresults{% endblock %}
+
+{% block title %}Search{% endblock %}
+
+{% block content %}
+
+<div class="container">
+<div class="row">
+<div id="contentArea" class="content col-12">
+<div class="row">
+<div class="main-title mt-4 mb-4"><h1>Search</h1></div>
+
+    <form id="searchForm" class="mt-1 form-inline" action="{% url 'search' %}" method="get">
+        <input id="altSearchInput" class="col-lg-6 col-10" title="Search Penticton Public Library" autofocus="" type="text" name="query"{% if search_query %} value="{{ search_query }}"{% endif %}>
+        <button id="searchButton" type="submit" class="btn btn-blue radius-right" title="Search" value="Search"><i class="bi bi-search"></i></button>
+         <div class="row">
+  <div id="searchRadio" class="col mt-2">
+   <div class="form-check form-check-inline">
+   <label class="form-check-label" for="catalogueSearch"><input type="radio" id="catalogueSearch" value="catalogue" data-searchsource="catalog" class="form-check-input" name="altSearch">Catalogue</label>
+ </div>
+ <div class="form-check form-check-inline">
+   <label class="form-check-label" for="websiteSearch"><input id="websiteSearch" type="radio" value="website" name="altSearch" class="form-check-input" checked="checked">Website</label>
+ </div>
+ </div>
+ </div>
+    </form>
+
+    {% if search_results %}
+    <div class="col-xl-4 col-12">
+    <h2 class="mt-2">Search Results</h2>
+        <ul class="mt-2 mb-2 list-group list-group-numbered">
+            {% for result in search_results %}
+                <li class="list-group-item">
+                    <a href="{% pageurl result %}">{{ result }}</a>
+                    {% if result.search_description %}
+                        {{ result.search_description }}
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+        {% if search_results.has_previous %}
+            <a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.previous_page_number }}">Previous</a>
+        {% endif %}
+
+        {% if search_results.has_next %}
+            <a href="{% url 'search' %}?query={{ search_query|urlencode }}&amp;page={{ search_results.next_page_number }}">Next</a>
+        {% endif %}
+    {% elif search_query %}
+        <div class="fw-bold">No results found</div>
+    {% endif %}
+</div><!--end content-body-->
+
+</div>
+</div><!--content area-->
+</div><!--end container-->
+</div><!--end row-->
+</div>
+<script type="text/javascript" src="{% static 'js/alt_search.js' %}"></script>
+
+{% endblock %}

@@ -1,0 +1,35 @@
+{% load wagtailcore_tags wagtailimages_tags %}
+<div id="allUpcomingEvents">
+<div class="event-list-container">
+{% for upcoming_events in upcoming_events %}
+{% for all_events_orm in all_events_orm|dictsort:"time_from" %}
+{% if all_events_orm.id == upcoming_events.id %}
+<div class="card mb-3" style="max-width: 991px;">
+  <a href="{{ all_events_orm.url }}">
+  {% image all_events_orm.event_image class="card-img-top img-fluid" fill-215x130-c100 %}
+  </a>
+  <ul class="list-group list-group-flush">
+  <li class="list-group-item mt-2">
+  <div class="row">
+    <div class="col-3 col-md-2">
+    <div class="date-icon">
+    <div class="date-icon-day">{{ upcoming_events.event_date|date:"d" }}</div>
+    <div class="date-icon-month">{{ upcoming_events.event_date|date:"M" }}</div>
+    </div>
+    </div>
+    <div class="col-9 col-md-10 event-info">
+      <div class="card-title event-title"><h2><a href="{{ all_events_orm.url }}" title="{{ all_events_orm.title }}">{{ all_events_orm.title }}</a></h2></div>
+      <div class="time">{{ all_events_orm.time_from|date:"g:i A"  }} - {{ all_events_orm.time_to|date:"g:i A"  }}</div>
+    </div>
+  </div>
+  </li>
+  <li class="list-group-item">
+    <div class="card-text">{{ all_events_orm.description|richtext|truncatewords_html:12 }}</div>
+  </li>
+  </ul>
+</div>
+{% endif %}
+{% endfor %}
+{% endfor %}
+</div>
+</div>
