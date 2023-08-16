@@ -15,5 +15,5 @@ To Install:
 6) python manage.py runserver
 
 First Steps: 
-1) Navigate to localhost:8000 on a web browser to check out the front end. 
+1) Navigate to http://localhost:8000 on a web browser to check out the front end. 
 2) Log in to admin with the createsuperuser credentials you created earlier by going to http://localhost:8000/admin
