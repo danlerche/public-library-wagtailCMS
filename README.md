@@ -37,4 +37,5 @@ First Steps:
 3) To other others on the same network you can use python manage.py runserver 0.0.0.0:8000
 
 Further Considerations: 
-1) This repo has been created to show how a public library website can be developed in WagtailCMS. It runs on a development server with SQLite and is not configured for production use.   
+1) This repo has been created to show how a public library website can be developed in WagtailCMS. It runs on a development server with SQLite and is not configured for production use.
+2) Further progress on this repo including documentation could be considered if others are interested.  
