@@ -19,17 +19,18 @@ Assumptions:
 Technical expertise including command line, preferably Linux. Understanding of Python and python virtual environments would be a huge plus. 
 
 Prerequistites: 
-1) Python 3
-2) Python Virtual Environment
+1) Python 3 (HINT - Ubuntu style systems this would be: sudo apt install python3-venv python3-dev)
+2) Python Virtual Environment (Again, in Ubuntu: python3 -m venv YOUR_PYTHON_ENVIRMENT)
+
+These environments can be set up on any OS that supports up to date versions of python. 
 
 To Install: 
 1) Enable a python virtual environment: source YOUR_PYTHON_ENVIRONMENT/bin/activate
 2) Download the repository
 3) navigate to the repo in the command line (cd public-library-wagtailCMS)
 4) pip install -r requirements.txt
-5) python manage.py migrate
-6) python manage.py createsuperuser
-7) python manage.py runserver
+5) python manage.py createsuperuser
+6) python manage.py runserver
 
 First Steps: 
 1) Navigate to http://localhost:8000 on a web browser to check out the front end. 
