@@ -34,8 +34,8 @@ To Install:
 
 First Steps: 
 1) Navigate to http://localhost:8000 on a web browser to check out the front end. 
-2) Log in to admin with the createsuperuser credentials you created earlier by going to http://localhost:8000/admin
-3) To other others on the same network you can use python manage.py runserver 0.0.0.0:8000
+2) Log in to admin with the createsuperuser credentials you created in step 5 by going to http://localhost:8000/admin
+3) To share with others on the same network you can use python manage.py runserver 0.0.0.0:8000
 
 Further Considerations: 
 1) This repo has been created to show how a public library website can be developed in WagtailCMS. It runs on a development server with SQLite and is not configured for production use.
