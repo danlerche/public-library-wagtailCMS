@@ -2,11 +2,11 @@
 <div id="allUpcomingEvents">
 <div class="event-list-container">
 {% for upcoming_events in upcoming_events %}
-{% for all_events_orm in all_events_orm|dictsort:"time_from" %}
-{% if all_events_orm.id == upcoming_events.id %}
+{% for events_qs in events_qs|dictsort:"time_from" %}
+{% if events_qs.id == upcoming_events.id %}
 <div class="card mb-3" style="max-width: 991px;">
-  <a href="{{ all_events_orm.url }}">
-  {% image all_events_orm.event_image class="card-img-top img-fluid" fill-215x130-c100 %}
+  <a href="{{ events_qs.url }}">
+  {% image events_qs.event_image class="card-img-top img-fluid" fill-215x130-c100 %}
   </a>
   <ul class="list-group list-group-flush">
   <li class="list-group-item mt-2">
@@ -18,13 +18,13 @@
     </div>
     </div>
     <div class="col-9 col-md-10 event-info">
-      <div class="card-title event-title"><h2><a href="{{ all_events_orm.url }}" title="{{ all_events_orm.title }}">{{ all_events_orm.title }}</a></h2></div>
-      <div class="time">{{ all_events_orm.time_from|date:"g:i A"  }} - {{ all_events_orm.time_to|date:"g:i A"  }}</div>
+      <div class="card-title event-title"><h2><a href="{{ events_qs.url }}" title="{{ events_qs.title }}">{{ events_qs.title }}</a></h2></div>
+      <div class="time">{{ events_qs.time_from|date:"g:i A"  }} - {{ events_qs.time_to|date:"g:i A"  }}</div>
     </div>
   </div>
   </li>
   <li class="list-group-item">
-    <div class="card-text">{{ all_events_orm.description|richtext|truncatewords_html:12 }}</div>
+    <div class="card-text">{{ events_qs.description|richtext|truncatewords_html:12 }}</div>
   </li>
   </ul>
 </div>

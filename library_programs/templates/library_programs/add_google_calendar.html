@@ -2,7 +2,7 @@
 
 <div class="mt-4">
 {% for rd in repeating_dates_per_event %}
-{% for event_info in current_event_orm %}
+{% for event_info in current_event_qs %}
 <div class="date-entry mt-2">
 <i class="bi bi-calendar-check"></i> <a href="https://www.google.com/calendar/render?action=TEMPLATE&text={{ event_info.title }}&dates={{ rd.event_date|date:'Ymd' }}T{{ event_info.time_from|date:'His' }}/{{ rd.event_date|date:'Ymd' }}T{{ event_info.time_to|date:'His' }}&ctz=America/Vancouver&details={{ event_info.description }}&location={{ event_info.location }}" target="_blank">{{ rd.event_date }}</a>
 </div>

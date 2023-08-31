@@ -219,11 +219,12 @@ class Event(Page, Orderable):
     week_interval = models.IntegerField(choices = WEEK_INTERVAL_CHOICE, null=True, blank=True)
     weekday = models.CharField(max_length = 20, choices = WEEKDAY_CHOICE, null=True, blank=True)
     event_image = models.ForeignKey('wagtailimages.Image', null=True, on_delete=models.SET_NULL,related_name='+')
-    hide_from_home_page = models.BooleanField(default=False)
+    featured_on_home_page = models.BooleanField(default=False)
     repeating_dates = models.TextField(null=True, blank=True)
     location = models.CharField(max_length=500, null=True, blank=True, help_text="Enter a location where the event will happen")
     form_page = models.ForeignKey('wagtailcore.Page', blank=True, null=True, on_delete=models.SET_NULL, related_name='embedded_form_page', help_text='Select a Form that will be embedded on this page.')
-    
+    tutorial_link = models.CharField(max_length=255, blank=True, help_text="for showing Niche Academy Links or similar")
+
     #allows webforms to be included at the bottom of the page
     def get_context(self, request, *args, **kwargs):
         """Add a renderable form to the page's context if form_page is set."""
@@ -240,8 +241,13 @@ class Event(Page, Orderable):
     #create an event_date_time template tag. Used for the "this event is in the past message"
     def get_context(self, request, *args, **kwargs):
         context = super().get_context(request, *args, **kwargs)
-        event_date_time = datetime.datetime.combine(self.event_date, self.time_from)
-        context['event_date_time'] = event_date_time
+        event_date_time_to = datetime.datetime.combine(self.event_date, self.time_to)
+        if self.until is not None: 
+            until_date_time_to = datetime.datetime.combine(self.until, self.time_to)
+        else:
+            until_date_time_to = ''
+        context['event_date_time_to'] = event_date_time_to
+        context['until_date_time_to'] = until_date_time_to
         return context
 
     #function to generate .ics files for integration into calendars
@@ -358,13 +364,14 @@ class Event(Page, Orderable):
     FieldPanel('description'),
     FieldPanel('event_image'),
     FieldPanel('location'),
+    FieldPanel('tutorial_link'),
     FieldRowPanel(
             [
                 PageChooserPanel('form_page', ['webform.FormPage']),
             ],
             heading="Optional Form Page",
         ),
-    FieldPanel('hide_from_home_page'),
+    FieldPanel('featured_on_home_page'),
     ]
     base_form_class =  EventRepeats
 

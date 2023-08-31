@@ -29,13 +29,13 @@ class EventAgeAdmin(SnippetViewSet):
 class EventFilterSet(WagtailFilterSet):
     class Meta:
         model = Event
-        fields = ['event_category_id', 'age_range']
+        fields = ['event_category_id', 'age_range', 'event_date']
 
 class EventAdmin(SnippetViewSet):
     model = Event
     menu_label = 'Event'
     icon = 'date'
-    list_display = ('title', 'event_date', 'time_from', 'time_to', 'repeats', 'until', UpdatedAtColumn())
+    list_display = ('title', 'event_date', 'time_from', 'time_to', 'repeats', 'until', 'featured_on_home_page', UpdatedAtColumn())
     #list_filter = {'event_category_id', 'age_range'}
     filterset_class = EventFilterSet
     base_url_path = "event"

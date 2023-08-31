@@ -6,6 +6,7 @@
 {% endblock extra_css %}
 {% block extra_js %}
 <script src="{% static 'js/honeypot.js' %}"></script>
+<script async src="https://my.nicheacademy.com/api/widgets/pentictonlibrary"></script>
 {% endblock extra_js %}
 
 {% block content %}
@@ -72,7 +73,7 @@
 
   {% now 'c' as today_dt %}
   {% with today=today_dt %}
-  {% if event_date_time|date:"c" < today and page.until == None or page.until|date:"c" < today and page.until != None %}
+  {% if event_date_time_to|date:"c" < today and page.until == None or until_date_time_to|date:"c" < today and page.until != None %}
   <div class="mt-2 alert alert-danger">This event is in the past</div>
   {% endif %}
   {% endwith %}
@@ -90,6 +91,7 @@
 <div class="desc mt-2">
     {{ page.description|richtext }}
 </div>
+<p>{{ page.tutorial_link|safe }}</p>
 {% regroup page.age_range.all by audience_name as audience %}
 {% for aud in audience %}
 {% if forloop is not None %}

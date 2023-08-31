@@ -32,14 +32,14 @@ eventTimeFormat: {
       initialView: 'dayGridMonth',
       events: [
             {% for all_events in all_events %}
-            {% for all_events_orm in all_events_orm %}
-            {% if all_events_orm.id == all_events.id %}
+            {% for events_qs in events_qs %}
+            {% if events_qs.id == all_events.id %}
             {
-                title: "{{ all_events_orm.title }}",
-                start: '{{ all_events.event_date|date:"o-m-d"}}T{{ all_events_orm.time_from|date:"H:i:s" }}',
-                end: '{{ all_events.event_date|date:"o-m-d"}}T{{ all_events_orm.time_to|date:"H:i:s" }}',
-                url: '{{ all_events_orm.url }}',
-                className: '{% for age in all_events_orm.age_range.all %}{% if forloop is not None %}{% if forloop.first == forloop.last %}{{ age.audience_name|slugify }}{% elif forloop.counter > 1 %}all-ages{% endif %}{% endif %}{% endfor %}',
+                title: "{{ events_qs.title }}",
+                start: '{{ all_events.event_date|date:"o-m-d"}}T{{ events_qs.time_from|date:"H:i:s" }}',
+                end: '{{ all_events.event_date|date:"o-m-d"}}T{{ events_qs.time_to|date:"H:i:s" }}',
+                url: '{{ events_qs.url }}',
+                className: '{% for age in events_qs.age_range.all %}{% if forloop is not None %}{% if forloop.first == forloop.last %}{{ age.audience_name|slugify }}{% elif forloop.counter > 1 %}all-ages{% endif %}{% endif %}{% endfor %}',
             },
             {% endif %}
             {% endfor %}

@@ -5,8 +5,8 @@
   {% endfor %}
 <div aria-label="mini calendar showing the next four upcoming events" class="event-list-container card">
 {% for next_events in next_four_events_list %}
-{% for all_events_orm in all_events_orm|dictsort:"time_from" %}
-{% if all_events_orm.id == next_events.id %}
+{% for events_qs in events_qs|dictsort:"time_from" %}
+{% if events_qs.id == next_events.id %}
 <div class="event-list">
   <div class="event-item row mt-3 pb-2 g-0">
   <div class="col-xl-3 col-1">
@@ -16,8 +16,8 @@
   </div>
   </div>
   <div class="col-7 event-info">
-    <div class="event-title"><strong><a href="{{ all_events_orm.url }}">{{ all_events_orm.title }}</a></strong></div>
-    <div class="time">{{ all_events_orm.time_from|date:"g:i A"  }} - {{ all_events_orm.time_to|date:"g:i A"  }}</div>
+    <div class="event-title"><strong><a href="{{ events_qs.url }}">{{ events_qs.title }}</a></strong></div>
+    <div class="time">{{ events_qs.time_from|date:"g:i A"  }} - {{ events_qs.time_to|date:"g:i A"  }}</div>
   </div>
 </div>
 </div>
