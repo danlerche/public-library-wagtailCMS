@@ -1,6 +1,95 @@
-{% extends "wagtailadmin/base.html" %}
-{% load static %}
+{% extends "wagtailadmin/admin_base.html" %}
+{% load wagtailadmin_tags wagtailcore_tags i18n static %}
 
-{% block branding_logo %}
-    <img src="{% static 'images/logo.png' %}" alt="library logo" width="80" />
+
+{% block furniture %}
+    <template data-wagtail-sidebar-branding-logo><img src="{% static 'images/logo.png' %}" alt="library logo" width="80" /></template>
+    {% sidebar_props %}
+    <aside id="wagtail-sidebar" class="sidebar-loading" data-wagtail-sidebar aria-label="{% trans 'Sidebar' %}"></aside>
+    <main class="content-wrapper w-overflow-x-hidden" id="main">
+        <div class="content">
+            {# Always show messages div so it can be appended to by JS #}
+            <div class="messages" role="status" data-controller="w-messages" data-action="w-messages:add@document->w-messages#add" data-w-messages-added-class="new" data-w-messages-show-class="appear">
+                <ul data-w-messages-target="container">
+                    {% if messages %}
+                        {% for message in messages %}
+                            {% message_level_tag message as level_tag %}
+                            <li class="{% message_tags message %}">
+                                {% if level_tag == "error" %}
+                                    {# There is no error icon, use warning icon instead #}
+                                    {% icon name="warning" classname="messages-icon" %}
+                                {% elif message.extra_tags == "lock" %}
+                                    {% icon name="lock" classname="messages-icon" %}
+                                {% elif message.extra_tags == "unlock" %}
+                                    {% icon name="lock-open" classname="messages-icon" %}
+                                {% else %}
+                                    {% icon name=level_tag classname="messages-icon" %}
+                                {% endif %}
+                                {{ message|safe }}
+                            </li>
+                        {% endfor %}
+                    {% endif %}
+                </ul>
+                <template data-w-messages-target="template" data-type="success">
+                    <li class="success">{% icon name="success" classname="messages-icon" %}<span></span></li>
+                </template>
+                <template data-w-messages-target="template" data-type="error">
+                    <li class="error">{% icon name="warning" classname="messages-icon" %}<span></span></li>
+                </template>
+                <template data-w-messages-target="template" data-type="warning">
+                    <li class="warning">{% icon name="warning" classname="messages-icon" %}<span></span></li>
+                </template>
+            </div>
+            {% block content %}{% endblock %}
+				 <script>
+				 $(".week-interval-display").css("display", "none");
+				if ($("#id_repeats").val() == 'CUSTOM')
+				  {
+				    $(".week-interval-display").css("display", "block");
+				  }
+				$("#id_repeats").change(function(){
+				  if($(this).val() == 'CUSTOM'){
+				    $(".week-interval-display").css("display", "block");
+				  }
+				  else {
+				    $(".week-interval-display").css("display", "none");
+				}
+				});
+				$( "button#id_form_fields-ADD" ).click(function() {
+				    $("[id^=id_form_fields-][id$=-field_type]").on('change', function() {
+				        if ( this.value == 'email') {
+				email_field = $("[id^=id_form_fields-][id$=-field_type]");
+				var email_label = "#" + email_field.attr('id').replace("-field_type", "-label");
+				$(email_label).val("Email");
+				        }
+				    });
+				});
+				</script>
+				<script>
+				if ($("#id_location").val() == '')
+				    {
+				        $('#id_location').val($('#id_location').val() + 'Penticton Public Library, 785 Main Street, Penticton, BC V2A 5E3, Canada');
+				    }
+				</script>
+
+				<script>
+				if ($("#id_from_address").val() == '')
+				    {
+				        $('#id_from_address').val($('#id_from_address').val() + 'contact@library.penticton.bc.ca');
+				    }
+				</script>
+        </div>
+    </main>
+        <script>
+            // Find all links with the original href pattern
+            $(".model-event a[href^='/admin/event/edit/']").each(function() {
+                var oldHref = $(this).attr("href");
+                // Extract the [id] from the old href
+                var id = oldHref.match(/\/admin\/event\/edit\/(\d+)\//)[1];
+                // Build the new href with the transformed format
+                var newHref = "/admin/pages/" + id + "/edit/";
+                // Update the href attribute
+                $(this).attr("href", newHref);
+            });  
+    </script>
 {% endblock %}
