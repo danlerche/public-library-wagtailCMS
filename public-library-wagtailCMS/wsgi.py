@@ -1,5 +1,5 @@
 """
-WSGI config for ppl_2022 project.
+WSGI config for public-library-wagtailCMS project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "ppl_2022.settings.production")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "public-library-wagtailCMS.settings.production")
 
 application = get_wsgi_application()
