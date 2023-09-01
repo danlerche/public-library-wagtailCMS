@@ -13,6 +13,7 @@ from wagtail.contrib.table_block.blocks import TableBlock
 from wagtail.search import index
 from wagtailgeowidget.panels import GoogleMapsPanel
 from wagtailgeowidget.blocks import GeoAddressBlock, GeoBlock,GeoZoomBlock,GoogleMapsBlock,LeafletBlock
+from wagtailgeowidget import geocoders
 from wagtail.embeds.oembed_providers import youtube, vimeo
 from wagtail.contrib.typed_table_block.blocks import TypedTableBlock
 from unidecode import unidecode
@@ -112,11 +113,11 @@ class AllPurposePage(Page):
         ('IframeBlock', blocks.RawHTMLBlock(help_text="See https://search.pentictonlibrary.ca/Admin/CollectionSpotlights for info about using the iframe tag to embed Aspen Collection Spotlights.")),
         ('PhoneNumberBlock', TextBlock()),
         ('EmbedBlock', EmbedBlock()),
-        ('ppl_map', BooleanBlock(required=False, help_text="If checked, a Google map of the library will appear", icon='user')),
-        ('holds_locker_map', BooleanBlock(required=False, help_text="If checked, a Google map of the holds locker will appear", icon='user')),
-        ('map', blocks.StructBlock([
-            ('map', GoogleMapsBlock()),
-        ], template='page/blocks/map.html', icon='user')),
+        ('map', GoogleMapsBlock()),
+         ('map_struct', blocks.StructBlock([
+            ('address', GeoAddressBlock(required=True, geocoder=geocoders.GOOGLE_MAPS)),
+            ('map', GoogleMapsBlock(address_field='address')),
+        ])),
         ('show_business_hours', BooleanBlock(required=False, help_text="If checked, the library hours will display on the page", icon='user')),
         ('show_next_closure', BooleanBlock(required=False, help_text="If checked, the next library closure will display", icon='user')),
         ('show_all_closures', BooleanBlock(required=False, help_text="If checked, all upcoming library closures will be shown", icon='user')),

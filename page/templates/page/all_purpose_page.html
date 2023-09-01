@@ -48,18 +48,14 @@
 </a>
 </section>
 
-{% elif block.block_type == 'ppl_map' and block.value == True %}
-<section class="block-map mb-2">
-<iframe marginwidth="0" marginheight="0" scrolling="no" width="425" height="350" frameborder="0"
-src="https://www.google.com/maps/d/embed?mid=1Y8Ajzgh-icL5icy_DtdByBbPgz_gJDK-&ehbc=0066B3" width="640" height="480"></iframe>
-</section>
-{% elif block.block_type == 'ppl_map' and block.value == False %}
+{% elif block.block_type == 'map' and block.value == True %}
 
-{% elif block.block_type == 'holds_locker_map' and block.value == True %}
-<section class="block-map mb-2">
-<iframe marginwidth="0" marginheight="0" scrolling="no" width="425" height="350" frameborder="0" src="https://www.google.com/maps/d/embed?mid=1w5U6pf29Jhy8qOYuLxoY-1NYleOViO0&ehbc=0066B3" width="640" height="480"></iframe>
-</section>
-{% elif block.block_type == 'holds_locker_map' and block.value == False %}
+{% for map_block in page.stream_field %}
+        <hr />
+        {{ map_block.value }}
+        <p>Latitude: {{ map_block.value.lat}}</p>
+        <p>Longitude: {{ map_block.value.lng }}</p>
+    {% endfor %}
 
 {% elif block.block_type == 'PhoneNumberBlock' %}
 

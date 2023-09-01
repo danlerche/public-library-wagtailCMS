@@ -50,7 +50,7 @@ wagtail==5.1
 wagtail-color-panel==1.4.1
 wagtail-honeypot==1.1.0
 wagtail-modeladmin==1.0.0
-wagtailgeowidget==7.0.0
+wagtailgeowidget==8.0.0
 wagtailmenus==3.1.8
 webencodings==0.5.1
 Willow==1.6
