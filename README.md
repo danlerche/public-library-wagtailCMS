@@ -40,10 +40,13 @@ First Steps:
 Optional Configuration: 
  To add Google Maps to the all purpose pages, you'll need to add a Google Map API Key.
  1) Create a Google Maps API Key by following the instructions: https://developers.google.com/maps/documentation/javascript/get-api-key
- 1) Edit base.py file located in public-library-wagtailCMS/public-library-wagtailCMS/settings
+ 1) Open the base.py file located in public-library-wagtailCMS/public-library-wagtailCMS/settings
  2) Replace 'MY_GOOGLE_MAP_API_KEY' with your Google Maps api key
-Open Street Maps requires the gdal library installed on your system.
-To install it, run sudo apt install gdal, or whatever syntax your package manager uses. 
+
+To add open street maps to your pages do the following: 
+ 1) Install gdal on your system. On ubuntu systems it should be sudo apt install gdal.
+ 2) Open the base.py file located in public-library-wagtailCMS/public-library-wagtailCMS/settings
+ 3) uncomment leaflet in the install apps list (BEFORE: #'leaflet', AFTER: 'leaflet',)
 
 Further Considerations: 
 1) This repo has been created to show how a public library website can be developed in WagtailCMS. It runs on a development server with SQLite and is not configured for production use.
