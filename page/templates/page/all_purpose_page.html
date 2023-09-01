@@ -48,14 +48,9 @@
 </a>
 </section>
 
-{% elif block.block_type == 'map' and block.value == True %}
+{% elif block.block_type == 'google_map' %}
+{% include_block block %}
 
-{% for map_block in page.stream_field %}
-        <hr />
-        {{ map_block.value }}
-        <p>Latitude: {{ map_block.value.lat}}</p>
-        <p>Longitude: {{ map_block.value.lng }}</p>
-    {% endfor %}
 
 {% elif block.block_type == 'PhoneNumberBlock' %}
 

@@ -56,10 +56,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sitemaps',
     'django.contrib.humanize',
+    'leaflet',
     'reset_migrations',
     'wagtail.contrib.table_block',
     'wagtail.contrib.typed_table_block',
-    'wagtailgeowidget',
     'wagtailmenus',
     'wagtail_honeypot',
     'page',
@@ -212,3 +212,10 @@ CACHES = {
 SECURE_SSL_REDIRECT = False
 
 SESSION_COOKIE_AGE = 7200
+
+LEAFLET_CONFIG = {
+    'DEFAULT_CENTER': (0, 0),  # Default map center coordinates
+    'DEFAULT_ZOOM': 10,       # Default zoom level
+}
+
+GOOGLE_MAP_API_KEY = 'MY_GOOGLE_MAP_API_KEY'

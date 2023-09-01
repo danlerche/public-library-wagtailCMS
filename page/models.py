@@ -27,9 +27,38 @@ from django.shortcuts import redirect
 from django.utils.html import format_html
 from wagtail.models.collections import Collection
 from wagtail.admin.forms import WagtailAdminPageForm
+from django.conf import settings
 
 class groupPage(Page):
     pass
+
+class GoogleMapBlock(blocks.StructBlock):
+    place_name = blocks.CharBlock(label="Place Name", required=True)
+    address = blocks.TextBlock(label="Address", required=True)
+    zoom = blocks.IntegerBlock(label="Zoom Level", default=15)
+
+    class Meta:
+        icon = 'map'
+
+    def get_context(self, value, parent_context=None):
+        context = super().get_context(value, parent_context=parent_context)
+        context['place_name'] = value['place_name']
+        context['address'] = value['address']
+        context['zoom'] = value['zoom']
+        context['api_key'] = getattr(settings, 'GOOGLE_MAP_API_KEY')
+        return context
+
+    def render(self, value, *args, **kwargs):
+        return super().render(value, *args, **kwargs)
+
+class OpenStreetMapBlock(blocks.StructBlock):
+    place_name = blocks.CharBlock(label="Place Name", required=True)
+    latitude = blocks.FloatBlock()
+    longitude = blocks.FloatBlock()
+    zoom = blocks.IntegerBlock(label="Zoom Level", default=19)
+
+    class Meta:
+        icon = 'map'  # Choose an appropriate icon
 
 class PolicyCategory(models.Model):
     policy_category = models.CharField(max_length=255)
@@ -113,11 +142,8 @@ class AllPurposePage(Page):
         ('IframeBlock', blocks.RawHTMLBlock(help_text="See https://search.pentictonlibrary.ca/Admin/CollectionSpotlights for info about using the iframe tag to embed Aspen Collection Spotlights.")),
         ('PhoneNumberBlock', TextBlock()),
         ('EmbedBlock', EmbedBlock()),
-        ('map', GoogleMapsBlock()),
-         ('map_struct', blocks.StructBlock([
-            ('address', GeoAddressBlock(required=True, geocoder=geocoders.GOOGLE_MAPS)),
-            ('map', GoogleMapsBlock(address_field='address')),
-        ])),
+        ('google_map', GoogleMapBlock(template='page/blocks/google_map_block.html', icon='globe')),
+        ('open_street_map', OpenStreetMapBlock(template='page/blocks/openstreetmap_block.html', icon='site')),
         ('show_business_hours', BooleanBlock(required=False, help_text="If checked, the library hours will display on the page", icon='user')),
         ('show_next_closure', BooleanBlock(required=False, help_text="If checked, the next library closure will display", icon='user')),
         ('show_all_closures', BooleanBlock(required=False, help_text="If checked, all upcoming library closures will be shown", icon='user')),

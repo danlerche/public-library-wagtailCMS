@@ -1,0 +1,15 @@
+{% load leaflet_tags %}
+
+    {% leaflet_js %}
+    {% leaflet_css %}
+<div id="map" style="height: 300px;" class="mt-2"></div>
+
+<script>
+    var map = L.map("map").setView([{{ self.latitude }}, {{ self.longitude }}], {{ self.zoom }});
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: {{ self.zoom }},
+    }).addTo(map);
+
+    var marker = L.marker([{{ self.latitude }}, {{ self.longitude }}]).addTo(map);
+    marker.bindPopup("{{ self.place_name }}").openPopup();
+</script>
