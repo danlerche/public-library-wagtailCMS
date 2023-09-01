@@ -31,11 +31,17 @@ To Install:
 4) pip install -r requirements.txt
 5) python manage.py createsuperuser
 6) python manage.py runserver
-
+   
 First Steps: 
 1) Navigate to http://localhost:8000 on a web browser to check out the front end. 
 2) Log in to admin with the createsuperuser credentials you created in step 5 by going to http://localhost:8000/admin
 3) To share with others on the same network you can use python manage.py runserver 0.0.0.0:8000
+
+Optional Configuration: 
+ To add Google Maps to the all purpose pages, you'll need to add a Google Map API Key.
+ 1) Create a Google Maps API Key by following the instructions: https://developers.google.com/maps/documentation/javascript/get-api-key
+ 1) Edit base.py file located in public-library-wagtailCMS/public-library-wagtailCMS/settings
+ 2) Replace 'MY_GOOGLE_MAP_API_KEY' with your Google Maps api key
 
 Further Considerations: 
 1) This repo has been created to show how a public library website can be developed in WagtailCMS. It runs on a development server with SQLite and is not configured for production use.
