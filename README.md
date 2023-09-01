@@ -2,14 +2,14 @@
 This is an example public library website using wagtail CMS, originally created for the Penticton Public Library, in Penticton, British Columbia, Canada. You can view their website at https://pentictonlibrary.ca
 
 Some features: 
-1) Displaying single and re-occuring events
+1) Displaying single and recurring events
 2) Displaying ranges and event categories
 3) Dynamic opening hours
 4) responsive and (mostly) accessible design
 5) Search box integrated with a catalogue (in this instance, Aspen Discovery)
-6) Pages with reordable elements such a richtext paragraphs, images, upcoming programs, hours, etc
+6) Pages with reorder-able elements such a rich text paragraphs, images, upcoming programs, hours, etc
 7) Alert messages 
-8) Simple editing of the header and footer of the site for content that rarely changes and needs to be consistent accross all pages
+8) Simple editing of the header and footer of the site for content that rarely changes and needs to be consistent across all pages
 9) Edible home page
 10) Person app for putting together an image based list of staff or library board members
 11) Digital Resources app for adding new databases
@@ -18,9 +18,9 @@ Some features:
 Assumptions: 
 Technical expertise including command line, preferably Linux. Understanding of Python and python virtual environments would be a huge plus. 
 
-Prerequistites: 
+Prerequisites: 
 1) Python 3 (HINT - Ubuntu style systems this would be: sudo apt install python3-venv python3-dev)
-2) Python Virtual Environment (Again, in Ubuntu: python3 -m venv YOUR_PYTHON_ENVIRMENT)
+2) Python Virtual Environment (Again, in Ubuntu: python3 -m venv YOUR_PYTHON_ENVIRONMENT)
 
 These environments can be set up on any OS that supports up to date versions of python. 
 
