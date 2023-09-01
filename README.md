@@ -44,7 +44,7 @@ Optional Configuration:
  2) Replace 'MY_GOOGLE_MAP_API_KEY' with your Google Maps api key
 
 To add open street maps to your pages do the following: 
- 1) Install gdal on your system. On ubuntu systems it should be sudo apt install gdal.
+ 1) Install gdal on your system. On ubuntu systems it should be sudo apt install gdal-bin (fedora, sudo dnf install gdal).
  2) Open the base.py file located in public-library-wagtailCMS/public-library-wagtailCMS/settings
  3) uncomment leaflet in the install apps list (BEFORE: #'leaflet', AFTER: 'leaflet',)
 
