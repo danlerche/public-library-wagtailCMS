@@ -259,7 +259,7 @@ class Event(Page, Orderable):
             alarm = Alarm()
             alarm['action'] = 'DISPLAY'
             alarm['description'] = "Reminder"
-            alarm['trigger'] = timedelta(minutes=-15)  # 15 minutes before the event
+            alarm['trigger'] = '-PT60M'  # 60 minutes before the event
             ics_event = icsEvent()
             ics_event.add('summary', title)
             ics_event.add('description', desc)
@@ -280,7 +280,7 @@ class Event(Page, Orderable):
                 elif ics_weekday == 'Wednesday':
                     ics_week_interval = str(ics_week_interval) + 'WE'
                 elif ics_weekday == 'Thursday':
-                    weekday_int = str(ics_week_interval) + 'TH'
+                    ics_week_interval = str(ics_week_interval) + 'TH'
                 elif ics_weekday == 'Friday':
                     ics_week_interval = str(ics_week_interval) + 'FR'
                 elif ics_weekday == 'Saturday':
