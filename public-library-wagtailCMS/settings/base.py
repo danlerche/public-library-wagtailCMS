@@ -56,7 +56,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sitemaps',
     'django.contrib.humanize',
-    'leaflet',
+    #'leaflet',
     'reset_migrations',
     'wagtail.contrib.table_block',
     'wagtail.contrib.typed_table_block',
