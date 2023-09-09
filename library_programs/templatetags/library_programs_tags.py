@@ -83,7 +83,7 @@ def next_three_events_feature(context):
 @register.inclusion_tag('library_programs/filtered_upcoming_events_by_category.html', takes_context=True)
 def filtered_upcoming_events_by_cat(context, filter_by):
     today = datetime.datetime.now()
-    events_by_cat = Event.objects.live().filter(Q(until__gte=today) | Q(event_date__gte=today, until__isnull=True), event_category__in=filter_by)
+    events_by_cat = Event.objects.live().filter(Q(until__gte=today) | Q(event_date__gte=today, until__isnull=True), event_category__in=filter_by).distinct()
     from library_programs.event_base import EventQueries
     eq = EventQueries()
     next_date = eq.next_upcoming_events(events_by_cat)
@@ -99,7 +99,7 @@ def filtered_upcoming_events_by_cat(context, filter_by):
 @register.inclusion_tag('library_programs/filtered_upcoming_events_by_audience.html', takes_context=True)
 def filtered_upcoming_events_by_audience(context, filter_by):
     today = datetime.datetime.now()
-    events_by_aud = Event.objects.live().filter(Q(until__gte=today) | Q(event_date__gte=today, until__isnull=True), age_range__audience_name__in=filter_by)
+    events_by_aud = Event.objects.live().filter(Q(until__gte=today) | Q(event_date__gte=today, until__isnull=True), age_range__audience_name__in=filter_by).distinct()
     from library_programs.event_base import EventQueries
     eq = EventQueries()
     next_date = eq.next_upcoming_events(events_by_aud)
