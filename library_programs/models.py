@@ -225,10 +225,10 @@ class Event(Page, Orderable):
     form_page = models.ForeignKey('wagtailcore.Page', blank=True, null=True, on_delete=models.SET_NULL, related_name='embedded_form_page', help_text='Select a Form that will be embedded on this page.')
     tutorial_link = models.CharField(max_length=255, blank=True, help_text="for showing Niche Academy Links or similar")
 
-    #allows webforms to be included at the bottom of the page
+    #allows web forms to be included at the bottom of the page
     def get_context(self, request, *args, **kwargs):
-        """Add a renderable form to the page's context if form_page is set."""
         context = super().get_context(request, *args, **kwargs)
+        #Add a renderable form to the page's context if form_page is set
         if self.form_page:
             form_page = self.form_page.specific  
             # must get the specific page
@@ -236,11 +236,7 @@ class Event(Page, Orderable):
             form = form_page.get_form(page=form_page, user=request.user)
             context['form'] = form
             context['form_page'] = form_page
-        return context
-
-    #create an event_date_time template tag. Used for the "this event is in the past message"
-    def get_context(self, request, *args, **kwargs):
-        context = super().get_context(request, *args, **kwargs)
+            #create an event_date_time template tag. Used for the "this event is in the past message"
         event_date_time_to = datetime.datetime.combine(self.event_date, self.time_to)
         if self.until is not None: 
             until_date_time_to = datetime.datetime.combine(self.until, self.time_to)
@@ -249,6 +245,18 @@ class Event(Page, Orderable):
         context['event_date_time_to'] = event_date_time_to
         context['until_date_time_to'] = until_date_time_to
         return context
+
+    
+    #def get_context(self, request, *args, **kwargs):
+     #   context = super().get_context(request, *args, **kwargs)
+     #   event_date_time_to = datetime.datetime.combine(self.event_date, self.time_to)
+      #  if self.until is not None: 
+     #       until_date_time_to = datetime.datetime.combine(self.until, self.time_to)
+      #  else:
+      #      until_date_time_to = ''
+      #  context['event_date_time_to'] = event_date_time_to
+      #  context['until_date_time_to'] = until_date_time_to
+     #   return context
 
     #function to generate .ics files for integration into calendars
     def serve(self, request):
