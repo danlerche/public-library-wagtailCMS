@@ -1,4 +1,3 @@
-#https://dateutil.readthedocs.io/en/stable/examples.html#rrule-examples
 from django.db import models
 from wagtail.models import Page, Orderable
 from modelcluster.fields import ParentalKey, ParentalManyToManyField
@@ -245,19 +244,7 @@ class Event(Page, Orderable):
         context['event_date_time_to'] = event_date_time_to
         context['until_date_time_to'] = until_date_time_to
         return context
-
-    
-    #def get_context(self, request, *args, **kwargs):
-     #   context = super().get_context(request, *args, **kwargs)
-     #   event_date_time_to = datetime.datetime.combine(self.event_date, self.time_to)
-      #  if self.until is not None: 
-     #       until_date_time_to = datetime.datetime.combine(self.until, self.time_to)
-      #  else:
-      #      until_date_time_to = ''
-      #  context['event_date_time_to'] = event_date_time_to
-      #  context['until_date_time_to'] = until_date_time_to
-     #   return context
-
+        
     #function to generate .ics files for integration into calendars
     def serve(self, request):
         def create_ical(title, desc, start, end, until, curr_date, repeats, ics_week_interval, ics_weekday, time_from, exdate, location):
