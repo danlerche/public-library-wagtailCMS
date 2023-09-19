@@ -51,3 +51,18 @@ function defaultShow(){
     $('#contentArea').css("display", "none");
   }
 }
+
+// Wait for the document to be ready
+$(document).ready(function() {
+    // Specify the ID of the element you want to target
+    var elementId = "calendar";
+
+    // Get the HTML content of the specific element by its ID
+    var elementContent = $("#" + elementId).html();
+
+    // Use regular expression to replace all occurrences of &amp; with &
+    var updatedElementContent = elementContent.replace(/&amp;/g, '&');
+
+    // Update the content of the specific element with the replaced text
+    $("#" + elementId).html(updatedElementContent);
+});
