@@ -44,7 +44,6 @@ Optional Configuration:
  2) Replace 'MY_GOOGLE_MAP_API_KEY' with your Google Maps api key
  3) Open public-library-wagtailCMS/page/models.py and delete (uncomment) the # in front of ('google_map', GoogleMapBlock(template='page/blocks/google_map_block.html', icon='globe'))
  
-
 To add open street maps to your pages do the following: 
  1) Install gdal on your system. On ubuntu systems it should be sudo apt install gdal-bin (fedora, sudo dnf install gdal).
  2) Open the base.py file located in public-library-wagtailCMS/public-library-wagtailCMS/settings
@@ -54,3 +53,4 @@ To add open street maps to your pages do the following:
 Further Considerations: 
 1) This repo has been created to show how a public library website can be developed in WagtailCMS. It runs on a development server with SQLite and is not configured for production use.
 2) Further progress on this repo including documentation could be considered if others are interested.  
+![a screenshot of the example public library website once the repo is running on your machine](https://github.com/danlerche/public-library-wagtailCMS/blob/main/static/wagtailimages/images/screenshot.png?raw=true)
