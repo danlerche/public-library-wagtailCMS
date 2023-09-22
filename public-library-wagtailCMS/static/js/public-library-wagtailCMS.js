@@ -51,24 +51,3 @@ function defaultShow(){
     $('#contentArea').css("display", "none");
   }
 }
-// replace &amp; with & in the full calendar
-$(document).ready(function() {
-    // Specify the class name you want to target
-    var className = "fc-event-title";
-
-    // Select all elements with the specified class
-    var elements = $("." + className);
-
-    // Loop through each element and replace its content
-    elements.each(function() {
-        // Get the current content of the element
-        var currentContent = $(this).html();
-
-        // Use regular expression to replace the desired text
-        var updatedContent = currentContent.replace(/&amp;/g, '&');
-
-        // Update the content of the element with the replaced text
-        $(this).html(updatedContent);
-    });
-
-});
