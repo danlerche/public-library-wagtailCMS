@@ -4,6 +4,11 @@
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
+    {% for events_qs in events_qs %}
+    var event_title_{{ events_qs.id }} = "{{ events_qs.title }}";
+    var decoded_event_title_{{ events_qs.id }} = event_title_{{ events_qs.id }}.replace("&amp;", "&");
+
+    {% endfor %}
     var calendar = new FullCalendar.Calendar(calendarEl, {
     themeSystem: 'bootstrap5',
       headerToolbar: {
@@ -35,7 +40,7 @@ eventTimeFormat: {
             {% for events_qs in events_qs %}
             {% if events_qs.id == all_events.id %}
             {
-                title: "{{ events_qs.title }}",
+                title: decoded_event_title_{{ events_qs.id }},
                 start: '{{ all_events.event_date|date:"o-m-d"}}T{{ events_qs.time_from|date:"H:i:s" }}',
                 end: '{{ all_events.event_date|date:"o-m-d"}}T{{ events_qs.time_to|date:"H:i:s" }}',
                 url: '{{ events_qs.url }}',
@@ -60,8 +65,6 @@ $("#calendar .fc-event-time").insertAfter("#calendar .fc-event-title");
 <div id="mobileCalendar" class="d-lg-none">
 {% all_upcoming_events %}
 </div>
-
-
 </div>
 </div>
 </div>
