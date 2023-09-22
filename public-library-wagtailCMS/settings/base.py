@@ -86,7 +86,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'public-library-wagtailCMS.urls'
 
-CRISPY_TEMPLATE_PACK = "bootstrap5"
+CRISPY_TEMPLATE_PACK = "crispy_forms_template"
 
 TEMPLATES = [
     {

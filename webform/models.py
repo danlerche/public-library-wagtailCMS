@@ -19,10 +19,6 @@ from wagtail_honeypot.models import (
     HoneypotFormMixin, HoneypotFormSubmissionMixin
 )
 
-
-#Tutorial on how to create web form sections here. 
-#https://stackoverflow.com/questions/69806491/how-to-group-individual-form-fields-into-sections-with-wagtail-formbuilder
-
 class FormField(AbstractFormField):
     page = ParentalKey('FormPage', on_delete=models.CASCADE, related_name='form_fields')
 
