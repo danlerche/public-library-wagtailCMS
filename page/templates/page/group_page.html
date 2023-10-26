@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% load static wagtailcore_tags wagtailuserbar menu_tags wagtailimages_tags %}
+{% include_block page.content %}
+
+{% block content %}
+
+<div class="container">
+<div class="row">
+<div id="contentArea" class="content col-12">
+<div class="row">
+<div class="main-title mt-4 mb-4"><h1>{{ page.title }}</h1></div>
+
+<div id="contentBody" class="mb-2">
+
+{% for post in page.get_children %}
+        <h2><a href="{% pageurl post %}">{{ post.title }}</a></h2>
+        {{ post.specific.intro }}
+        {{ post.specific.body|richtext }}
+    {% endfor %}
+
+</div>
+
+
+{% endblock %}
