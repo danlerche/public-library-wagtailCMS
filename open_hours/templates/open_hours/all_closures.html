@@ -10,7 +10,7 @@
 
 {# shows true for multiday all day closures #}
 {% elif all_closures.all_day == True and all_closures.closed_date_from != all_closures.closed_date_to %}
-<div class="holiday_hours">{{ all_closures.closed_date_name }}: <strong>Closed from {{ all_closures.closed_date_from|date:"F d, Y" }} through {{ all_closures.closed_date_to|date:"F d, Y" }}</strong></div>
+<div class="holiday_hours">{{ all_closures.closed_date_name }}: <strong>Closed from {{ all_closures.closed_date_from|date:"F d, Y" }} to {{ all_closures.closed_date_to|date:"F d, Y" }}</strong></div>
 
 
 {# shows true for single event alternate hours #}
@@ -20,7 +20,7 @@
 
 {# shows true for multiday alternate hours #}
 {% elif all_closures.all_day == False and all_closures.closed_date_from != all_closures.closed_date_to %}
-<div class="holiday_hours">From {{ all_closures.closed_date_from|date:"F d, Y" }} through {{ all_closures.closed_date_to|date:"F d, Y" }}:<strong> Open {{ all_closures.time_from|date:"g:i a" }} to {{ all_closures.time_to|date:"g:i a" }} for {{ all_closures.closed_date_name }} </strong></div>
+<div class="holiday_hours">From {{ all_closures.closed_date_from|date:"F d, Y" }} to {{ all_closures.closed_date_to|date:"F d, Y" }}:<strong> Open {{ all_closures.time_from|date:"g:i a" }} to {{ all_closures.time_to|date:"g:i a" }} for {{ all_closures.closed_date_name }} </strong></div>
 
 {% endif %}
 {% empty %}
