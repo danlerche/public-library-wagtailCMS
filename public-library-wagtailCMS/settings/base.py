@@ -44,7 +44,6 @@ INSTALLED_APPS = [
 
     'modelcluster',
     'taggit',
-    'wagtail_color_panel',
     'header_footer',
     'open_hours',
 
@@ -57,7 +56,6 @@ INSTALLED_APPS = [
     'django.contrib.sitemaps',
     'django.contrib.humanize',
     #'leaflet',
-    'reset_migrations',
     'wagtail.contrib.table_block',
     'wagtail.contrib.typed_table_block',
     'wagtailmenus',

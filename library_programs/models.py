@@ -218,7 +218,7 @@ class Event(Page, Orderable):
     week_interval = models.IntegerField(choices = WEEK_INTERVAL_CHOICE, null=True, blank=True)
     weekday = models.CharField(max_length = 20, choices = WEEKDAY_CHOICE, null=True, blank=True)
     event_image = models.ForeignKey('wagtailimages.Image', null=True, on_delete=models.SET_NULL,related_name='+')
-    featured_on_home_page = models.BooleanField(default=False)
+    featured_on_home_page = models.BooleanField(default=True)
     repeating_dates = models.TextField(null=True, blank=True)
     location = models.CharField(max_length=500, null=True, blank=True, help_text="Enter a location where the event will happen")
     form_page = models.ForeignKey('wagtailcore.Page', blank=True, null=True, on_delete=models.SET_NULL, related_name='embedded_form_page', help_text='Select a Form that will be embedded on this page.')
