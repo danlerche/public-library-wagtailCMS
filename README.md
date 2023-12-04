@@ -46,8 +46,9 @@ Optional Configuration:
  
 To add open street maps to your pages do the following: 
  1) Install gdal on your system. On ubuntu systems it should be sudo apt install gdal-bin (fedora, sudo dnf install gdal).
- 2) Open the base.py file located in public-library-wagtailCMS/public-library-wagtailCMS/settings
- 3) uncomment leaflet in the install apps list (BEFORE: #'leaflet', AFTER: 'leaflet',)
+ 2) Install the django-leaflet app from pypi: pip install django-leaflet. Make sure you've activated your python virtual environment YOUR_PYTHON_ENVIRONMENT/bin/activate.
+ 3) Open the base.py file located in public-library-wagtailCMS/public-library-wagtailCMS/settings
+ 4) uncomment leaflet in the install apps list (BEFORE: #'leaflet', AFTER: 'leaflet',)
  3) Open public-library-wagtailCMS/page/models.py and delete (uncomment) the # in front of ('open_street_map', OpenStreetMapBlock(template='page/blocks/openstreetmap_block.html', icon='site')),
 
 Further Considerations: 
