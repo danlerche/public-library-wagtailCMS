@@ -6,7 +6,7 @@
     var calendarEl = document.getElementById('calendar');
     {% for events_qs in events_qs %}
     var event_title_{{ events_qs.id }} = "{{ events_qs.title }}";
-    var decoded_event_title_{{ events_qs.id }} = event_title_{{ events_qs.id }}.replace("&amp;", "&");
+    var decoded_event_title_{{ events_qs.id }} = event_title_{{ events_qs.id }}.replace("&amp;", "&").replace("&#x27;", "'");
 
     {% endfor %}
     var calendar = new FullCalendar.Calendar(calendarEl, {

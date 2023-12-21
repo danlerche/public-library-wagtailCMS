@@ -1,0 +1,380 @@
+#skipContentLink {display: block; width: 1px; height: 1px; overflow: hidden;}
+#skipContentWrapper { position: fixed; top: 0;left: 0; z-index: 10000;}
+
+body {font-family:'Montserrat', Tahoma,Verdana,Segoe,sans-serif !important; }
+body#background {background-color: #fff;}
+h1 {font-family: 'Montserrat', sans-serif; color: #4E4C4F; font-weight: bold;}
+h2 {font-family: 'Montserrat', sans-serif; color: #0066B3; font-weight: 600;}
+h3 {font-family: 'Montserrat', sans-serif; color: #4E4C4F; font-weight: 400;}
+h4 {font-family: 'Montserrat', sans-serif; color: #0066B3; font-weight: 350;}
+h5 {font-family: 'Montserrat', sans-serif; color: #0066B3; font-weight: 200;}
+a {color: #0066B3;}
+h2 a {color: #4E4C4F; text-decoration: none; font-weight: bold;}
+h2 a:hover {color:#0C283D;}
+footer a.btn-primary-green {color: #fff; font-weight: bold;}
+footer a.btn-primary-blue {color: #0C283D; font-weight: bold;}
+footer h2, footer h3 {color: #fff; font-weight: bold;}
+footer div, footer td {color: #fff !important;}
+footer h2,footer h3 {font-size: 20px;}
+.main-title {border-bottom: solid #019FE2;}
+p {color: #414042; }
+header {background-color: #fff;}
+#logoArea .img-fluid {max-width: 150px; min-height: 100px; }
+div {color: #0C283D;}
+a.hover {background-color: #02345;}
+.btn-primary {background-color: #0066B3;}
+.btn-primary-green {background-color: #77BF87;}
+.btn-primary-blue {background-color: #019FE2;}
+footer a:hover.btn-primary-blue {background-color: #A3CEEF;}
+a:hover.btn-primary-green {background-color: #D7ED9C !important;}
+.btn {border-radius: 0px;}
+a.btn:hover, div.btn-primary:hover {background-color: #02345a;}
+button.btn-primary {
+  color: #fff;
+  background-color: #0066B3;
+  border-color: #0066B3;
+}
+button:hover.btn-primary {
+  color: #fff;
+  background-color: #0066B3;
+  border-color: #0066B3;
+}
+
+button.btn-blue, #Upcoming .btn-blue {
+    background-color: #0066B3;
+    color: #fff;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+a:hover.btn.btn-blue, button:hover.btn-blue {
+    color: #fff;
+    background-color: #02345a;
+}
+
+a.btn-light-green {
+    background-color: #D7ED9C;
+    font-weight: bold;
+}
+
+a:hover.btn-light-green {
+    background-color: #019FE2;
+}
+
+#btn-back-to-top {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  display: none;
+}
+
+.navbar-toggler {border-radius: 0px;}
+#Upcoming .card {border: none; clear: both;}
+#titleBox {background-color: #fff;}
+#topMenu .bi-heart-fill {color: #d72811;}
+#topMenu .nav-item i {display: block; margin-left: 18px;}
+/*.menu-trigger-label {display: block; clear: both; text-transform: uppercase; font-size: .8em;}*/
+#logInButton {margin-left: auto;}
+#logInButton a {font-weight: bold;}
+#logInButton .bi-person-fill::before {font-size: 16px;}
+a.nav-link {color: #0066B3;}
+a:hover.nav-link {color: #463c30;}
+
+.date-icon {border-style: solid; border-width: 1px; border-color: #dedede; display: inline-block;}
+.date-icon-month {background-color: #0066B3; color: #fff; font-weight: bold; text-align: center; font-size: .75rem; padding: 2px 10px 2px 10px; min-width: 48px;}
+.date-icon-day {font-weight: bold; text-align: center; padding: 2px 5px 2px 5px;}
+
+.event-listing h3 a {color:#594a41; text-decoration: none;}
+.event-listing h3 a:hover {text-decoration: underline;}
+.content {}
+
+
+#topMenu .nav-item {margin-left: 1rem;}
+#topMenu .nav-link {background-color: #0066B3; color: #fff; border-radius: .25rem;font-weight: bold;
+transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;}
+#topMenu a:hover.nav-link {background-color: #02345a;}
+#topMenuMobile {background-color: #dedede;}
+#topMenuMobile li.nav-item {background-color: #fff; margin-left: 1px;}
+#topMenuMobile nav {position: relative; margin-left: -5px; font-size: 14px; font-weight: bold;}
+#topMenuMobile .top-menu-icon {display: inline-block;; }
+
+#homepageMinHeight {min-height: 75px;}
+
+footer {border-top: 5px solid #0066B3;}
+footer .footer-menu {font-size: 16px; font-weight: bold;}
+footer div {font-size: 16px;}
+footer .social-nav {position: relative; left: -28px;}
+footer #footerSocial {font-size: 1.2em;}
+footer .block-social_icons i {font-size: 1.4em !important;}
+footer .social-nav-link {margin-left: 30px;}
+footer a {color: #fff;}
+footer a:hover, footer a.nav-link:hover {color:#0066B3; font-weight: bold;}
+footer a.nav-link, a.social-nav-link  {color: #fff; font-size: 16px;}
+footer .nav-link {padding: .5rem 0rem;}
+footer a:visited.nav-lnk {color: #0066B3;}
+footer {background-color: #000; min-height: 425px;}
+footer p {color: #fff;}
+footer .block-telephone {margin-top: 8px;}
+footer .block-email a, footer .block-telephone a {text-decoration: none;}
+#footerContent {margin-top: 12px;}
+
+@media only screen and (max-width: 1199px) {
+.footer-menu ul {flex-direction: column !important; position: relative; left: -15px; top: 10px;}
+}
+
+iframe, .elementor object, .elementor video {
+  max-width: 100%;
+  width: 100%;
+  margin: 0;
+  line-height: 1;
+  border: none;font-family: 'Montserrat', sans-serif;
+}
+
+.brdcrumb li {list-style-type: none;}
+
+#contentArea blockquote {font-style: italic;font-weight: bold; font-size: 1.5em; color: #594a41;}
+#contentArea form label {font-weight: bold;}
+
+
+.accordion-button:not(.collapsed) {
+    font-weight: bold;
+    color: #212529 !important;
+    background-color: #fff !important;
+    box-shadow: inset 0 -1px 0 rgba(0,0,0,.125);
+
+}
+.accordion-button:focus {
+  box-shadow: 0 0 0 .25rem rgba(0,185,0,0.3) !important;
+}
+
+.accordion-button::after {
+background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23000'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e")
+!important;
+}
+
+#OpenHoursAlert {
+  background-color: #0066B3;
+  color: #fff;
+  min-height: 35px;
+}
+
+#hoursMessage {
+  font-size: 16px;
+
+  font-weight: normal;
+  letter-spacing: 1px;col-xl-9
+}
+
+#hoursMessage, #OpenHoursAlert a, #hoursMessage a {color: #fff; font-size: 18px !important; font-weight: bold;}
+
+#OpenHoursAlert a:hover {
+  color: #fff; font-weight: bold;
+}
+
+.megamenu h6 {font-weight: bold; }
+form input[type = submit] {background-color: #0066B3; color: #fff;}
+form input[type="submit"].btn:hover {background-color: #0066B3; font-weight: bold;}
+
+#homepage h2, #homepage h2 a {color:#594a41; }
+#nextFourEventsList h2 a {color: #fff; font-weight: bold; }
+#mainContent h2, a.card-title, .card a {text-decoration: none; font-weight: bold;}
+a:hover {color: #0a58ca;}
+
+#checkBoxCategory {background-color: #d5d5d5;}
+#featuredResourceTitle {margin-left: 14px;}
+.category-title {position: relative; left: -12px;}
+
+#searchBox h2 {color: #594a41;}
+#searchBox {min-height: 52px;}
+#searchType {background-color: #fff;line-height: 1.7; margin-left: 6px;
+}
+.radius-left {border-radius:.25rem 0 0 .25rem !important; }
+.radius-right {border-radius:0rem .25rem .25rem 0 !important; }
+
+#altSearchInput {
+display: inline;
+padding: .375rem .75rem;
+font-weight: 400;
+color: #212529;
+background-color: #fff;
+background-clip: padding-box;
+border: 1px solid #0066B3;
+border-top-color: rgb(206, 212, 218);
+border-right-color: rgb(206, 212, 218);
+border-bottom-color: rgb(206, 212, 218);
+border-left-color: rgb(206, 212, 218);
+-webkit-appearance: none;
+-moz-appearance: none;
+appearance: none;
+border-radius: .25rem 0 0 .25rem;
+transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
+}
+
+#altSearchInput:focus {
+display: inline;
+outline: 0;
+box-shadow: 0 0 0 .25rem rgba(13,110,253,.25);
+}
+
+#searchButton {position: relative; top: -2px; left: 2px; left:-4px; padding: .385rem .75rem !important;}
+
+
+
+@media only screen and (min-width: 960px) {
+  .scrollerBody {
+    margin-left: -40% !important;
+  }
+
+  .titleScrollerSelectedTitle {
+      text-align: left !important;
+      padding-left: 5%;
+      font-size: 1.2em;
+  }
+}
+/* features */
+.card-title.feature-title {
+  font-size: 1.15rem;
+  font-weight: bold;
+}
+
+.feature-image {
+  border-bottom: solid #0066B3 4px;
+}
+
+#Upcoming .event-title a {text-decoration: none; color: #0C283D;}
+#Upcoming .event-item {border-bottom: solid 1px rgba(65,64,66,.2);}
+#Upcoming .event-info {margin: auto; font-size: 14px; }
+#mobileCalendar .event-item {border-bottom: solid 1px rgba(65,64,66,.2); font-size: 14px;}
+#mobileCalendar .date-icon-month {font-size: 14px;}
+#allUpcomingEvents .card .list-group-item {border: none;}
+#allUpcomingEvents .event-info {position: relative; top: -7px;}
+#allUpcomingEvents h2 a {font-size: 22px; color: #4E4C4F;}
+#programsHomepageFeature a {text-decoration: none;}
+#programsHomepageFeature .card, #features .card, #singleFeature .card, #allUpcomingEvents .card {box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);}
+#programsHomepageFeature .event-info {margin: auto;}
+#programsHomepageFeature .title-time {margin: auto;}
+#programsHomepageFeature .time {font-size: 14px; font-weight: normal;white-space: nowrap;}
+
+#singleFeature .btn-primary {font-weight: bold; }
+section.block-ebooks_card .card-body {min-height: 175px;}
+
+#programsHomepageFeature .card {min-height: 325px; }
+@media only screen and (max-width: 855px) {
+#programsHomepageFeature .card {min-height: 305px; }
+}
+@media only screen and (max-width: 575px) {
+#homepage #backgroundImage {height: 480px !important; }
+}
+
+@media only screen and (max-width: 767px) {
+#programsHomepageFeature .title-time {margin-top: 4px;text-align: center; }
+.feature-box {margin-bottom: 8px;}
+#programsHomepageFeature .date-icon {display: block; margin-left: 10px; margin-right: 10px; }
+}
+
+@media only screen and (max-width: 992px) {
+  .view-all-events {position: relative;display:flex; float: right;}
+  #mainMenu .accordion-body {padding: 0 !important;}
+}
+
+@media only screen and (max-width: 991px) {
+  #programsHomepageFeature .title-time { position: relative; left: -8px; margin-bottom: 4px; }
+  .view-all-events { position: relative; display:flex; float: right;}
+  #logInButton a { margin-right: .5rem !important; margin-left: .5rem !important; white-space: nowrap;}
+}
+@media only screen and (max-width: 1199px) {
+  .view-all-events {margin-top: 1.5rem !important; float: left;}
+  #feature-1, #feature-2 {margin-bottom: 8px;}
+}
+.event-date-time-info {font-weight: bold;}
+.event-page .bi-calendar4-week {font-size: 3.0em;}
+.exception-dates {font-weight: normal;}
+
+.block-events-by-category .card, .block-events-by-audience .card {border: none; border-radius: 0; border-bottom: 1px solid rgba(0,0,0,.125); }
+
+/*
+CSS for the book carousels controlled by Aspen
+*/
+
+font-family:'Montserrat', Tahoma,Verdana,Segoe,sans-serif !important;
+
+.jcarousel-wrapper {
+  margin: 10px auto;
+  position: relative;
+}
+#AspenCarouselContainer {padding-bottom: 4px;}
+.titleScrollerHeader {
+  background-color: #0066B3;
+  padding: 2px 0px 4px 3px;
+  color: white;
+  font-size: inherit;
+  font-weight: bold;
+  height: 24px;
+}
+#backgroundImage {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
+#searchBox {}
+#searchBox h2, #searchBox label {color: #594a41; font-weight: bold;}
+
+/* From mdb boostrap */
+.mask {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-attachment: fixed;
+}
+.bg-image {
+  position: relative;
+  overflow: hidden;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50%;
+}
+footer .social-links a {color: #fff;}
+.asteriskField {color: #dc3545;}
+.side-menu h2 {color: #4E4C4F;}
+.side-menu .nav-link {padding: .5rem 1rem;}
+#ebook_app_link a {color: #4E4C4F; font-size: 1.5em;}
+.screen-only {position: absolute; clip: rect(0,0,0,0);}
+.person .position {font-size: inherit;}
+.person .name {font-size: 20px; }
+#boardMinutes h2 {font-size: 20px;}
+
+container.person h2 {
+  font-size: 20px;
+  margin-left: 3px;
+}
+
+.person h2 {
+  font-size: 26px;
+  margin-left: 2px;
+}
+/* Niche Academy links */
+#contentAreaDefault .na.bgPrimary, #contentArea .na.bgPrimary {background: #0066b3;}
+#calMethod button {
+  border: none;
+  cursor: pointer; 
+}
+#googleCalendarModal .date-entry a, #yahooCalendarModal .date-entry a {color: #4E4C4F; } {color: #4E4C4F; }
+
+.cal-button { 
+background-color: #fff;
+border: none;
+position: relative;
+left: -4px;
+font-weight: bold;
+color: #0C283D;
+}
+
+.cal-button:hover {
+text-decoration: underline;
+
+}
