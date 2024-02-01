@@ -3,6 +3,8 @@
 #mainMenu a.list-group-item, #mainMenu .menu-heading {font-size: 1rem;}
 #mainMenu a.nav-link {font-size: 1.18rem; font-weight: bold; color: #0C283D;}
 #mainMenu .menu-margin {margin-right: 40px;}
+#mainMenu .fs-submenu-items .list-group-item a {text-decoration: none; color: #0C283D;}
+
 
 @media all and (max-width: 1199px) {
   #mainMenu .menu-margin {margin-right: 0px;}
@@ -33,6 +35,7 @@
       margin-top:10px;
   }
 }
+
 .menu-heading a {color: #019FE2; text-decoration: none;}
 .menu-heading a:hover {color: #0066B3;}
 

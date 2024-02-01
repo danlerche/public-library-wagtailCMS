@@ -1,4 +1,11 @@
-//allows toggling menus open with the enter key
+$("#mainMenu .dropdown-menu").hover(function(){
+  $(this).prev().parent().addClass("menu-border");
+
+  },
+  function(){
+  $(this).prev().parent().removeClass("menu-border");
+}
+);
 $("#mainMenu a.dropdown-toggle").click(function(event) {
   if ($(this).hasClass("show")) {
     // If the class 'show' is already present, remove it
