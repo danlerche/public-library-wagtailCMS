@@ -51,3 +51,6 @@ function defaultShow(){
     $('#contentArea').css("display", "none");
   }
 }
+
+// set alt text to an empty string per accessibility guidelines for decorative images. 
+$("#features img").attr("alt", "");
