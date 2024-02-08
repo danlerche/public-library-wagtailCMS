@@ -8,16 +8,10 @@ h2.fc-toolbar-title {color: #4E4C4F; fo}
   padding-top: 7px;
   margin-left: 13px;
 }
-.fc-daygrid-event-dot {border: none;}
 a.fc-daygrid-event {font-size: .9em;}
-.fc-event .fc-event-title {color: #0066B3; font-weight: bold; white-space: break-spaces;}
+a.fc-daygrid-event .fc-event-title {font-weight: bold; color: rgba(0, 0, 0, 0.71); }
 #calendar .fc-event-time {color: rgba(0, 0, 0, 0.71);}
 #calendar a.for-kids .fc-event-title {color: #2DB34B;}
 #calendar a.for-adults .fc-event-title {color: #0066B3;}
 #calendar a.for-teens .fc-event-title {color: #019FE2;}
 #calendar a.for-tweens .fc-event-title {color: #A6CE39;}
-.fc-direction-ltr .fc-daygrid-event.fc-event-start, .fc-direction-rtl .fc-daygrid-event.fc-event-end {
-  margin-left: 10px !important;
-}
-.fc .fc-daygrid-day.fc-day-today {border: 4px solid #feb700; background-color: #fff;}
-

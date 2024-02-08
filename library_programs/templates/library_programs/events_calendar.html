@@ -1,6 +1,7 @@
 {% load wagtailcore_tags static library_programs_tags %}
+<script src="{% static 'js/index.global.js' %}"></script>
+<script src="{% static 'js/fullcalendar-ext.js' %}"></script>
 <link rel='stylesheet' type='text/css' href="{% static 'css/fullcalendar.css' %}" />
-<script src="{% static 'js/fullcalendar.js' %}"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');

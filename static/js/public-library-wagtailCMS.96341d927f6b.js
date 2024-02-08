@@ -54,12 +54,3 @@ function defaultShow(){
 
 // set alt text to an empty string per accessibility guidelines for decorative images. 
 $("#features img").attr("alt", "");
-
-//move aria-label to the td element in fullcalendar
-  var tdElement = $('td[aria-labelledby]');
-  
-  // Get the aria-label attribute value from the child a element
-  var ariaLabel = tdElement.find('a').attr('aria-label');
-  
-  // Set the text of the td element with the aria-label value
-  tdElement.text(ariaLabel);

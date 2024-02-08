@@ -53,4 +53,5 @@ function defaultShow(){
 }
 
 // set alt text to an empty string per accessibility guidelines for decorative images. 
-$("#features img").attr("alt", "");
+  // Select the td element with specific class values
+  var tdElement = $('td.fc-day.fc-daygrid-day[aria-labelledby]');
