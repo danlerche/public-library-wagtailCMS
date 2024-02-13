@@ -15,3 +15,11 @@ $(document).ready(function(){
   $('.fc-daygrid-day-top a').removeAttr('aria-label');
 
 });
+
+$(document).ready(function(){
+    // Select the button by its class
+    $('.fc-prevYear-button').attr('aria-label', 'Previous year');
+    $('.fc-nextYear-button').attr('aria-label', 'Next year');
+    $('.fc-prev-button').attr('aria-label', 'Previous month');
+    $('.fc-next-button').attr('aria-label', 'Next month');
+});
