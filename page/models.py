@@ -107,6 +107,7 @@ class AllPurposePage(Page):
         ('half_size_image', ImageChooserBlock(help_text="Takes up 1/2 of the screen size 648px")),
         ('full_width_image', ImageChooserBlock(help_text="Takes up the full screen view 1248px")),
         ('image', ImageChooserBlock(help_text="uses the original picture size and respects that with")),
+        ('image_w_accessible_heading', ImageChooserBlock(help_text="uses the original picture size and puts an additional h2 heading for accessibility")),
         ('card', blocks.StructBlock([
         ('card_body', blocks.StreamBlock([
             ('card_item', blocks.StructBlock(
