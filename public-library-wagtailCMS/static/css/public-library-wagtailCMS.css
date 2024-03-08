@@ -378,3 +378,10 @@ color: #0C283D;
 text-decoration: underline;
 
 }
+hgroup .position-title {
+font-family: 'Montserrat', sans-serif;
+  color: #0066B3;
+  font-weight: 600;
+  font-size: 26px;
+  margin-left: 2px;
+}

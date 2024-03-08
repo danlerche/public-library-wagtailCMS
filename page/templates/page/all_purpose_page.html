@@ -39,7 +39,7 @@
 {% elif block.block_type == 'image_w_accessible_heading' %}
 <section class="block-image-with-accessible-heading mb-2">
 {% image block.value original as img_w_accessible_heading %}
-<h2 class="d-none">{{ img_w_accessible_heading.alt }}</h2>
+<h2 class="visually-hidden-focusable">{{ img_w_accessible_heading.alt }}</h2>
 <img src="{{ img_w_accessible_heading.url }}" alt="" class="img-fluid d-block" />
 </section>
 
