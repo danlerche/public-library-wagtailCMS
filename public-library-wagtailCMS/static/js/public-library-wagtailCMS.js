@@ -37,10 +37,12 @@ for (var i=0; i<input_checkboxes.length; i++)  {
 function defaultHideIfChecked() {
 if($('.db-checkbox:checked').length >0) {
 $('#contentAreaDefault').css("display", "none");
+$('#contentAreaDefault').removeAttr("aria-live");
 $('#contentArea').css("display", "block");
+$('#contentArea').attr("aria-live", "polite");
+}
 }
 
-}
 function toggle(className, obj) {
   $(className).toggle( obj.checked );
 }
@@ -48,7 +50,9 @@ function toggle(className, obj) {
 function defaultShow(){
   if($('#contentArea .db-checkbox:checked').length ==0) {
     $('#contentAreaDefault').css("display", "block");
+    $('#contentAreaDefault').attr("aria-live", "polite");
     $('#contentArea').css("display", "none");
+    $('#contentArea').removeAttr("aria-live");
   }
 }
 
