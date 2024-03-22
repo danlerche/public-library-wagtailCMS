@@ -1,3 +1,31 @@
+//back to top button code
+
+//Get the button
+let top_button = document.getElementById("btn-back-to-top");
+
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function () {
+  scrollFunction();
+};
+
+function scrollFunction() {
+  if (
+    document.body.scrollTop > 20 ||
+    document.documentElement.scrollTop > 20
+  ) {
+    top_button.style.display = "block";
+  } else {
+    top_button.style.display = "none";
+  }
+}
+// When the user clicks on the button, scroll to the top of the document
+top_button.addEventListener("click", backToTop);
+
+function backToTop() {
+  document.body.scrollTop = 0;
+  document.documentElement.scrollTop = 0;
+}
+
 //Digital Resources JS
 
 var input_checkboxes = $('input');
@@ -34,8 +62,10 @@ $("#features img").attr("alt", "");
 //add aria-hidden to honeypot field
 $('#whf_name').attr('aria-hidden', 'true');
 
-// back to top button code
-let top_button = document.getElementById("returnToTopBtn");
+//return to top button
+
+// Get the button:
+let top_button = document.getElementById("returnTopBtn");
 
 // When the user scrolls down 20px from the top of the document, show the button
 window.onscroll = function() {scrollFunction()};
@@ -50,6 +80,6 @@ function scrollFunction() {
 
 // When the user clicks on the button, scroll to the top of the document
 function topFunction() {
-  document.body.scrollTop = 0;
-  document.documentElement.scrollTop = 0;
-}
+  document.body.scrollTop = 0; // For Safari
+  document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+} 
