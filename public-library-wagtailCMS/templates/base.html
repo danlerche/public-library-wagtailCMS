@@ -37,6 +37,7 @@
         {% endblock %}
     </head>
 <body id="background" class="{% block body_class %}{% endblock %}">
+<button onclick="topFunction()" id="returnToTopBtn" title="Go to top">Top</button>
   <div id="alertArea">
   {% popup_alert %}
   </div>
@@ -61,10 +62,7 @@
     </div>
   </div>
 </header>
-  <a class="btn btn-primary" id="btn-back-to-top" href="#background" label="back to the top button">
-    <i class="bi bi-arrow-up"></i>
-    <span class="d-none">back to the top</span>
-  </a>
+
 <main id="mainContent">
         {% block content %}
         {% endblock %}
