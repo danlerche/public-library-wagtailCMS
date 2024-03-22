@@ -37,15 +37,13 @@
         {% endblock %}
     </head>
 <body id="background" class="{% block body_class %}{% endblock %}">
-  <div id="skipContentWrapper" class="nocontent" role="navigation" aria-label="Skip to content navigation">
-      <a id="skipContentLink" title="Skip Navigation and go to Content" href="#mainContent">Skip to Content</a>
-  </div>
   <div id="alertArea">
   {% popup_alert %}
   </div>
   {% open_hours %}
         {% wagtailuserbar %}
 <header class="container content">
+<a class="visually-hidden-focusable" href="#mainContent">Skip to main content</a>
   <div class="row d-none d-lg-block">
     <div id="topMenu" class="d-flex justify-content-end">
     {% flat_menu 'top' template="menus/top_menu.html" %}
@@ -63,11 +61,11 @@
     </div>
   </div>
 </header>
-<main id="mainContent">
   <a class="btn btn-primary" id="btn-back-to-top" href="#background" label="back to the top button">
     <i class="bi bi-arrow-up"></i>
     <span class="d-none">back to the top</span>
   </a>
+<main id="mainContent">
         {% block content %}
         {% endblock %}
 </main>

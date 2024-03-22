@@ -25,7 +25,7 @@
  </div>
  <div id="contentAreaDefault" class="content col-12 mt-4 h-100">
         {% for resource in resource_by_category %}
-        <div class="category border-bottom row mb-3 {% for cat in resource.categories.all %}cat-id-{{ cat.id }} {% endfor %}">
+        <div class="category border-bottom row mb-3 {% for cat in resource.categories.all %}cat-id-{{ cat.id }} {% endfor %}" aria-live="polite">
         <div class="col-2">
           <div class="resource-image mt-2 mb-2">
             <a href="{{ resource.online_resource_url }}">{% image resource.resource_image class="img-fluid" width-150 %}</a>
@@ -42,7 +42,7 @@
 
   <div id="contentArea" class="content col-12 mt-4 h-100" style="display: none;">
         {% for resource in resource_by_category %}
-        <div class="category border-bottom row mb-3 {% for cat in resource.categories.all %}cat-id-{{ cat.id }} {% endfor %}" style="display: none;">
+        <div class="category border-bottom row mb-3 {% for cat in resource.categories.all %}cat-id-{{ cat.id }} {% endfor %}" style="display: none;" aria-live="polite">
         <div class="col-2">
           <div class="resource-image mt-2 mb-2">
             <a href="{{ resource.online_resource_url }}">{% image resource.resource_image class="img-fluid" width-150 %}</a>

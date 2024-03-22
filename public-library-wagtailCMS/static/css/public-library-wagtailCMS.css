@@ -1,6 +1,3 @@
-#skipContentLink {display: block; width: 1px; height: 1px; overflow: hidden;}
-#skipContentWrapper { position: fixed; top: 0;left: 0; z-index: 10000;}
-
 body {font-family:'Montserrat', Tahoma,Verdana,Segoe,sans-serif !important; }
 body#background {background-color: #fff;}
 h1 {font-family: 'Montserrat', sans-serif; color: #4E4C4F; font-weight: bold;}
@@ -384,4 +381,8 @@ font-family: 'Montserrat', sans-serif;
   font-weight: 600;
   font-size: 26px;
   margin-left: 2px;
+}
+
+.form-check-input {
+    border: 2px solid #0C283D;
 }

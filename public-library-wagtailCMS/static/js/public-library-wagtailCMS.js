@@ -52,5 +52,8 @@ function defaultShow(){
   }
 }
 
-// set alt text to an empty string per accessibility guidelines for decorative images. 
+// set alt text to an empty string per accessibility guidelines for decorative images. TODO: use the wagtail template, rather than JavaScript. 
 $("#features img").attr("alt", "");
+
+//add aria-hidden to honeypot field
+$('#whf_name').attr('aria-hidden', 'true');
