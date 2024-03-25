@@ -14,20 +14,23 @@
 <div class="row">
 <div class="main-title mt-4 mb-4"><h1>Search</h1></div>
 
-    <form id="searchForm" class="mt-1 form-inline" action="{% url 'search' %}" method="get">
-        <input id="altSearchInput" class="col-lg-6 col-10" title="Search Penticton Public Library" autofocus="" type="text" name="query"{% if search_query %} value="{{ search_query }}"{% endif %}>
-        <button id="searchButton" type="submit" class="btn btn-blue radius-right" title="Search" value="Search"><i class="bi bi-search"></i></button>
-         <div class="row">
+<form id="searchForm" class="mt-1 form-inline" action="{% url 'search' %}" method="get">
+  <input id="altSearchInput" class="col-lg-6 col-10" title="Search Penticton Public Library" autofocus="" type="text" name="query"{% if search_query %} value="{{ search_query }}"{% endif %}>
+ <button id="searchButton" type="submit" aria-label="submit search" class="btn btn-blue radius-right" title="Search" value="Search"><i class="bi bi-search"></i></button>
+ <div class="row">
   <div id="searchRadio" class="col mt-2">
-   <div class="form-check form-check-inline">
-   <label class="form-check-label" for="catalogueSearch"><input type="radio" id="catalogueSearch" value="catalogue" data-searchsource="catalog" class="form-check-input" name="altSearch">Catalogue</label>
- </div>
+ <div class="form-check form-check-inline">
+  <fieldset>
+  <legend class="screen-only">Search Source</legend>
+   <label class="form-check-label" for="catalogueSearch"><input type="radio" id="catalogueSearch" value="catalogue" data-searchsource="catalog" value="Keyword" class="form-check-input" name="altSearch" checked="checked">Catalogue</label>
  <div class="form-check form-check-inline">
    <label class="form-check-label" for="websiteSearch"><input id="websiteSearch" type="radio" value="website" name="altSearch" class="form-check-input" checked="checked">Website</label>
+ </fieldset>
  </div>
  </div>
  </div>
-    </form>
+ </div>
+</form>    
 
     {% if search_results %}
     <div class="col-xl-4 col-12">
