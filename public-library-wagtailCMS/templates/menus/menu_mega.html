@@ -19,7 +19,7 @@
 <div class="col-xl-6 col-md-6 col-12 mb-3 mb-lg-0">
 <div class="list-group list-group-flush">
 {% endif %}
-  <a href="{{ item.href }}" class="list-group-item list-group-item-action">{{ item.text }}</a>
+  <li class="list-group-item list-group-item-action"><a href="{{ item.href }}">{{ item.text }}</a></li>
 {% if forloop.counter == menu_col %}
 </div>
 </div>
@@ -32,7 +32,7 @@
 <div class="col-xl-6 col-md-6 col-12 mb-3 mb-lg-0">
 <div class="list-group list-group-flush">
 {% endif %}
-<a href="{{ item.href }}" class="list-group-item list-group-item-action">{{ item.text }}</a>
+<li class="list-group-item list-group-item-action"><a href="{{ item.href }}">{{ item.text }}</a></li>
 {% if forloop.last %}
 </div>
 </div>
@@ -52,7 +52,7 @@
 <div class="col-xl-6 col-md-6 col-12 mb-3 mb-lg-0">
 <div class="list-group list-group-flush">
 {% endif %}
-  <a href="{{ item.href }}" class="list-group-item list-group-item-action">{{ item.text }}</a>
+  <li class="list-group-item list-group-item-action"><a href="{{ item.href }}">{{ item.text }}</a></li>
 {% if forloop.counter == menu_col %}
 </div>
 </div>
@@ -65,7 +65,7 @@
 <div class="col-xl-6 col-md-6 col-12 mb-3 mb-lg-0">
 <div class="list-group list-group-flush">
 {% endif %}
-<a href="{{ item.href }}" class="list-group-item list-group-item-action">{{ item.text }}</a>
+<li class="list-group-item list-group-item-action"><a href="{{ item.href }}">{{ item.text }}</a></li>
 {% if forloop.last %}
 </div>
 </div>
