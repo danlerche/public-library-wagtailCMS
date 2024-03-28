@@ -6,7 +6,7 @@
 {% for item in menu_items %}
 <li class="list-unstyled col-12">
 	<div class="menu-heading fw-bold"><a href="{{ item.href }}" class="menu-link">{{ item.text }}</a></div>
-{% sub_menu item template="menus/level_3.html" %}
+{% sub_menu item template="menus/mobile_level_3.html" %}
 </li>
 {% endfor %}
 {% endif %}
@@ -15,7 +15,7 @@
 {% for item in menu_items %}
 <li class="list-unstyled col-6">
 	<div class="menu-heading fw-bold"><a href="{{ item.href }}" class="menu-link">{{ item.text }}</a></div>
-{% sub_menu item template="menus/level_3.html" %}
+{% sub_menu item template="menus/mobile_level_3.html" %}
 </li>
 {% endfor %}
 {% endif %}
@@ -24,7 +24,7 @@
 {% for item in menu_items %}
 <li class="list-unstyled col-xl-4 col-md-12 col-12">
 	<div class="menu-heading fw-bold"><a href="{{ item.href }}" class="menu-link">{{ item.text }}</a></div>
-{% sub_menu item template="menus/level_3.html" %}
+{% sub_menu item template="menus/mobile_level_3.html" %}
 </li>
 {% endfor %}
 {% endif %}
@@ -33,7 +33,7 @@
 {% for item in menu_items %}
 <li class="list-unstyled col-xl-3">
 	<div class="menu-heading fw-bold"><a href="{{ item.href }}" class="menu-link">{{ item.text }}</a></div>
-{% sub_menu item template="menus/level_3.html" %}
+{% sub_menu item template="menus/mobile_level_3.html" %}
 </li>
 {% endfor %}
 {% endif %}
