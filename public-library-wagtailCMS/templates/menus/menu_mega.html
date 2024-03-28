@@ -16,26 +16,26 @@
 {% for item in menu_items %}
 {% if forloop.counter <= menu_col %}
 {% if forloop.first %}
-<div class="col-xl-6 col-md-6 col-12 mb-3 mb-lg-0">
+<ul class="level-2-no-heading col-xl-6 col-md-6 col-12 mb-3 mb-lg-0">
 <div class="list-group list-group-flush">
 {% endif %}
-  <li class="list-group-item list-group-item-action"><a href="{{ item.href }}">{{ item.text }}</a></li>
+  <li class="list-group-item list-group-item-action"><a href="{{ item.href }}" class="menu-link">{{ item.text }}</a></li>
 {% if forloop.counter == menu_col %}
 </div>
-</div>
+</ul>
 {% endif %}
 {% endif %}
 
 {% if forloop.counter > menu_col %}
 
 {% if forloop.counter == menu_col|add:1 %}
-<div class="col-xl-6 col-md-6 col-12 mb-3 mb-lg-0">
+<ul class="level-2-no-heading col-xl-6 col-md-6 col-12 mb-3 mb-lg-0">
 <div class="list-group list-group-flush">
 {% endif %}
-<li class="list-group-item list-group-item-action"><a href="{{ item.href }}">{{ item.text }}</a></li>
+<li class="list-group-item list-group-item-action"><a href="{{ item.href }}" class="menu-link">{{ item.text }}</a></li>
 {% if forloop.last %}
 </div>
-</div>
+</ul>
 {% endif %}
 {% endif %}
 
@@ -49,26 +49,26 @@
 {% for item in menu_items %}
 {% if forloop.counter <= menu_col %}
 {% if forloop.first %}
-<div class="col-xl-6 col-md-6 col-12 mb-3 mb-lg-0">
+<ul class="level-2-no-heading col-xl-6 col-md-6 col-12 mb-3 mb-lg-0">
 <div class="list-group list-group-flush">
 {% endif %}
-  <li class="list-group-item list-group-item-action"><a href="{{ item.href }}">{{ item.text }}</a></li>
+  <li class="list-group-item list-group-item-action"><a href="{{ item.href }}" class="menu-link">{{ item.text }}</a></li>
 {% if forloop.counter == menu_col %}
 </div>
-</div>
+</ul>
 {% endif %}
 {% endif %}
 
 {% if forloop.counter > menu_col %}
 
 {% if forloop.counter == menu_col|add:1 %}
-<div class="col-xl-6 col-md-6 col-12 mb-3 mb-lg-0">
+<ul class="level-2-no-heading col-xl-6 col-md-6 col-12 mb-3 mb-lg-0">
 <div class="list-group list-group-flush">
 {% endif %}
-<li class="list-group-item list-group-item-action"><a href="{{ item.href }}">{{ item.text }}</a></li>
+<li class="list-group-item list-group-item-action"><a href="{{ item.href }}" class="menu-link">{{ item.text }}</a></li>
 {% if forloop.last %}
 </div>
-</div>
+</ul>
 {% endif %}
 {% endif %}
 
