@@ -24,6 +24,9 @@
     </div>
  </div>
  <div id="contentAreaDefault" class="content col-12 mt-4 h-100">
+   <div id="politeAlertDefaultContainer">
+    <p id="politeAlertDefault"></p>
+   </div>
         {% for resource in resource_by_category %}
         <div class="category border-bottom row mb-3 {% for cat in resource.categories.all %}cat-id-{{ cat.id }} {% endfor %}">
         <div class="col-2">
@@ -41,6 +44,7 @@
   </div>
 
   <div id="contentArea" class="content col-12 mt-4 h-100" style="display: none;">
+    <div id="politeAlertContainer" class=""><p id="politeAlert"></p></div>
         {% for resource in resource_by_category %}
         <div class="category border-bottom row mb-3 {% for cat in resource.categories.all %}cat-id-{{ cat.id }} {% endfor %}" style="display: none;">
         <div class="col-2">
