@@ -4,16 +4,24 @@ var input_checkboxes = $('input');
 for (var i=0; i<input_checkboxes.length; i++)  {
   if (input_checkboxes[i].type == 'checkbox')   {
     input_checkboxes[i].checked = false;
+    var numberOfH2Elements = $("#contentAreaDefault h2").length;
+    var ariaPolite = $('#politeAlertDefaultContainer').attr({'aria-live': 'polite'});
+    $('#politeAlertDefault').text(numberOfH2Elements + ' results available');
   }
 }
 function defaultHideIfChecked() {
 if($('.db-checkbox:checked').length >0) {
-$('#contentAreaDefault').css("display", "none");
-$('#contentAreaDefault').removeAttr("aria-live");
-$('#contentArea').css("display", "block");
-$('#contentArea').attr("aria-live", "polite");
+  $('#contentAreaDefault').css("display", "none");
+  $('#contentArea').css("display", "block");
+  var numberOfH2Elements = $('#contentArea div.category[style=""] h2').length;
+  var ariaPolite = $('#politeAlertContainer').attr({'aria-live': 'polite'});
+  var rmAriaPolite = $('#politeAlertDefaultContainer').removeAttr('aria-live', 'polite');
+  $('#politeAlert').text(numberOfH2Elements + ' results available');
 }
-}
+else if($('.db-checkbox:checked').length ==0) { 
+  var ariaPolite = $('#politeAlertDefaultContainer').attr({'aria-live': 'polite'});
+  var rmAriaPolite = $('#politeAlertContainer').removeAttr('aria-live', 'polite');
+}}
 
 function toggle(className, obj) {
   $(className).toggle( obj.checked );
@@ -22,11 +30,11 @@ function toggle(className, obj) {
 function defaultShow(){
   if($('#contentArea .db-checkbox:checked').length ==0) {
     $('#contentAreaDefault').css("display", "block");
-    $('#contentAreaDefault').attr("aria-live", "polite");
     $('#contentArea').css("display", "none");
-    $('#contentArea').removeAttr("aria-live");
   }
 }
+
+
 
 // set alt text to an empty string per accessibility guidelines for decorative images. TODO: use the wagtail template, rather than JavaScript. 
 $("#features img").attr("alt", "");
