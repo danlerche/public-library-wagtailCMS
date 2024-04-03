@@ -20,4 +20,5 @@ a.fc-daygrid-event {font-size: .9em;}
   margin-left: 10px !important;
 }
 .fc .fc-daygrid-day.fc-day-today {border: 4px solid #feb700; background-color: #fff;}
-
+.fc-timegrid-body .fc-event-title, .fc-timegrid-body .fc-event-time {color: #fff !important;}
+.fc-timegrid-body .fc-v-event {background-color: #0066B3;}

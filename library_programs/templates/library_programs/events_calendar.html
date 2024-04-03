@@ -5,18 +5,19 @@
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     var calendarEl = document.getElementById('calendar');
+   
     {% for events_qs in events_qs %}
     var event_title_{{ events_qs.id }} = "{{ events_qs.title }}";
     var decoded_event_title_{{ events_qs.id }} = event_title_{{ events_qs.id }}.replace("&amp;", "&").replace("&#x27;", "'");
-
     {% endfor %}
+   
     var calendar = new FullCalendar.Calendar(calendarEl, {
     themeSystem: 'bootstrap5',
       headerToolbar: {
-        left: 'dayGridMonth,listYear',
-        center: 'title',
-        right: 'prevYear,prev,next,nextYear'
-      },
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+            },
       businessHours: [ // specify an array instead
   {
     daysOfWeek: [ 1, 3, 5, 6 ], // Monday, Wednesday, Friday, Saturday
@@ -35,6 +36,12 @@ eventTimeFormat: {
   meridiem: 'short',
 },
       editable: true,
+
+     views: {
+                dayGridMonth: { buttonText: 'month' },
+                timeGridWeek: { buttonText: 'week' },
+                timeGridDay: { buttonText: 'day' }
+            },
       initialView: 'dayGridMonth',
       events: [
             {% for all_events in all_events %}

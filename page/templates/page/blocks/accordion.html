@@ -3,9 +3,10 @@
   {% for accordion_body in value.accordion_body %}
     <div class="accordion-item">
       <h3 class="accordion-header" id="heading-{{ accordion_body.value.accordion_item_title|slugify }}">
-        <button class="accordion-button {% if accordion_body.value.show_by_default == False %}collapsed{% endif %}" 
-        type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ accordion_body.value.accordion_item_title|slugify }}"
-         aria-expanded="true" aria-controls="collapse-{{ accordion_body.value.accordion_item_title|slugify }}">
+        <button class="accordion-button {% if accordion_body.value.show_by_default == False %}collapsed" aria-expanded="false"
+        {% elif accordion_body.value.show_by_default == True %}" aria-expanded="true"
+        {% endif %}
+        type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ accordion_body.value.accordion_item_title|slugify }}" aria-controls="collapse-{{ accordion_body.value.accordion_item_title|slugify }}">
           {{ accordion_body.value.accordion_item_title }}
         </button>
       </h3>
