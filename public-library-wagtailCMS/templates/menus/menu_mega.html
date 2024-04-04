@@ -12,69 +12,71 @@
 
 {% if forloop.counter|divisibleby:2 %}
 {% with menu_col=mk_menu_col|add:0 %}
-
+<ul class="row">
 {% for item in menu_items %}
+
 {% if forloop.counter <= menu_col %}
 {% if forloop.first %}
-<ul class="level-2-no-heading col-xl-6 col-md-6 col-12 mb-3 mb-lg-0">
+<div class="level-2-no-heading col-xl-6 col-md-6 col-12 mb-3 mb-lg-0">
 <div class="list-group list-group-flush">
 {% endif %}
   <li class="list-group-item list-group-item-action"><a href="{{ item.href }}" class="menu-link">{{ item.text }}</a></li>
 {% if forloop.counter == menu_col %}
 </div>
-</ul>
+</div>
 {% endif %}
 {% endif %}
 
 {% if forloop.counter > menu_col %}
 
 {% if forloop.counter == menu_col|add:1 %}
-<ul class="level-2-no-heading col-xl-6 col-md-6 col-12 mb-3 mb-lg-0">
+<div class="level-2-no-heading col-xl-6 col-md-6 col-12 mb-3 mb-lg-0">
 <div class="list-group list-group-flush">
 {% endif %}
 <li class="list-group-item list-group-item-action"><a href="{{ item.href }}" class="menu-link">{{ item.text }}</a></li>
 {% if forloop.last %}
 </div>
-</ul>
+</div>
 {% endif %}
 {% endif %}
 
 
 {% endfor %}
+<ul>
 {% endwith %}
 
 {% else %}
 {% with menu_col=mk_menu_col|add:0 %}
-
+<ul class="row">
 {% for item in menu_items %}
 {% if forloop.counter <= menu_col %}
 {% if forloop.first %}
-<ul class="level-2-no-heading col-xl-6 col-md-6 col-12 mb-3 mb-lg-0">
+<div class="level-2-no-heading col-xl-6 col-md-6 col-12 mb-3 mb-lg-0">
 <div class="list-group list-group-flush">
 {% endif %}
   <li class="list-group-item list-group-item-action"><a href="{{ item.href }}" class="menu-link">{{ item.text }}</a></li>
 {% if forloop.counter == menu_col %}
 </div>
-</ul>
+</div>
 {% endif %}
 {% endif %}
 
 {% if forloop.counter > menu_col %}
 
 {% if forloop.counter == menu_col|add:1 %}
-<ul class="level-2-no-heading col-xl-6 col-md-6 col-12 mb-3 mb-lg-0">
+<div class="level-2-no-heading col-xl-6 col-md-6 col-12 mb-3 mb-lg-0">
 <div class="list-group list-group-flush">
 {% endif %}
 <li class="list-group-item list-group-item-action"><a href="{{ item.href }}" class="menu-link">{{ item.text }}</a></li>
 {% if forloop.last %}
 </div>
-</ul>
+</div>
 {% endif %}
 {% endif %}
 
 
 {% endfor %}
-
+<ul>
 {% endwith %}
 {% endif %}
 {% endif %}
