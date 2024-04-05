@@ -4,7 +4,7 @@
 #mainMenu a.nav-link {font-size: 1.18rem; font-weight: bold; color: #0C283D;}
 #mainMenu .menu-margin {margin-right: 40px;}
 #modalMenu .accordion-body li a.menu-link, #mainMenu .level-3 li a, #mainMenu .level-2-no-heading li a {color: #0C283D; text-decoration: none;}
-
+.level-2-no-heading a.menu-link {color: #0C283D; text-decoration: none;}
 
 @media all and (max-width: 1199px) {
   #mainMenu .menu-margin {margin-right: 0px;}
