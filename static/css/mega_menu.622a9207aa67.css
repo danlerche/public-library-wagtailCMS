@@ -1,0 +1,70 @@
+#mainMenu {font-family:'Montserrat', Tahoma,Verdana,Segoe,sans-serif !important; }
+#mainMenu .dropdown-menu {padding: 0;}
+#mainMenu a.list-group-item, #mainMenu .menu-heading {font-size: 1rem;}
+#mainMenu a.nav-link {font-size: 1.18rem; font-weight: bold; color: #0C283D;}
+#mainMenu .menu-margin {margin-right: 40px;}
+#modalMenu .accordion-body li a.menu-link, #mainMenu .level-3 li a, #mainMenu .level-2-no-heading li a {color: #0C283D; text-decoration: none;}
+.level-2-no-heading a.menu-link {color: #0C283D; text-decoration: none;}
+
+@media all and (max-width: 1199px) {
+  #mainMenu .menu-margin {margin-right: 0px;}
+  #mainMenu a.nav-link {font-size: 17px;}
+}
+@media all and (min-width: 1199px) {
+#mainMenu a.nav-link {font-size: 1.18rem; }
+}
+/*
+#mainMenu .list-group-item-action:hover {text-decoration: underline !important; background-color: inherit !important;}
+.nav-item.dropdown.has-megamenu {
+  padding-right: 21px;
+}
+*/
+#mainMenu .dropdown-menu {border-radius: 0;}
+.navbar .megamenu { padding: 1rem; }
+/* ============ desktop view ============ */
+@media all and (min-width: 992px) {
+  #mainMenu {position: relative; top: 8px;}
+  .navbar .has-megamenu{position:static!important;}
+  .navbar .megamenu{left:0; right:0; width:100%; margin-top:0;  }
+}
+/* ============ desktop view .end// ============ */
+
+/* ============ mobile view ============ */
+@media(max-width: 991px){
+  .navbar.fixed-top .navbar-collapse, .navbar.sticky-top .navbar-collapse{
+    overflow-y: auto;
+      max-height: 90vh;
+      margin-top:10px;
+  }
+}
+.menu-heading a {color: #019FE2 !important; text-decoration: none !important;}
+/*
+.menu-heading a:hover {color: #0066B3;}
+*/
+.menu-heading {
+  color: #019FE2;
+  border-bottom: solid whitesmoke;
+  padding-left: 16px;
+}
+#mainMenu .menu-heading a {position: relative; top: -7px;}
+#mainMenu li.menu-border a.dropdown-toggle {border-bottom: solid 4px #2DB34B;}
+
+#mainMenu a.dropdown-toggle:focus {
+  outline: thin dotted;
+}
+/*
+.dropdown-hover:hover>.dropdown-menu {
+display: inline-block;
+left: 0;
+}
+*/
+/*
+.dropdown-hover>.dropdown-toggle:active {
+}
+*/
+.dropdown-menu[data-bs-popper] {top: unset !important; }
+#mainMenu a.show {
+  pointer-events: unset;
+  cursor: pointer;
+}
+#mainMenu .dropdown-menu.show {display: inline-block; left: 0;}
