@@ -37,7 +37,7 @@
         <div class="col-10">
         <h2><a href="{{ resource.online_resource_url }}">{{ resource.title }}</a></h2>
         {{ resource.online_resource_description|richtext }}
-        <h3>{{ resource.tutorial_link|safe }}</h3>
+        <div>{{ resource.tutorial_link|safe }}</div>
         </div>
         </div>
         {% endfor %}
@@ -55,7 +55,7 @@
         <div class="col-10">
         <h2><a href="{{ resource.online_resource_url }}">{{ resource.title }}</a></h2>
         {{ resource.online_resource_description|richtext }}
-        <h3>{{ resource.tutorial_link|safe }}</h3>
+        <div>{{ resource.tutorial_link|safe }}</div>
         </div>
         </div>
         {% endfor %}
