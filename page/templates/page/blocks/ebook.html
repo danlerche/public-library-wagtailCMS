@@ -7,7 +7,7 @@
 </a>
 <div class="card-body">
 {{ value.ebook_description }}
-<p>{{ value.tutorial_link|safe }}</p>
+<div>{{ value.tutorial_link|safe }}</div>
 {% if value.app_link is not None %}
 <div id="ebook_app_link">
 {% for app_links in value.app_link %}
