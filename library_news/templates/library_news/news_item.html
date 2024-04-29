@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags %}
+
+{% block content %}
+
+<div class="container">
+<div class="row">
+<div class="col-12">
+<hgroup class="person main-title mt-4 mb-4">
+  <h1>{{ page.title }}</h1>
+  <div class="position-title fw-bold">{{ page.news_date }}</div>
+</hgroup>
+
+<div class="row mb-2">
+  <div class="col-md-3 col-12">
+    {% image page.news_image class="img-fluid" fill-250x240 %}
+  </div>
+  <div class="col-md-9 col-12 mt-1">
+    {{ page.news_body|richtext }}
+  </div>
+</div>
+
+</div>
+</div>
+</div>
+{% endblock %}

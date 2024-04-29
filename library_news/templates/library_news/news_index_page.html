@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags wagtailimages_tags first_sentence %}
+
+{% block content %}
+<div class="container">
+<div class="row">
+
+<div class="main-title mt-4 mb-4">
+    <h1>{{ page.title }}</h1>
+</div>
+
+<div class="lead">{{ page.intro|richtext }}</div>
+
+<div id="newsItems" class="col-10">
+{% for news_item in news_items %}
+{% if page.get_children %}
+<div class="news_item row border-bottom mb-3">
+<div class="col">
+ {% image news_item.specific.news_image class="img-fluid" fill-240x175-c100 %}
+</div>
+<div class="col-9">
+<h2><a href="{{ news_item.specific.url }}">{{ news_item.title }}</a></h2>
+<div class="news-date fw-bold"><i class="bi bi-clock"></i> {{ news_item.news_date }}</div>
+<p class="mt-2">{{ news_item.news_body|first_sentence }}.</p>
+<a href="{{ news_item.url }}" class="btn btn-primary mb-2">Read More</a>
+</div>
+</div>
+{% endif %}
+{% endfor %}
+
+</div>
+
+<div class="col-2 bg-light" style="height: 100px;">
+<ul class="h-25">
+<div class="fw-bold">DATE</div>
+<li><a href="{{ current_url }}">All</a></li>
+{% for cty in news_count_by_year %}
+<li><a href="{{ current_url }}{{ cty.year }}">{{ cty.year }} ({{ cty.count }})</a></li>
+{% endfor %}
+</ul>
+</div>
+
+</div>
+</div>
+{% endblock %}
