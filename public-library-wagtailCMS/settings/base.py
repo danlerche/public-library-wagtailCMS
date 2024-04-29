@@ -30,6 +30,7 @@ INSTALLED_APPS = [
 
     'wagtail.contrib.forms',
     'wagtail.contrib.redirects',
+    'wagtail.contrib.routable_page',
     'wagtail.contrib.styleguide',
     'wagtail.embeds',
     'wagtail.sites',
@@ -60,6 +61,7 @@ INSTALLED_APPS = [
     'wagtail.contrib.typed_table_block',
     'wagtailmenus',
     'wagtail_honeypot',
+    'library_news',
     'page',
     'widget_tweaks',
     'webform',

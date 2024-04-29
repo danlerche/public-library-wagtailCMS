@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>News Items for {{ year }}</title>
+</head>
+<body>
+    <h1>News Items for {{ year }}</h1>
+    <ul>
+        {% for item in news_items %}
+            <li>{{ item.news_date }} - {{ item.title }}</li>
+        {% empty %}
+            <li>No news items found for this year.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
