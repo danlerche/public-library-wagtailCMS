@@ -6,6 +6,9 @@ import datetime
 from django.db.models import Count
 from django.db.models.functions import ExtractYear
 from wagtail.contrib.routable_page.models import RoutablePageMixin, path
+from wagtail.fields import StreamField, RichTextField
+from wagtail import blocks
+from wagtail.blocks import BlockQuoteBlock
 
 # Create your models here.
 
@@ -48,11 +51,15 @@ class newsIndexPage(RoutablePageMixin, Page):
 
 class newsItem(Page):
 	news_date = models.DateField(default=datetime.date.today)
-	news_body = RichTextField(blank=True)
 	news_image = models.ForeignKey('wagtailimages.Image', blank=False, null=True, help_text="upload an image for the bio", on_delete=models.SET_NULL,related_name='+')
 
+	content = StreamField([
+		('quote', BlockQuoteBlock(required=True, help_text="Enter the text you'd like to appear in quotation marks")),
+		('paragraph', blocks.RichTextBlock()),
+		], use_json_field=True, blank=True)
+	
 	content_panels = Page.content_panels + [
         FieldPanel('news_date'),
 		FieldPanel('news_image'),
-		FieldPanel('news_body'),
+		FieldPanel('content'),
 	]
