@@ -5,7 +5,7 @@
 
 <div class="container">
 <div class="row">
-<div class="col-12">
+<div id="contentArea" class="content col-12">
 <hgroup class="person main-title mt-4 mb-4">
   <h1>{{ page.title }}</h1>
   <div class="position-title fw-bold">{{ page.news_date }}</div>
@@ -17,6 +17,15 @@
   </div>
   <div class="col-md-9 col-12 mt-1">
     {{ page.news_body|richtext }}
+    {% for block in page.content %}
+    {% if block.block_type == 'paragraph' and forloop.first %}
+    {% include_block block %}
+    {% elif block.block_type == 'quote' %}
+    {% include_block block %}
+    {% elif block.block_type == 'paragraph' and not forloop.first %}
+    {% include_block block %}
+    {% endif %}
+    {% endfor %}
   </div>
 </div>
 

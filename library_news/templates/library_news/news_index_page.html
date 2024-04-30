@@ -30,14 +30,16 @@
 
 </div>
 
-<div class="col-2 bg-light" style="height: 100px;">
-<ul class="h-25">
+<div class="col-2">
+<div class="d-flex bg-light">
+<ul class="bd-highlight">
 <div class="fw-bold">DATE</div>
 <li><a href="{{ current_url }}">All</a></li>
 {% for cty in news_count_by_year %}
 <li><a href="{{ current_url }}{{ cty.year }}">{{ cty.year }} ({{ cty.count }})</a></li>
 {% endfor %}
 </ul>
+</div>
 </div>
 
 </div>
