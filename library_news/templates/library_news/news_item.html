@@ -23,8 +23,8 @@
   </div>
   <div class="row">
   <div id="newsItemBlockQuote" class="col-md-12 mt-4">
-    {% elif block.block_type == 'quote' %}
-    {{ block }}
+    {% elif block.block_type == 'quote_block' %}
+      <blockquote>&quot;{{ block.value.quote }}&quot; - {{ block.value.attribution }}</blockquote>
   </div>
 </div>
 </div>
@@ -39,9 +39,4 @@
 </div>
 </div>
 </div>
-<script>
-  $('#newsItemBlockQuote blockquote').each(function() {
-    $(this).html('"'+ $(this).html() +'"');
-  });
-</script>
 {% endblock %}

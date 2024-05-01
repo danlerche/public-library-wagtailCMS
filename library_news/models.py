@@ -58,7 +58,10 @@ class newsItem(Page):
 	news_image = models.ForeignKey('wagtailimages.Image', blank=False, null=True, help_text="upload an image for the bio", on_delete=models.SET_NULL,related_name='+')
 
 	content = StreamField([
-		('quote', BlockQuoteBlock(required=True, help_text="Enter the text you'd like to appear in quotation marks")),
+		('quote_block', blocks.StructBlock([
+			('quote', BlockQuoteBlock(required=True, help_text="Enter the text you'd like to appear in quotation marks")),
+			('attribution', blocks.CharBlock(required=False, help_text="attribute the quote to someone")),
+			], icon='openquote')),
 		('paragraph', blocks.RichTextBlock()),
 		], use_json_field=True, blank=True)
 	
