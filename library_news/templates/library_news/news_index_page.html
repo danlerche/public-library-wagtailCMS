@@ -11,15 +11,27 @@
 
 <div class="lead">{{ page.intro|richtext }}</div>
 
+<div id="filterByDateMobile" class="col-md-2 d-block d-sm-none mb-4 bg-light">
+<ul class="bd-highlight">
+<div class="fw-bold">DATE</div>
+<li><a class="year-filter" href="{{ current_url }}">All</a></li>
+{% for cty in news_count_by_year %}
+<li><a class="year-filter" href="{{ current_url }}{{ cty.year }}/">{{ cty.year }} ({{ cty.count }})</a></li>
+{% endfor %}
+</ul>
+</div>
 
-<div id="newsItems" class="col-10">
+<div id="newsItems" class="col-md-10 col-12">
 {% for news_item in news_items %}
 {% if page.get_children %}
 <div class="news_item row border-bottom mb-3">
-<div class="col">
+<div class="col mb-3 d-none d-sm-block">
  {% image news_item.specific.news_image class="img-fluid" fill-240x175-c100 %}
 </div>
-<div class="col-9">
+<div class="col mb-3 d-block d-sm-none">
+ {% image news_item.specific.news_image class="img-fluid" fill-570x330-c100 %}
+</div>
+<div class="col-md-9">
 <h2><a href="{{ news_item.specific.url }}">{{ news_item.title }}</a></h2>
 <div class="news-date fw-bold"><i class="bi bi-clock"></i> {{ news_item.news_date }}</div>
 {% for block in news_item.specific.content %}
@@ -33,7 +45,7 @@
 {% endif %}
 {% endfor %}
 </div>
-<div id="filterByDate" class="col-2">
+<div id="filterByDate" class="col-md-2 d-none d-sm-block">
 <div class="d-flex bg-light">
 <ul class="bd-highlight">
 <div class="fw-bold">DATE</div>
