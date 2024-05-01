@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load wagtailcore_tags wagtailimages_tags %}
+{% load wagtailcore_tags wagtailimages_tags library_news_tags %}
 
 {% block content %}
 
@@ -12,24 +12,36 @@
 </hgroup>
 
 <div class="row mb-2">
-  <div class="col-md-3 col-12">
-    {% image page.news_image class="img-fluid" fill-250x240 %}
+  <div class="col-md-4 col-12">
+    {% image page.news_image class="img-fluid" width-440 %}
   </div>
-  <div class="col-md-9 col-12 mt-1">
+  <div class="col-md-8 col-12 mt-4">
     {{ page.news_body|richtext }}
     {% for block in page.content %}
     {% if block.block_type == 'paragraph' and forloop.first %}
     {% include_block block %}
+  </div>
+  <div class="row">
+  <div id="newsItemBlockQuote" class="col-md-12 mt-4">
     {% elif block.block_type == 'quote' %}
-    {% include_block block %}
+    {{ block }}
+  </div>
+</div>
+</div>
+<div class="row">
+<div class="col-md-12">
     {% elif block.block_type == 'paragraph' and not forloop.first %}
     {% include_block block %}
     {% endif %}
     {% endfor %}
-  </div>
-</div>
-
 </div>
 </div>
 </div>
+</div>
+</div>
+<script>
+  $('#newsItemBlockQuote blockquote').each(function() {
+    $(this).html('"'+ $(this).html() +'"');
+  });
+</script>
 {% endblock %}

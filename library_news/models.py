@@ -19,10 +19,13 @@ class newsIndexPage(RoutablePageMixin, Page):
 	def news_items(self, request):
 		news_items = newsItem.objects.all().live().order_by('-news_date')
 		news_count_by_year = newsItem.objects.annotate(year=ExtractYear('news_date')).values('year').annotate(count=Count('id')).order_by('-year')
+		current_url = self.url_path[len("/home"):]
 		
 		return self.render(request, context_overrides={
 			'news_items': news_items, 
 			'news_count_by_year': news_count_by_year,
+			'current_url': current_url,
+
 		})
 
 	@path('<int:year>/')
@@ -43,6 +46,7 @@ class newsIndexPage(RoutablePageMixin, Page):
 			'news_items': news_items,
 			'current_url': current_url,
 			'news_count_by_year': news_count_by_year,
+
  		})
 
 	content_panels = Page.content_panels + [

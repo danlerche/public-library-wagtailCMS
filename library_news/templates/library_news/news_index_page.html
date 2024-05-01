@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load wagtailcore_tags wagtailimages_tags first_sentence %}
+{% load wagtailcore_tags wagtailimages_tags library_news_tags %}
 
 {% block content %}
 <div class="container">
@@ -11,6 +11,7 @@
 
 <div class="lead">{{ page.intro|richtext }}</div>
 
+
 <div id="newsItems" class="col-10">
 {% for news_item in news_items %}
 {% if page.get_children %}
@@ -21,27 +22,39 @@
 <div class="col-9">
 <h2><a href="{{ news_item.specific.url }}">{{ news_item.title }}</a></h2>
 <div class="news-date fw-bold"><i class="bi bi-clock"></i> {{ news_item.news_date }}</div>
-<p class="mt-2">{{ news_item.news_body|first_sentence }}.</p>
+{% for block in news_item.specific.content %}
+{% if block.block_type == 'paragraph' and forloop.first %}
+<p class="mt-2">{{ block|striptags|first_sentence }}.</p>
+{% endif %}
+{% endfor %}
 <a href="{{ news_item.url }}" class="btn btn-primary mb-2">Read More</a>
 </div>
 </div>
 {% endif %}
 {% endfor %}
-
 </div>
-
-<div class="col-2">
+<div id="filterByDate" class="col-2">
 <div class="d-flex bg-light">
 <ul class="bd-highlight">
 <div class="fw-bold">DATE</div>
-<li><a href="{{ current_url }}">All</a></li>
+<li><a class="year-filter" href="{{ current_url }}">All</a></li>
 {% for cty in news_count_by_year %}
-<li><a href="{{ current_url }}{{ cty.year }}">{{ cty.year }} ({{ cty.count }})</a></li>
+<li><a class="year-filter" href="{{ current_url }}{{ cty.year }}/">{{ cty.year }} ({{ cty.count }})</a></li>
 {% endfor %}
 </ul>
 </div>
 </div>
+</div>
+</div>
+<script> 
+	 var django_request_path = "{{ request.path }}";
+    $('.year-filter').each(function() {
+        // Get the href attribute value of each anchor element
+               var href = $(this).attr('href');
+        if (django_request_path === href) { 
+        	$(this).addClass('news_page_highlighted');
 
-</div>
-</div>
+    }       
+    });
+</script>
 {% endblock %}
