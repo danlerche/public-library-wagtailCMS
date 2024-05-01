@@ -122,11 +122,12 @@ iframe, .elementor object, .elementor video {
 .brdcrumb li {list-style-type: none;}
 
 #contentArea blockquote {font-style: italic;font-weight: bold; font-size: 1.5em; color: #594a41;}
-#newsItemBlockQuote blockquote {color: #0066B3; border-left: solid #0066B3; margin-left: 100px; padding-left: inherit; quotes: "'" "'";}
+#newsItemBlockQuote blockquote {color: #0066B3; border-left: solid #0066B3; margin-left: 100px; padding-left: inherit;}
 a.news_page_highlighted {font-weight: bold; text-decoration: underline;}
+.year-filter {text-decoration: none;}
 
 #contentArea form label {font-weight: bold;}
-.year-filter {text-decoration: none;}
+
 
 
 .accordion-button:not(.collapsed) {
