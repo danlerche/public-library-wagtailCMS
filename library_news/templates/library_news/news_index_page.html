@@ -39,7 +39,7 @@
 <p class="mt-2">{{ block|striptags|first_sentence }}.</p>
 {% endif %}
 {% endfor %}
-<a href="{{ news_item.url }}" class="btn btn-primary mb-2">Read More</a>
+<a href="{{ news_item.url }}" aria-label="Read more about {{ news_item.title }}" class="btn btn-primary mb-2">Read More</a>
 </div>
 </div>
 {% endif %}
