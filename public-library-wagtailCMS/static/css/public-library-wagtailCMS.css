@@ -125,10 +125,8 @@ iframe, .elementor object, .elementor video {
 #newsItemBlockQuote blockquote {color: #0066B3; border-left: solid #0066B3; margin-left: 100px; padding-left: inherit;}
 a.news_page_highlighted {font-weight: bold; text-decoration: underline;}
 .year-filter {text-decoration: none;}
-
+#filterByDate h2, #filterByDateMobile h2 {color: #4E4C4F; font-size: 22px;}
 #contentArea form label {font-weight: bold;}
-
-
 
 .accordion-button:not(.collapsed) {
     font-weight: bold;
