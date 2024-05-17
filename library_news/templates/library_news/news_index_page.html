@@ -12,8 +12,8 @@
 <div class="lead">{{ page.intro|richtext }}</div>
 
 <div id="filterByDateMobile" class="col-md-2 d-block d-sm-none mb-4 bg-light">
+<h2 class="fw-bold">DATE</h2>
 <ul class="bd-highlight">
-<div class="fw-bold">DATE</div>
 <li><a class="year-filter" href="{{ current_url }}">All</a></li>
 {% for cty in news_count_by_year %}
 <li><a class="year-filter" href="{{ current_url }}{{ cty.year }}/">{{ cty.year }} ({{ cty.count }})</a></li>
@@ -46,9 +46,9 @@
 {% endfor %}
 </div>
 <div id="filterByDate" class="col-md-2 d-none d-sm-block">
-<div class="d-flex bg-light">
+<div class="bg-light">
+<h2 class="fw-bold">DATE</h2>
 <ul class="bd-highlight">
-<div class="fw-bold">DATE</div>
 <li><a class="year-filter" href="{{ current_url }}">All</a></li>
 {% for cty in news_count_by_year %}
 <li><a class="year-filter" href="{{ current_url }}{{ cty.year }}/">{{ cty.year }} ({{ cty.count }})</a></li>
