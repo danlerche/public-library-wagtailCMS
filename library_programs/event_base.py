@@ -60,7 +60,6 @@ class EventQueries:
                 for index in range(len(json_dates_to_list)):
                     dt_format = datetime.datetime.strptime(json_dates_to_list[index], '%Y-%m-%d %H:%M')
                     #grab only the upcoming dates and put each date in their own individual dictionary
-                    print(dt_format)
                     if dt_format.date() >= today.date():
                         ind_event = {'id': upcoming_event_qs[rd].id, 'repeating_dates':dt_format }
                         all_upcoming_events.append(ind_event)
