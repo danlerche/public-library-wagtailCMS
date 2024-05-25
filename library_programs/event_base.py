@@ -51,6 +51,7 @@ class EventQueries:
         all_upcoming_events = []
         grouped_upcoming_events = []
 
+        
         for rd in range(len(upcoming_event_qs)):
             if upcoming_event_qs[rd].repeating_dates is not None:
                 #grabs the repeating dates in json format and converts them to python dt
@@ -59,7 +60,8 @@ class EventQueries:
                 for index in range(len(json_dates_to_list)):
                     dt_format = datetime.datetime.strptime(json_dates_to_list[index], '%Y-%m-%d %H:%M')
                     #grab only the upcoming dates and put each date in their own individual dictionary
-                    if dt_format >= today:
+                    print(dt_format)
+                    if dt_format.date() >= today.date():
                         ind_event = {'id': upcoming_event_qs[rd].id, 'repeating_dates':dt_format }
                         all_upcoming_events.append(ind_event)
             #puts the repeating dates in a list grouped by the event id
