@@ -11,9 +11,6 @@ from wagtail.admin.panels import FieldPanel, InlinePanel, MultiFieldPanel, Field
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.contrib.table_block.blocks import TableBlock
 from wagtail.search import index
-from wagtailgeowidget.panels import GoogleMapsPanel
-from wagtailgeowidget.blocks import GeoAddressBlock, GeoBlock,GeoZoomBlock,GoogleMapsBlock,LeafletBlock
-from wagtailgeowidget import geocoders
 from wagtail.embeds.oembed_providers import youtube, vimeo
 from wagtail.contrib.typed_table_block.blocks import TypedTableBlock
 from unidecode import unidecode
