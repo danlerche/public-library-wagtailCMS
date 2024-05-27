@@ -22,7 +22,7 @@ from django import forms
 from wagtail.admin import widgets
 from django.shortcuts import redirect
 from django.utils.html import format_html
-from wagtail.models.collections import Collection
+from wagtail.models.media import Collection
 from wagtail.admin.forms import WagtailAdminPageForm
 from django.conf import settings
 
