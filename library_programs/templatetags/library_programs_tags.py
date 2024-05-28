@@ -19,8 +19,8 @@ def db_queries():
     events_qs = Event.objects.live()
     s_events_qs = Event.objects.filter(repeats__isnull=True).live()
     r_events_qs = Event.objects.filter(repeats__isnull=False).live()
-    featured_event = Event.objects.live().filter(Q(until__gte=today, time_to__gte=time_today, until__isnull=False, featured_on_home_page=True) | \
-        Q(event_date__gte=today, time_to__gte=time_today, until__isnull=True, featured_on_home_page=True))
+    featured_event = Event.objects.live().filter(Q(until__gte=today, until__isnull=False, featured_on_home_page=True) | \
+        Q(event_date__gte=today, until__isnull=True, featured_on_home_page=True))
     full_calendar_link = FullCalendarLink.objects.all()
     return today, events_qs, s_events_qs, r_events_qs, featured_event, full_calendar_link
 
