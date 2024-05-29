@@ -50,7 +50,6 @@ class EventQueries:
         next_date = []
         all_upcoming_events = []
         grouped_upcoming_events = []
-
         
         for rd in range(len(upcoming_event_qs)):
             if upcoming_event_qs[rd].repeating_dates is not None:

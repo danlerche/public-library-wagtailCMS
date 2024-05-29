@@ -347,7 +347,7 @@ class Event(Page, Orderable):
             classname="week-interval-display",
         ),
     FieldPanel('until'),
-    #FieldPanel('repeating_dates'),
+    FieldPanel('repeating_dates'),
     InlinePanel('exception_dates', label="Exception Dates"),
     FieldPanel('event_category'),
     MultiFieldPanel(
