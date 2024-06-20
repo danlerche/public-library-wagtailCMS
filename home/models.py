@@ -19,7 +19,8 @@ class HomePage(Page):
         ('upcoming_events_features', BooleanBlock(required=False, default=1, help_text="If checked BOTH the three program features plus an upcoming events list row will display", icon='tasks')),
         ('single_feature', blocks.StructBlock([
             ('page', blocks.PageChooserBlock(required=False, help_text="The internal page to link to")),
-            ('single_feature_image', ImageChooserBlock(required=True)),
+            ('single_feature_image', ImageChooserBlock(required=False)),
+            ('single_feature_video_embed', blocks.RawHTMLBlock(required=False, help_text="Embed a video using an iframe tag provided by youTube, or another source instead of displaying the image.")),
             ('single_feature_description', blocks.CharBlock(required=True, help_text="write a short description of the feature")),
             ('override_title', blocks.CharBlock(required=False, help_text="OPTIONAL, only use this if you'd like to override the name of the page you are linking to")),
             ('enabled', blocks.BooleanBlock(default=True, required=False))

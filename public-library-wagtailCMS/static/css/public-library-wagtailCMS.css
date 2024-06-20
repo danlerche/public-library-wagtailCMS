@@ -249,7 +249,7 @@ box-shadow: 0 0 0 .25rem rgba(13,110,253,.25);
 
 #singleFeature .btn-primary {font-weight: bold; }
 section.block-ebooks_card .card-body {min-height: 175px;}
-
+#singleFeature iframe {height: 350px !important;}
 #programsHomepageFeature .card {min-height: 325px; }
 @media only screen and (max-width: 855px) {
 #programsHomepageFeature .card {min-height: 305px; }
