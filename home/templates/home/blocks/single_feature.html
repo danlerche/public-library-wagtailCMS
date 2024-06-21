@@ -5,13 +5,13 @@
 <div class="card">
 <div class="card-body row">
 <div class="col-md-5 col-12">
-<a href="{{ value.page.url }}" aria-hidden="true" role="presentation" tabindex="-1">
   {% if value.single_feature_video_embed != '' %}
   {{ value.single_feature_video_embed }}
   {% elif value.single_feature_video_embed == '' %}
+  <a href="{{ value.page.url }}" aria-hidden="true" role="presentation" tabindex="-1">
   {% image value.single_feature_image class="img-fluid" fill-540x350-c100 %}
+  </a>
  {% endif %}
-</a>
 </div>
 <div class="col-md-7 col-12">
 <a href="{{ value.page.url }}">
