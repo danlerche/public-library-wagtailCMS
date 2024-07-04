@@ -14,14 +14,14 @@
  {% endif %}
 </div>
 <div class="col-md-7 col-12">
-<a href="{{ value.page.url }}">
 <div class="card-body">
+<a href="{{ value.page.url }}">
 <h2>{% if value.override_title != '' %}{{ value.override_title }}
   {% else %}{{ value.page }}{% endif %}</h2>
-<p>{{ value.single_feature_description }}</p>
-<div href="{{ value.page.url }}" class="btn btn-primary">Read More</div>
-</div>
 </a>
+<p>{{ value.single_feature_description }}</p>
+<a href="{{ value.page.url }}" class="btn btn-primary">Read More</a>
+</div>
 </div>
 </div>
 </div>
