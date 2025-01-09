@@ -32,6 +32,10 @@
 <div class="col-md-12">
     {% elif block.block_type == 'paragraph' and not forloop.first %}
     {% include_block block %}
+</div>
+<div class="col-md-12">
+    {% else %}
+    {% include_block block %}
     {% endif %}
     {% endfor %}
 </div>
