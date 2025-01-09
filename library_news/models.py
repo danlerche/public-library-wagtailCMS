@@ -63,7 +63,7 @@ class newsItem(Page):
 			('attribution', blocks.CharBlock(required=False, help_text="attribute the quote to someone")),
 			], icon='openquote')),
 		('paragraph', blocks.RichTextBlock()),
-		 ('IframeBlock', blocks.RawHTMLBlock(help_text="See https://search.pentictonlibrary.ca/Admin/CollectionSpotlights for info about using the iframe tag to embed Aspen Collection Spotlights.")),
+		('IframeBlock', blocks.RawHTMLBlock(help_text="See https://search.pentictonlibrary.ca/Admin/CollectionSpotlights for info about using the iframe tag to embed Aspen Collection Spotlights.")),
 		], use_json_field=True, blank=True)
 	
 	content_panels = Page.content_panels + [
