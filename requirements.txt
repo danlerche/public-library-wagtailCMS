@@ -4,7 +4,7 @@ django-crispy-forms
 django-widget-tweaks
 icalendar
 python-dateutil
-wagtail==6.3
+wagtail==6.4
 wagtail-honeypot
 wagtail-modeladmin
 wagtailmenus
