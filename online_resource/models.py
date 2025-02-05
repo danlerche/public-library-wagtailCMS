@@ -29,16 +29,11 @@ class OnlineResourceIndexPage(Page):
     intro = RichTextField(blank=True)
     niche_academy = models.CharField(max_length=250, blank=True)
 
-    def get_context(self, request):
-        context = super().get_context(request)
-        online_resource_pages = self.get_children().live().order_by('title')
+    def get_context(self, request, *args, **kwargs):
+        context = context = super().get_context(request, *args, **kwargs)
+        online_resource_pages = OnlineResourcePage.objects.child_of(self).live().order_by('title')
         categories = OnlineResourceCategory.objects.all().order_by('name')
-        #cat_id shoudl equal whatever value is checked off in the checkboxes
-        #cat_id = request.GET.get('values from the checkboxes')
-        #https://stackoverflow.com/questions/8259609/how-to-update-a-django-query-variable-using-ajax-query
-        #https://stackoverflow.com/questions/19131800/getting-value-from-checked-checkbox-in-ajax
-        #resource_by_category = OnlineResourcePage.objects.filter(categories__id=11).order_by('title')
-        resource_by_category = OnlineResourcePage.objects.all().order_by('title')
+        resource_by_category = OnlineResourcePage.objects.live().order_by('title')
         context['online_resource_pages'] = online_resource_pages
         context['categories'] = categories
         context['resource_by_category'] = resource_by_category
