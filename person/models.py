@@ -20,11 +20,9 @@ class PersonIndexPage(Page):
             ],template='person/blocks/side_menu.html', icon='collapse-down')),
     	], use_json_field=True, blank=True)
 
-    def get_context(self, request):
-        # Update context to include only published posts, ordered by reverse-chron
-        context = super().get_context(request)
-        person_entries = self.get_children().live()
-        context['person_entries'] = person_entries
+    def get_context(self, request, *args, **kwargs):
+        context = super().get_context(request, *args, **kwargs)
+        context['person_entries'] = personEntry.objects.child_of(self).live()
         return context
 
     content_panels = Page.content_panels + [
