@@ -24,5 +24,92 @@ $(document).ready(function(){
     $('.fc-next-button').attr('aria-label', 'Next month');
 });
 
-// On the weekday of the list view, set aria-hidden to false
-$('.fc-list-day-side-text').attr('aria-hidden', 'false');
+//update previous buttons with aria-labels based on the view selected
+$(document).ready(function(){
+// Function to update aria-label
+function updateAriaLabel() {
+// Find the button element
+var button = $('.fc-prev-button');
+
+// Get the title attribute
+var title = button.attr('title');
+
+// Set the aria-label attribute to the same value as the title
+button.attr('aria-label', title);
+}
+
+// Initial update
+updateAriaLabel();
+
+// Click event handler for first update button
+$('.fc-dayGridMonth-button').click(function(){
+// Call the update function
+updateAriaLabel();
+});
+
+// Click event handler for second update button
+$('.fc-timeGridWeek-button').click(function(){
+// Call the update function
+updateAriaLabel();
+});
+
+// Click event handler for second update button
+$('.fc-timeGridDay-button').click(function(){
+// Call the update function
+updateAriaLabel();
+});
+
+// Click event handler for second update button
+$('.fc-listMonth-button').click(function(){
+// Call the update function
+updateAriaLabel();
+});
+});
+
+//update next buttons with aria-labels based on the view selected
+$(document).ready(function(){
+// Function to update aria-label
+function updateAriaLabel() {
+// Find the button element
+var button = $('.fc-next-button');
+
+// Get the title attribute
+var title = button.attr('title');
+
+// Set the aria-label attribute to the same value as the title
+button.attr('aria-label', title);
+}
+
+// Initial update
+updateAriaLabel();
+
+// Click event handler for first update button
+$('.fc-dayGridMonth-button').click(function(){
+// Call the update function
+updateAriaLabel();
+});
+
+// Click event handler for second update button
+$('.fc-timeGridWeek-button').click(function(){
+// Call the update function
+updateAriaLabel();
+});
+
+// Click event handler for second update button
+$('.fc-timeGridDay-button').click(function(){
+// Call the update function
+updateAriaLabel();
+});
+
+// Click event handler for second update button
+$('.fc-listMonth-button').click(function(){
+// Call the update function
+updateAriaLabel();
+});
+});
+
+//show today aria-label
+$(document).ready(function(){
+// Add aria-label attribute to the button
+$('.fc-today-button').attr('aria-label', 'show today');
+});

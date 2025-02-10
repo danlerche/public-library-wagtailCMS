@@ -113,16 +113,3 @@ $(document).ready(function(){
 // Add aria-label attribute to the button
 $('.fc-today-button').attr('aria-label', 'show today');
 });
-
-
-$(document).ready(function() {
-    // Function to remove aria-hidden attribute for elements with class fc-list-day-side-text
-    function removeAriaHidden() {
-        $('.fc-list-day-side-text').attr('aria-hidden', 'false');
-    }
-
-    // Trigger the function when a button with class fc-listMonth-button is clicked
-    $('.fc-listMonth-button').click(function() {
-        removeAriaHidden();
-    });
-});
