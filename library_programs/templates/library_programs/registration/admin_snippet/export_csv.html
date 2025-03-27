@@ -1,0 +1,93 @@
+<!-- /path/to/confirm_bulk_export.html -->
+
+{% extends 'wagtailadmin/bulk_actions/confirmation/base.html' %}
+{% load i18n wagtailadmin_tags registration_filters %}
+
+{% block titletag %}{% blocktranslate trimmed count counter=items|length %}Export 1 item{% plural %}Export {{ counter }} items{% endblocktranslate %}{% endblock %}
+
+{% block header %}
+    {% trans "Export" as export_str %}
+    {% include "wagtailadmin/shared/header.html" with title=export_str icon="doc-empty-inverse" %}
+{% endblock header %}
+
+{% block items_with_access %}
+        {% if items %}
+        <p>{% trans "Here is the registration info that will be exported:" %}</p>
+            <table id="userInfo" class="listing">
+            {% for item in items %}
+            {% if forloop.first %}
+            <tr>
+            <td>ID</td>
+            <td>Event Name</td>
+            <td>Registration Date</td>
+            <td>Wait List</td>
+            {% for headings in item.item.user_info.form_data.keys %}
+            <td>{{ headings|und_to_space|title }}</td>
+            {% endfor %}
+            </tr>
+            {% endif %}
+            <tr>
+                <td>{{ item.item.id }}</td>
+                <td>{{ item.item.event_name }}</td>
+                <td>{{ item.item.registration_date }}</td>
+                    {% if item.item.wait_list == True %}
+                    <td>Yes</td>
+                    {% elif item.item.wait_list == False %}
+                    <td>No</td>
+                    {% endif %}
+                {% for user_values in item.item.user_info.form_data.values %}
+                <td class="user_values">{{ user_values }}</td>
+                {% endfor %}
+         </tr>
+            {% endfor %}
+            </table>
+        {% endif %}
+
+  <script>
+    $(document).ready(function() {
+      // Find all <td> elements with the class "user_values"
+      var $tdElements = $(".user_values");
+
+      $tdElements.each(function() {
+        var $td = $(this);
+
+        // Get the text content within the <td> element
+        var originalText = $td.text();
+
+        // Check if the text content matches the specific value
+        if (originalText === "['No']") {
+          // Remove square brackets and quotes using regular expressions
+          var modifiedText = originalText.replace(/[\[\]']/g, '');
+
+          // Set the modified text as the new content of the <td> element
+          $td.text(modifiedText);
+        }
+           if (originalText === "['Yes']") {
+          // Remove square brackets and quotes using regular expressions
+          var modifiedText = originalText.replace(/[\[\]']/g, '');
+
+          // Set the modified text as the new content of the <td> element
+          $td.text(modifiedText);
+        }
+      });
+    });
+  </script>
+
+{% endblock items_with_access %}
+
+{% block items_with_no_access %}
+
+{% blocktranslate trimmed asvar no_access_msg count counter=items_with_no_access|length %}You don't have permission to export this item{% plural %}You don't have permission to export these items{% endblocktranslate %}
+{% include 'wagtailadmin/bulk_actions/confirmation/list_items_with_no_access.html' with items=items_with_no_access no_access_msg=no_access_msg %}
+
+{% endblock items_with_no_access %}
+
+{% block form_section %}
+{% if items %}
+    {% trans 'Yes, export' as action_button_text %}
+    {% trans "No, don't export" as no_action_button_text %}
+    {% include 'wagtailadmin/bulk_actions/confirmation/form.html' with action_button_class="serious" %}
+{% else %}
+    {% include 'wagtailadmin/bulk_actions/confirmation/go_back.html' %}
+{% endif %}
+{% endblock form_section %}

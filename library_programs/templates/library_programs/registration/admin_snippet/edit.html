@@ -1,0 +1,87 @@
+{% extends "wagtailadmin/base.html" %}
+{% load wagtailadmin_tags i18n %}
+{% block titletag %}{% blocktrans trimmed with snippet_type_name=model_opts.verbose_name %}Editing {{ snippet_type_name }} - {{ object }}{% endblocktrans %}{% endblock %}
+{% block bodyclass %}{% if locked_for_user %}content-locked{% endif %}{% endblock %}
+{% block content %}
+    {% include 'wagtailadmin/shared/headers/slim_header.html' %}
+
+    {% include "wagtailadmin/shared/header.html" with title=object icon=header_icon merged=1 only %}
+
+    <div class="row row-flush">
+
+        <div class="{% if uc_enabled %}col10 divider-after{% else %}col12{% endif %}">
+            <form action="{{ action_url }}" method="POST" novalidate{% if form.is_multipart %} enctype="multipart/form-data"{% endif %} data-edit-form>
+                {% csrf_token %}
+                <div class="nice-padding">
+                    {{ panel.render_form_content }}
+                    <script> 
+                    var user_info_selector = $('#panel-child-registrant-user_info-content .w-field__textoutput');
+                    var user_info =  user_info_selector.text();
+                    var repl_sing_doub = user_info.replace(/'([^']+)'/g, '"$1"');
+                    var rm_ln_br = repl_sing_doub.replace(/\n/g, '');
+                    var fix_true = rm_ln_br.replace(/True/g, 'true');
+                    var user_info_parsed = JSON.parse(fix_true);
+                    var new_label_keys = {};
+
+                    for (var key in user_info_parsed) {
+                        var newKey = key.replace(/_/g, ' '); // Replace underscores with spaces
+                        new_label_keys[newKey] = user_info_parsed[key];
+                        }
+
+                    // Function to create an HTML table from the object
+                    function objectToTable(obj) {
+                        var table = '<table class="listing">';
+                        for (var key in obj) {
+                            table += '<tr>';
+                            table += '<td>' + key + ':</td>';
+                            table += '<td>' + obj[key] + '</td>';
+                            table += '</tr>';
+                        }
+                        table += '</table>';
+                        return table;
+                    }
+
+                    // Get the container element and insert the table
+                    var tableContainer = document.getElementById('panel-child-registrant-child-user_info-helptext');
+                    tableContainer.innerHTML = objectToTable(new_label_keys);
+                    user_info_selector.hide(); 
+                </script>
+                </div>
+                <footer class="footer">
+                    <nav aria-label="{% trans 'Actions' %}">
+                        <ul>
+                            <li class="actions actions--primary footer__container">
+                                <div class="dropdown dropup dropdown-button match-width {% if view.view_name == 'revisions_revert' %}warning{% endif %}">
+                                    {{ action_menu.render_html }}
+                                </div>
+                            </li>
+                        </ul>
+                    </nav>
+                </footer>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_css %}
+    {{ block.super }}
+    {{ media.css }}
+{% endblock %}
+{% block extra_js %}
+    {{ block.super }}
+    {% include "wagtailadmin/pages/_editor_js.html" %}
+    {{ media.js }}
+
+    <script>
+        // Set wagtailConfig.ACTIVE_CONTENT_LOCALE if this is a translated page
+        // This value may be used by JS widgets on the form
+        {% if locale %}
+            window.wagtailConfig = window.wagtailConfig || {};
+            window.wagtailConfig.ACTIVE_CONTENT_LOCALE = '{{ locale.language_code|escapejs }}';
+        {% endif %}
+    </script>
+
+    {% if workflow_enabled %}
+        {% include "wagtailadmin/shared/_workflow_init.html" %}
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load wagtailcore_tags %}
+
+{% block content %}
+
+<div class="container">
+<div class="row">
+<div id="contentArea" class="content col-xl-12">
+<div class="main-title mt-4 mb-4"><h1>{{ page.title }}</h1></div>
+  <p>We're sorry. {{ page.title }} has no spaces left to book.</p> 
+</div>
+</div>
+</div>
+{% endblock %}

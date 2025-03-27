@@ -2,7 +2,7 @@ from django.db import models
 from wagtail.models import Page, Orderable
 from modelcluster.fields import ParentalKey, ParentalManyToManyField
 from modelcluster.models import ClusterableModel
-from wagtail.admin.panels import FieldPanel, MultiFieldPanel, InlinePanel, FieldRowPanel, PageChooserPanel
+from wagtail.admin.panels import FieldPanel, MultiFieldPanel, InlinePanel, FieldRowPanel, PageChooserPanel, TabbedInterface, ObjectList
 from wagtail.fields import RichTextField
 from wagtail.admin.forms import WagtailAdminPageForm
 import datetime, json, pytz
@@ -14,6 +14,17 @@ from django.utils.html import strip_tags
 from django.http import HttpResponse
 from icalendar import Calendar, Event, Alarm
 from icalendar import Event as icsEvent, vDatetime, vText
+#registration imports
+from wagtail.contrib.forms.models import AbstractFormField, AbstractForm, AbstractEmailForm, AbstractFormSubmission
+from wagtail.contrib.forms.panels import FormSubmissionsPanel
+from django.shortcuts import render, redirect
+from django.http import HttpResponse, HttpResponseRedirect
+from django.contrib import messages
+from django.core.exceptions import ValidationError
+from django.core.mail import send_mail
+from django.utils.html import strip_tags
+from django.conf import settings
+from wagtail.snippets.views.snippets import DeleteView
 
 
 class EventAudience(ClusterableModel):
@@ -91,7 +102,7 @@ class FullCalendarLink(models.Model):
     def __str__(self):
         return self.link_to_calendar.title
 
-class EventRepeats(WagtailAdminPageForm):
+class EventEditExtraValidation(WagtailAdminPageForm):
     def clean(self):
         cleaned_data = super().clean()
         # make sure that if repeats is selected that the user has also entered something in the until field
@@ -99,12 +110,20 @@ class EventRepeats(WagtailAdminPageForm):
         until = cleaned_data['until']
         week_interval = cleaned_data['week_interval']
         weekday = cleaned_data['weekday']
+        enable_registration = cleaned_data['enable_registration']
+        registration_form_chooser = cleaned_data['registration_form_chooser']
+        success_page = cleaned_data['success_page']
         if repeats is not None and until is None:
             self.add_error('until', 'please enter an until date or deselect the repeats option')
         elif repeats == 'CUSTOM' and week_interval is None:
             self.add_error('week_interval', 'Week interval cannot be blank if Custom is selected')
         elif repeats == 'CUSTOM' and weekday is None:
             self.add_error('weekday', 'Weekday cannot be blank if Custom is selected')
+        if enable_registration == 1 and registration_form_chooser is None:
+            self.add_error('registration_form_chooser', 'Registration form must be chosen to enable registration')
+        if enable_registration == 1 and success_page is None:
+            self.add_error('success_page', 'Success page must be chosen to enable registration')
+
         return cleaned_data
 
     def save(self, commit=True):
@@ -223,30 +242,33 @@ class Event(Page, Orderable):
     location = models.CharField(max_length=500, null=True, blank=True, help_text="Enter a location where the event will happen")
     form_page = models.ForeignKey('wagtailcore.Page', blank=True, null=True, on_delete=models.SET_NULL, related_name='embedded_form_page', help_text='Select a Form that will be embedded on this page.')
     tutorial_link = models.CharField(max_length=255, blank=True, help_text="for showing Niche Academy Links or similar")
+    #fields used to registrer for a library program
+    enable_registration = models.BooleanField(default=False)
+    spots_available = models.PositiveIntegerField(default=0)
+    wait_list_spots = models.PositiveIntegerField(default=0,)
+    registration_form_chooser = models.ForeignKey('wagtailcore.Page', blank=True, null=True, on_delete=models.SET_NULL, related_name='embedded_registration_form_page', help_text='Select a Registration Form that will be embedded on this page.')
+    enable_email = models.BooleanField(default=False)
+    success_email_msg = RichTextField(blank=True, null=True, verbose_name="Body of the success email")
+    waitlist_email_msg = models.CharField(max_length=2000, blank=True, null=True, verbose_name="Body of the waitlist email")
+    success_page = models.ForeignKey('wagtailcore.Page', blank=True, on_delete=models.SET_NULL, null=True, related_name="registration_success")
 
-    #allows web forms to be included at the bottom of the page
-    def get_context(self, request, *args, **kwargs):
-        context = super().get_context(request, *args, **kwargs)
-        #Add a renderable form to the page's context if form_page is set
-        if self.form_page:
-            form_page = self.form_page.specific  
-            # must get the specific page
-            # form will be a renderable form as per the dedicated form pages
-            form = form_page.get_form(page=form_page, user=request.user)
-            context['form'] = form
-            context['form_page'] = form_page
-            #create an event_date_time template tag. Used for the "this event is in the past message"
+    def show_registered_events():
+        return self.Event.objects.get(enable_registration=1)
+
+    def serve(self, request, form_submission=None, *args, **kwargs):
+        registered = Registration.objects.filter(event_name_id=self.page_ptr_id, wait_list=0).count()
+        wait_listed = Registration.objects.filter(event_name_id=self.page_ptr_id, wait_list=1).count()
+        reg_spots_remaining = self.spots_available - registered
+        wait_list_remaining = self.wait_list_spots - wait_listed
+        event_id = Event.objects.get(id=self.page_ptr_id)
+        
+      
         event_date_time_to = datetime.datetime.combine(self.event_date, self.time_to)
         if self.until is not None: 
             until_date_time_to = datetime.datetime.combine(self.until, self.time_to)
         else:
             until_date_time_to = ''
-        context['event_date_time_to'] = event_date_time_to
-        context['until_date_time_to'] = until_date_time_to
-        return context
-        
-    #function to generate .ics files for integration into calendars
-    def serve(self, request):
+        #function to generate .ics files for integration into calendars
         def create_ical(title, desc, start, end, until, curr_date, repeats, ics_week_interval, ics_weekday, time_from, exdate, location):
             cal = Calendar()
             cal.add('prodid', '-//Events at the Penticton Public Library//NONSGML v1.0//EN')
@@ -329,46 +351,133 @@ class Event(Page, Orderable):
                 # Unrecognised format error
                 message = 'Could not export event\n\nUnrecognised format: ' + request.GET['format']
                 return HttpResponse(message, content_type='text/plain')
-        else:
-            # Display event page as usual
-            return super().serve(request)
 
-    content_panels = Page.content_panels + [
-    FieldPanel('event_date'),
-    FieldPanel('time_from'),
-    FieldPanel('time_to'),
-    FieldPanel('repeats'),
-    FieldRowPanel(
+        def registration():
+            if request.method == 'POST' and self.registration_form_chooser is not None and self.enable_registration == True:
+                registration_form_page = RegistrationFormPage.objects.get(pk=self.registration_form_chooser)
+                registration_form = registration_form_page.get_form(request.POST, request.FILES, page=self, user=request.user)                
+                if registration_form.is_valid() and reg_spots_remaining > 0:
+                    form_submission = registration_form_page.process_form_submission(registration_form)
+                    user_id = get_primary
+                    registration = Registration(event_name=event_id, user_info_id=get_primary[0], wait_list=0)
+                    registration.save()
+                    #messages.success(request, 'You have succesfully registered for ' + self.title)
+                    status = 'registered'
+                    #email function here
+                    submission_email = registration_form.cleaned_data['email']
+                    subject = 'You have succesfully registered for ' + self.title
+                    plain_message = strip_tags(self.success_email_msg)
+                    from_email = settings.EMAIL_HOST_USER
+                    recipient_list = [submission_email]
+                    if from_email !='' and self.enable_email == True:
+                        send_mail(subject, plain_message, from_email, [submission_email], html_message=self.success_email_msg)
+
+                elif registration_form.is_valid() and reg_spots_remaining == 0 and wait_list_remaining > 0:
+                    form_submission = registration_form_page.process_form_submission(registration_form)
+                    user_id = get_primary
+                    registration = Registration(event_name=event_id, user_info_id=get_primary[0], wait_list=1)
+                    registration.save()
+                    #messages.success(request, 'You have been added to the waitlist for ' + self.title)
+                    status = 'waitlisted'
+                    submission_email = registration_form.cleaned_data['email']
+                    subject = 'You have been added to the wait listed for ' + self.title
+                    plain_message = strip_tags(self.success_email_msg)
+                    from_email = settings.EMAIL_HOST_USER
+                    recipient_list = [submission_email]
+                    if from_email !='' and self.enable_email == True:
+                        send_mail(subject, plain_message, from_email, [submission_email], html_message=self.success_email_msg)
+                
+            elif self.registration_form_chooser is not None:
+                registration_form_page = RegistrationFormPage.objects.get(pk=self.registration_form_chooser)
+                registration_form = registration_form_page.get_form(page=self, user=request.user)
+                status = ''
+            elif self.registration_form_chooser is None:
+                status = ''
+                registration_form = ''
+            return registration_form, status
+        registration_form, status = registration()
+        if status == 'registered':
+            return redirect(self.success_page.url)
+        if status == 'waitlisted':
+            return redirect(self.success_page.url)
+        if status == '':
+            return render(request, 'library_programs/event.html', {
+                'page': self,
+                'event_date_time_to': event_date_time_to,
+                'until_date_time_to': until_date_time_to,
+                'registration_form': registration_form,
+                'reg_spots_remaining': reg_spots_remaining,
+                'wait_list_remaining': wait_list_remaining,
+            })
+
+    edit_handler = TabbedInterface([
+        ObjectList([
+            FieldPanel('title'),
+            FieldPanel('event_date'),
+            FieldPanel('time_from'),
+            FieldPanel('time_to'),
+            FieldPanel('repeats'),
+            FieldRowPanel(
             [
-                FieldPanel("week_interval", classname="collapsed"),
-                FieldPanel("weekday", classname="collapsed"),
+            FieldPanel("week_interval", classname="collapsed"),
+            FieldPanel("weekday", classname="collapsed"),
             ],
             heading="Monthly Weekday Interval",
             classname="week-interval-display",
-        ),
-    FieldPanel('until'),
-    #FieldPanel('repeating_dates'),
-    InlinePanel('exception_dates', label="Exception Dates"),
-    FieldPanel('event_category'),
-    MultiFieldPanel(
+            ),
+            FieldPanel('until'),
+            #FieldPanel('repeating_dates'),
+            InlinePanel('exception_dates', label="Exception Dates"),
+            FieldPanel('event_category'),
+            MultiFieldPanel(
             [
-                FieldPanel("age_range", widget=forms.CheckboxSelectMultiple)
+            FieldPanel("age_range", widget=forms.CheckboxSelectMultiple)
             ],
             heading="Age Range"
-        ),
-    FieldPanel('description'),
-    FieldPanel('event_image'),
-    FieldPanel('location'),
-    FieldPanel('tutorial_link'),
-    FieldRowPanel(
-            [
-                PageChooserPanel('form_page', ['webform.FormPage']),
-            ],
-            heading="Optional Form Page",
-        ),
-    FieldPanel('featured_on_home_page'),
-    ]
-    base_form_class =  EventRepeats
+            ),
+            FieldPanel('description'),
+            FieldPanel('event_image'),
+            FieldPanel('location'),
+            FieldPanel('tutorial_link'),
+            FieldPanel('featured_on_home_page'),
+    ], heading = "Program Info"), 
+        ObjectList([
+            FieldPanel('enable_registration'),
+            FieldPanel('spots_available', classname="full"),
+            FieldPanel('wait_list_spots', classname="full"),
+            PageChooserPanel('registration_form_chooser', ['library_programs.RegistrationFormPage']),
+            PageChooserPanel('success_page'),
+            MultiFieldPanel([
+                FieldPanel('enable_email'),
+                FieldPanel('success_email_msg'),
+                FieldPanel('waitlist_email_msg'),
+                ], heading="email settings")
+           
+            ], heading="Registration Setup"),
+        ObjectList(Page.promote_panels, heading='Promote'),
+        ])
+
+    base_form_class =  EventEditExtraValidation
+
+    def total_registered(self):
+        total_registered = Registration.objects.filter(event_name_id=self.page_ptr_id, wait_list=0).count()
+        return total_registered
+
+    def total_spaces(self):
+        return self.spots_available
+
+    def spaces_remaining(self):
+        total_registered = Registration.objects.filter(event_name_id=self.page_ptr_id, wait_list=0).count()
+        spaces_remaining = self.spots_available - total_registered
+        return spaces_remaining
+
+    def waitlist_spots(self):
+        return self.wait_list_spots
+
+    def waitlist_remaining(self):
+        current_waitlisted = Registration.objects.filter(event_name_id=self.page_ptr_id, wait_list=1).count()
+        waitlist = self.wait_list_spots - current_waitlisted
+        return waitlist
 
 class ExceptionDate(models.Model) :
     event = ParentalKey(Event, on_delete=models.CASCADE, related_name='exception_dates')
@@ -376,3 +485,86 @@ class ExceptionDate(models.Model) :
 
     def __str__(self):
         return self.exception_date
+
+RESERVED_LABELS = ['Your Name', 'Email']
+
+def validate_label(value):
+    if value in RESERVED_LABELS:
+        raise ValidationError("'%s' is reserved." % value)
+
+class RegistrationFormField(AbstractFormField):
+    form_builder_page = ParentalKey('RegistrationFormPage', on_delete=models.CASCADE, related_name='form_fields')
+    label = models.CharField(
+        verbose_name='label',
+        max_length=255,
+        help_text='The label of the form field, cannot be one of the following: %s.'
+        % ', '.join(RESERVED_LABELS),
+        validators=[validate_label]
+    )
+
+#registration classes
+class RegistrationFormPage(AbstractEmailForm):
+
+    content_panels = AbstractForm.content_panels + [
+        FormSubmissionsPanel(),
+        InlinePanel('form_fields', label="Form fields"),
+    ]
+
+    def get_submission_class(self):
+        return RegistrationUserFormBuilder
+
+    def process_form_submission(self, form):
+        create_submission = self.get_submission_class().objects.create(form_data=form.cleaned_data, page=self)
+        get_submission = self.get_submission_class().objects.filter(pk=create_submission.id).values('id')
+        global get_primary
+        get_primary = [id['id'] for id in get_submission]
+
+    def get_form_fields(self):
+
+            fields = list(super(RegistrationFormPage, self).get_form_fields())
+
+            fields.insert(0, RegistrationFormField(
+                label='Email',
+                field_type='email',
+                required=True,
+                help_text="Your email address"))
+
+            fields.insert(0, RegistrationFormField(
+                label='Your Name',
+                field_type='singleline',
+                required=False,
+                help_text="Your First and Last Name"))
+
+            return fields
+
+    class Meta:
+        verbose_name = "Registration Form Builder"
+
+class RegistrationUserFormBuilder(AbstractFormSubmission):
+    pass
+
+class Registration(models.Model):
+    user_info = models.ForeignKey('RegistrationUserFormBuilder', default=1, on_delete=models.CASCADE)
+    event_name = models.ForeignKey('Event', default=1, on_delete=models.CASCADE)
+    registration_date = models.DateTimeField(auto_now_add=True, blank=True)
+    wait_list = models.BooleanField(default=0)
+
+    def name(self):
+        user_info = self.user_info.form_data
+        return user_info.get('your_name', None)
+
+    def email(self):
+        email = self.user_info.form_data
+        return email.get('email', None)
+
+    def wait_listed(self):
+        if self.wait_list == True:
+            return 'Yes'
+        elif self.wait_list == False:
+            return 'No'
+
+    def __str__(self):
+        return self.event_name.title
+
+    class Meta:
+        verbose_name = "Registration"

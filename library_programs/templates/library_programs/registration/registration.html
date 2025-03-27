@@ -1,0 +1,18 @@
+{% load static wagtailcore_tags wagtailuserbar wagtailimages_tags humanize crispy_forms_tags honeypot_tags library_programs_tags tz %}
+
+<div id="registrationArea" class="mt-2">
+<h2>Register Now</h2>
+<hr>
+
+<div>{{ reg_spots_remaining }} Spot{{ reg_spots_remaining|pluralize }} remaining</div>
+<div>{{ wait_list_remaining }} spot{{ wait_list_remaining|pluralize }} on the waitlist</div>
+
+{% if reg_spots_remaining > 0 and page.registration_form_chooser != None or wait_list_remaining > 0 and page.registration_form_chooser != None %}
+<form class="mb-4" method="POST" class="col-xl-6 mb-2">
+  {% honeypot_fields page.honeypot %}
+  {% csrf_token %}
+  {{ registration_form|crispy }}
+ <input type="submit" class="btn btn-primary mt-2" value="Register">
+</form>
+{% endif %}
+</div>

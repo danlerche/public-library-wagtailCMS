@@ -1,0 +1,61 @@
+{% extends "wagtailadmin/base.html" %}
+{% block titletag %}Events With Registration {% endblock %}
+
+{% block content %}
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    {% include "wagtailadmin/shared/header.html" with title="Event Registrations" icon="date" %}
+    <div class="nice-padding">
+    <div id="listing-results" class="snippets">
+    <table id="sortable-table" class="listing">
+    <thead>
+    <tr>
+    <th data-sort="name"><a class="icon icon-arrow-up-after teal label">Event Name</a></th><th>Registered</th><th>Wait Listed</th><th>Registration Spots</th><th>Waitlist Spots</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for reg in registration_info %}
+    <tr>
+    <td class="title"><div class="title-wrapper"><a href="/admin/library-programs/registration/?event_name={{ reg.event_name_id }}">{{ reg.event_title }}</a></div></td>
+    <td>{{ reg.registered }}</td>
+    <td>{{ reg.wait_listed }}</td>
+    <td>{{ reg.spots_available }}</td>
+    <td>{{ reg.wait_list_spots }}</td>
+    </tr>
+    {% endfor %}
+    <tbody>
+    </table>
+    </div>
+    </div>
+
+<script>
+$(document).ready(function() {
+    $('#sortable-table th').click(function() {
+        var table = $(this).parents('table').eq(0);
+        var rows = table.find('tr:gt(0)').toArray().sort(comparator($(this).index()));
+
+        this.asc = !this.asc;
+        if (!this.asc) {
+            rows = rows.reverse();
+        }
+
+        for (var i = 0; i < rows.length; i++) {
+            table.append(rows[i]);
+        }
+    });
+
+    function comparator(index) {
+        return function(a, b) {
+            var valA = getCellValue(a, index),
+                valB = getCellValue(b, index);
+            return $.isNumeric(valA) && $.isNumeric(valB) ? valA - valB : valA.localeCompare(valB);
+        };
+    }
+
+    function getCellValue(row, index) {
+        return $(row).children('td').eq(index).text();
+    }
+});
+</script>
+{% endblock %}
+
+
