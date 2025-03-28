@@ -179,6 +179,11 @@ def event_with_reg_url():
         path('library-programs/events_with_registration/', events_with_registration, name='event_regisitration'),
     ]
 
+#references a JavaScript File so honeypot checkbox can be enabled by default
+@hooks.register("insert_editor_js")
+def add_custom_admin_js():
+    return '<script src="/static/js/honeypot.js"></script>'
+
 #combines the events with registration viewset with the other model links
 @hooks.register('register_admin_menu_item')
 def register_event_reg_menu_item():

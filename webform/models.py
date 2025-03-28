@@ -56,8 +56,7 @@ class FormPage(HoneypotFormMixin, HoneypotFormSubmissionMixin):
 
     honeypot_panels = [
         MultiFieldPanel(
-            [FieldPanel("honeypot")],
-            heading="Reduce Form Spam",
+            [FieldPanel("honeypot")], heading="Reduce Form Spam",
         )
     ]
 

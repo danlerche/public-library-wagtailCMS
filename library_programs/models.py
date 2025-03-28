@@ -25,7 +25,9 @@ from django.core.mail import send_mail
 from django.utils.html import strip_tags
 from django.conf import settings
 from wagtail.snippets.views.snippets import DeleteView
-
+from wagtail_honeypot.models import (
+    HoneypotFormMixin, HoneypotFormSubmissionMixin
+)
 
 class EventAudience(ClusterableModel):
     audience_name = models.CharField(max_length=300, null=True, blank=True)
@@ -503,7 +505,7 @@ class RegistrationFormField(AbstractFormField):
     )
 
 #registration classes
-class RegistrationFormPage(AbstractEmailForm):
+class RegistrationFormPage(HoneypotFormMixin, HoneypotFormSubmissionMixin):
 
     content_panels = AbstractForm.content_panels + [
         FormSubmissionsPanel(),
@@ -536,6 +538,22 @@ class RegistrationFormPage(AbstractEmailForm):
                 help_text="Your First and Last Name"))
 
             return fields
+
+    honeypot_panels = [
+        MultiFieldPanel(
+            [FieldPanel("honeypot")],
+            heading="Reduce Form Spam",
+        )
+    ]
+
+    edit_handler = TabbedInterface(
+        [
+            ObjectList(content_panels, heading="Content"),
+            ObjectList(honeypot_panels, heading="Honeypot"),
+            ObjectList(Page.promote_panels, heading="Promote"),
+            ObjectList(Page.settings_panels, heading="Settings", classname="settings"),
+        ]
+    )
 
     class Meta:
         verbose_name = "Registration Form Builder"
