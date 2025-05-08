@@ -1,10 +1,11 @@
 crispy-bootstrap5
 django-crispy-forms
-#django-filter
 django-widget-tweaks
 icalendar
 python-dateutil
-wagtail==6.4.1
+django>=5.1
+pytz
+wagtail==7.0
 wagtail-honeypot
 wagtail-modeladmin
 wagtailmenus
