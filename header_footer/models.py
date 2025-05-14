@@ -29,13 +29,15 @@ class Logo(models.Model):
 
 class Alert(Orderable):
     enable_alert = models.BooleanField(default=False)
-    alert_date = models.DateTimeField(default=datetime.now)
+    alert_date = models.DateTimeField(default=datetime.now, help_text="The start of the alert")
+    alert_end_date = models.DateTimeField(blank=True, null=True, help_text="If entered, the time the alert should be removed from public view")
     alert_text = RichTextField(blank=True)
     alert_label = 'Pop Up Alert'
 
     panels = [
         FieldPanel('enable_alert'),
         FieldPanel('alert_date'),
+        FieldPanel('alert_end_date'),
         FieldPanel('alert_text'),
     ]
 

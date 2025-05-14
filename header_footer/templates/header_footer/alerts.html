@@ -1,6 +1,8 @@
 {% load static wagtailcore_tags %}
 {% for alert in alert %}
 {% if alert.enable_alert == True %}
+{% now "Y-m-d c" as todays_date %}
+{% if todays_date < alert.alert_end_date|date:"Y-m-d c" or alert.alert_end_date is Null %}
 <div class="modal fade" id="modalAlert" tabindex="-1" aria-label="service alert">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -18,8 +20,8 @@
   </div>
 </div>
 {% endif %}
+{% endif %}
 {% endfor %}
-
 
 <script src="{% static 'js/alert.js' %}" type="text/javascript"></script>
 <script>
