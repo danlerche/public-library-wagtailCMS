@@ -3,6 +3,7 @@
 {% if alert.enable_alert == True %}
 {% now "Y-m-d c" as todays_date %}
 {% if todays_date < alert.alert_end_date|date:"Y-m-d c" or alert.alert_end_date is Null %}
+{% if todays_date >= alert.alert_date|date:"Y-m-d c" %}
 <div class="modal fade" id="modalAlert" tabindex="-1" aria-label="service alert">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -19,6 +20,7 @@
     </div>
   </div>
 </div>
+{% endif %}
 {% endif %}
 {% endif %}
 {% endfor %}
