@@ -28,7 +28,7 @@ class Logo(models.Model):
         return self.logo_label
 
 class Alert(Orderable):
-    enable_alert = models.BooleanField(default=False)
+    enable_alert = models.BooleanField(default=True)
     alert_date = models.DateTimeField(default=datetime.now, help_text="The start of the alert")
     alert_end_date = models.DateTimeField(blank=True, null=True, help_text="If entered, the time the alert should be removed from public view")
     alert_text = RichTextField(blank=True)
