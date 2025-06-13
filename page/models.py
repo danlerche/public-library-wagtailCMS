@@ -25,6 +25,9 @@ from django.utils.html import format_html
 from wagtail.models.media import Collection
 from wagtail.admin.forms import WagtailAdminPageForm
 from django.conf import settings
+from django.forms.utils import flatatt
+from django.utils.html import format_html, format_html_join
+from wagtailmedia.blocks import AbstractMediaChooserBlock
 
 class groupPage(Page):
     pass
@@ -55,7 +58,7 @@ class OpenStreetMapBlock(blocks.StructBlock):
     zoom = blocks.IntegerBlock(label="Zoom Level", default=19)
 
     class Meta:
-        icon = 'map'  # Choose an appropriate icon
+        icon = 'map' 
 
 class PolicyCategory(models.Model):
     policy_category = models.CharField(max_length=255)
@@ -91,6 +94,41 @@ def get_audiences():
 def get_collection():
     return [(col.id, col.name) for col in Collection.objects.all()]
 
+class AudioVideoBlock(AbstractMediaChooserBlock):
+    def render_basic(self, value, context=None):
+        if not value:
+            return ""
+
+        if value.type == "video":
+            player_code = """
+            <div class="ratio ratio-16x9">
+                <video width="{1}" height="{2}" controls poster="{3}">
+                    {0}
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            """
+        else:
+            player_code = """
+            <div>
+                <audio controls>
+                    {0}
+                    Your browser does not support the audio element.
+                </audio>
+            </div>
+            """
+
+        return format_html(
+            player_code,
+            format_html_join(
+                "\n", "<source{0}>", [[flatatt(s)] for s in value.sources]
+            ),
+            value.width,
+            value.height,
+            value.thumbnail.url if value.thumbnail else "", 
+        )
+
+
 class AllPurposePage(Page):
 # tutorial to add web forms to the pages. Not a stream form but who cares https://stackoverflow.com/questions/48636619/wagtail-feedback-form-in-homepage
 
@@ -103,8 +141,8 @@ class AllPurposePage(Page):
         ], template='page/blocks/image_link.html', icon='openquote')),
         ('half_size_image', ImageChooserBlock(help_text="Takes up 1/2 of the screen size 648px")),
         ('full_width_image', ImageChooserBlock(help_text="Takes up the full screen view 1248px")),
-        ('image', ImageChooserBlock(help_text="uses the original picture size and respects that with")),
         ('image_w_accessible_heading', ImageChooserBlock(help_text="uses the original picture size and puts an additional h2 heading for accessibility")),
+        ('image', ImageChooserBlock(help_text="uses the original picture size and respects that with")),
         ('card', blocks.StructBlock([
         ('card_body', blocks.StreamBlock([
             ('card_item', blocks.StructBlock(
@@ -130,10 +168,8 @@ class AllPurposePage(Page):
         ('EmailBlock', EmailBlock()),
         ('all_upcoming_events', BooleanBlock(required=False, help_text="If checked a list of upcoming events will display", icon='tasks')),
         ('events_calendar', BooleanBlock(required=False, help_text="If checked an event calendar will display", icon='tasks')),
-        ('events_by_category', MultipleChoiceBlock(choices=get_categories, 
-            required=False, help_text="If checked all upcoming programs filtered by a category will display", icon='tasks')),
-        ('events_by_audience', MultipleChoiceBlock(choices=get_audiences, 
-            required=False, help_text="If checked all upcoming programs filtered by a audiences will display", icon='tasks')),
+        ('events_by_category', MultipleChoiceBlock(choices=get_categories, required=False, help_text="If checked all upcoming programs filtered by a category will display", icon='tasks')),
+        ('events_by_audience', MultipleChoiceBlock(choices=get_audiences, required=False, help_text="If checked all upcoming programs filtered by a audiences will display", icon='tasks')),
         ('DateBlock', DateBlock()),
         ('TimeBlock', TimeBlock()),
         ('DateTimeBlock', DateBlock()),
@@ -142,8 +178,10 @@ class AllPurposePage(Page):
         ('IframeBlock', blocks.RawHTMLBlock(help_text="See https://search.pentictonlibrary.ca/Admin/CollectionSpotlights for info about using the iframe tag to embed Aspen Collection Spotlights.")),
         ('PhoneNumberBlock', TextBlock()),
         ('EmbedBlock', EmbedBlock()),
-        #('google_map', GoogleMapBlock(template='page/blocks/google_map_block.html', icon='globe')),
-        #('open_street_map', OpenStreetMapBlock(template='page/blocks/openstreetmap_block.html', icon='site')),
+        ('ppl_map', BooleanBlock(required=False, help_text="If checked, a Google map of the library will appear", icon='user')),
+        ('holds_locker_map', BooleanBlock(required=False, help_text="If checked, a Google map of the holds locker will appear", icon='user')),
+        ('google_map', GoogleMapBlock(template='page/blocks/google_map_block.html', icon='globe')),
+        ('open_street_map', OpenStreetMapBlock(template='page/blocks/openstreetmap_block.html', icon='site')),
         ('show_business_hours', BooleanBlock(required=False, help_text="If checked, the library hours will display on the page", icon='user')),
         ('show_next_closure', BooleanBlock(required=False, help_text="If checked, the next library closure will display", icon='user')),
         ('show_all_closures', BooleanBlock(required=False, help_text="If checked, all upcoming library closures will be shown", icon='user')),
@@ -203,6 +241,7 @@ class AllPurposePage(Page):
                 ], template='page/blocks/side_menu_item.html', icon='openquote')),
             ]))
             ],template='page/blocks/side_menu.html', icon='collapse-down')),
+        ("media", AudioVideoBlock(icon="media")),
         ('accordion', blocks.StructBlock([
             ('accordion_name', blocks.CharBlock()),
             ('only_one_open', blocks.BooleanBlock(required=False, default=True, help_text="Automatically close all other accordions while another is open")),

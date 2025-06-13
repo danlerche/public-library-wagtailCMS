@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'wagtail.admin',
     'wagtail',
     'wagtail_modeladmin',
+    'wagtailmedia',
 
     'modelcluster',
     'taggit',
@@ -179,8 +180,38 @@ STATIC_URL = '/static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
-WAGTAILADMIN_BASE_URL = 'pentictonlibrary.ca'
 
+# settings.py
+
+WAGTAILMEDIA = {
+    "MEDIA_MODEL": "wagtailmedia.Media",  # string, dotted-notation.
+    "MEDIA_FORM_BASE": "",  # string, dotted-notation. Defaults to an empty string
+    "AUDIO_EXTENSIONS": [
+        "aac",
+        "aiff",
+        "flac",
+        "m4a",
+        "m4b",
+        "mp3",
+        "ogg",
+        "wav",
+    ],  # list of extensions
+    "VIDEO_EXTENSIONS": [
+        "avi",
+        "h264",
+        "m4v",
+        "mkv",
+        "mov",
+        "mp4",
+        "mpeg",
+        "mpg",
+        "ogv",
+        "webm",
+    ],  # list of extensions
+}
+
+
+WAGTAILADMIN_BASE_URL = 'pentictonlibrary.ca'
 # Wagtail settings
 
 WAGTAIL_SITE_NAME = "public-library-wagtailCMS"
