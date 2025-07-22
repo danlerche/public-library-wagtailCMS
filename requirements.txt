@@ -8,5 +8,6 @@ pytz
 wagtail==7.0
 wagtail-honeypot
 wagtail-modeladmin
+wagtailmedia
 wagtailmenus
 unidecode
