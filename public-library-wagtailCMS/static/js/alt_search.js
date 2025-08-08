@@ -5,7 +5,7 @@ $("form#searchForm").attr("action", "/search");
 $("input#altSearchInput").attr("name", "query");
 }
 else {
-$("form#searchForm").attr("action", "https://search.pentictonlibrary.ca/Union/Search");
+$("form#searchForm").attr("action", "https://aspen-demo.equinoxoli.org");
 $("input#altSearchInput").attr("name", "lookfor");
 }
 });

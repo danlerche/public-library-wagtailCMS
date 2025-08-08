@@ -211,7 +211,7 @@ WAGTAILMEDIA = {
 }
 
 
-WAGTAILADMIN_BASE_URL = 'pentictonlibrary.ca'
+WAGTAILADMIN_BASE_URL = 'http://localhost:8000'
 # Wagtail settings
 
 WAGTAIL_SITE_NAME = "public-library-wagtailCMS"
@@ -226,7 +226,7 @@ WAGTAILSEARCH_BACKENDS = {
 
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
 # e.g. in notification emails. Don't include '/admin' or a trailing slash
-BASE_URL = 'https://pentictonlibrary.ca'
+BASE_URL = 'http:localhost:8000'
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 WAGTAILDOCS_SERVE_METHOD = 'direct'
 
