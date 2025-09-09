@@ -1,33 +1,18 @@
 import datetime, re
 import json
 from django.http import JsonResponse
-from wagtail.models import Page
+
 #this class has a number of reusable functions to display data in template tags and the RSS feed. 
 
 class EventQueries:
     #creates a list of dictionaries that contain both events with repeating dates and one-off events in event date order
-    def all_events(self, s_events_qs, r_events_qs, closed_date_qs, closed_page_url_qs):
+    def all_events(self, s_events_qs, r_events_qs):
         single_events = []
-        closed_page_urls = []
         #formats single events into a list of dictionaries so they can be combined with repeating dates
         for se in s_events_qs:
             se_dates = datetime.datetime.combine(se.event_date, se.time_from)
-            se_dict = {'id': se.id, 'title':se.title, 'event_date':se_dates, 'all_day':se.all_day, 'description':se.description, 'url':se.url }
+            se_dict = {'id': se.id, 'title':se.title, 'event_date':se_dates, 'description':se.description, 'all_day': se.all_day, 'url':se.url }
             single_events.append(se_dict)
-
-        #this may no longer be necessary with the union query. You could union the s_events_qs and be done with it.  
-
-        for cd_url in closed_page_url_qs:
-            ### WTF
-            cd_url_dict = {'id': cd_url.id, 'url': cd_url.closed_holiday_page.id }
-            closed_page_urls.append(cd_url_dict)
-            #this is a hack and does not account for multiple closed pages, for different branches
-            closed_page = Page.objects.get(id=closed_page_urls[0]['url'])
-
-        for cd in closed_date_qs:
-            cd_dates = datetime.datetime.combine(cd.closed_date_from, datetime.time(23, 59))
-            cd_dict = {'id': cd.id, 'title':cd.closed_date_name, 'event_date': cd_dates, 'description':'Closed Date', 'url':closed_page.url}
-            single_events.append(cd_dict)
         
         repeating_dates = []
         repeating_events = []
@@ -38,7 +23,7 @@ class EventQueries:
             repeating_dates.append(json_dates_to_list)
             for occur in range(len(json_dates_to_list)):
                 py_dt_format = datetime.datetime.strptime(json_dates_to_list[occur], '%Y-%m-%d %H:%M')
-                ind_event = {'id': rd.id, 'title':se.title, 'event_date':py_dt_format, 'description':se.description, 'url':se.url }
+                ind_event = {'id': rd.id, 'title':se.title, 'event_date':py_dt_format, 'description':se.description, 'all_day': se.all_day,'url':se.url }
                 repeating_events.append(ind_event)
         all_events = single_events + repeating_events
         all_events.sort(key=lambda item: item.get('event_date'))
@@ -64,6 +49,7 @@ class EventQueries:
         repeating_dates = []
         next_date = []
         all_upcoming_events = []
+        grouped_upcoming_events = []
         
         for rd in range(len(upcoming_event_qs)):
             if upcoming_event_qs[rd].repeating_dates is not None:
@@ -83,17 +69,17 @@ class EventQueries:
                     rd_list.append(aev['repeating_dates'])
             #creates a dictionary with a list of repeating dates if the repeating dates list is not an empty list
             if rd_list != []:
-                gr_entry = {'id': upcoming_event_qs[rd].id, 'repeating_dates':rd_list, 'rd': True, 'time_from':upcoming_event_qs[rd].time_from, 'time_to':upcoming_event_qs[rd].time_to, 'all_day':upcoming_event_qs[rd].all_day,'title':upcoming_event_qs[rd].title, 'event_image':upcoming_event_qs[rd].event_image , 'url':upcoming_event_qs[rd].url }
+                gr_entry = {'id': upcoming_event_qs[rd].id, 'repeating_dates':rd_list, 'rd': True, 'time_from':upcoming_event_qs[rd].time_from, 'time_to':upcoming_event_qs[rd].time_to,'all_day':upcoming_event_qs[rd].all_day, 'title':upcoming_event_qs[rd].title, 'event_image':upcoming_event_qs[rd].event_image , 'url':upcoming_event_qs[rd].url }
                 grouped_upcoming_events.append(gr_entry)
             #filters out single dates and uses the event_date and time_from  db field instead
             elif rd_list == []:
-                gr_entry = {'id': upcoming_event_qs[rd].id, 'repeating_dates':datetime.datetime.combine(upcoming_event_qs[rd].event_date, upcoming_event_qs[rd].time_from), 'rd': False, 'time_from':upcoming_event_qs[rd].time_from, 'time_to':upcoming_event_qs[rd].time_to,'all_day':upcoming_event_qs[rd].all_day,'title':upcoming_event_qs[rd].title, 'event_image':upcoming_event_qs[rd].event_image , 'url':upcoming_event_qs[rd].url}
+                gr_entry = {'id': upcoming_event_qs[rd].id, 'repeating_dates':datetime.datetime.combine(upcoming_event_qs[rd].event_date, upcoming_event_qs[rd].time_from), 'rd': False, 'time_from':upcoming_event_qs[rd].time_from, 'time_to':upcoming_event_qs[rd].time_to, 'all_day':upcoming_event_qs[rd].all_day,'title':upcoming_event_qs[rd].title, 'event_image':upcoming_event_qs[rd].event_image , 'url':upcoming_event_qs[rd].url}
                 grouped_upcoming_events.append(gr_entry)
         #grabs only the next upcoming event.
         for gue in grouped_upcoming_events:
             if gue['rd'] == True:
-                next_date.append({'id': gue['id'],'next_date':gue['repeating_dates'][0],'time_from': gue['time_from'], 'time_to': gue['time_to'],'all_day': gue['all_day'],'title': gue['title'],'event_image': gue['event_image'] ,'url': gue['url']})
+                next_date.append({'id': gue['id'],'next_date':gue['repeating_dates'][0],'time_from': gue['time_from'], 'time_to': gue['time_to'], 'all_day': gue['all_day'], 'title': gue['title'],'event_image': gue['event_image'] ,'url': gue['url']})
             #event_date db field is not a dictionary
             elif gue['rd'] == False:
-                next_date.append({'id': gue['id'],'next_date':gue['repeating_dates'], 'time_from': gue['time_from'], 'time_to': gue['time_to'],'all_day': gue['all_day'], 'title': gue['title'],'event_image': gue['event_image'] ,'url': gue['url']})
+                next_date.append({'id': gue['id'],'next_date':gue['repeating_dates'], 'time_from': gue['time_from'], 'time_to': gue['time_to'], 'all_day': gue['all_day'], 'title': gue['title'],'event_image': gue['event_image'] ,'url': gue['url']})
         return next_date
