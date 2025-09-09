@@ -79,4 +79,32 @@
                 $(this).attr("href", newHref);
             });  
     </script>
+
+<script>
+  (function($) {
+    $(document).ready(function() {
+      function toggleTimePanels() {
+        if ($("#id_all_day").is(":checked")) {
+          $("#panel-child-program_info-time_from-section").hide();
+          $("#panel-child-program_info-time_to-section").hide();
+        } else {
+          $("#panel-child-program_info-time_from-section").show();
+          $("#panel-child-program_info-time_to-section").show();
+        }
+      }
+
+      // Run on load
+      toggleTimePanels();
+
+      // Run on change
+      $("#id_all_day").on("change", toggleTimePanels);
+    });
+  })(jQuery);
+
+  $("#panel-child-program_info-time_from-heading").after('<span class="w-required-mark" data-panel-required="">*</span>');
+  $("#panel-child-program_info-time_to-heading").after('<span class="w-required-mark" data-panel-required="">*</span>');
+</script>
+
+
+
 {% endblock %}

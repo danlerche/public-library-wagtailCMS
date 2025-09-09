@@ -11,9 +11,10 @@
   <div class="date-icon-month" aria-label="of {{ next_events.next_date|date:'F' }}">{{ next_events.next_date|date:"M"|upper  }}</div>
   </div>
   </div>
+
   <div class="col-8 col-md-8 title-time">
     <div class="card-title"><strong>{{ next_events.title|truncatechars:30 }}</strong></div>
-    <div class="time">{{ next_events.time_from|date:"g:i A"  }} - {{ next_events.time_to|date:"g:i A"  }}</div>
+    <div class="time">{% if next_events.all_day == True %}All Day{% elif next_events.all_day == False %}{{ next_events.time_from|date:"g:i A"  }} - {{ next_events.time_to|date:"g:i A"  }}{% endif %}</div>
 </div>
 </div>
 </a>

@@ -8,6 +8,8 @@ from library_programs.models import Event, EventAge, FullCalendarLink
 import datetime, re
 import json
 from django.db.models import Q
+from open_hours.models import BranchInfo, ClosedDate
+from django.db.models import F, Value, CharField
 
 register = template.Library()
 
@@ -17,35 +19,45 @@ def db_queries():
     today = datetime.datetime.now()
     time_today = today.time()
     events_qs = Event.objects.live()
+
+    #event_union_query = Event.objects.annotate(source=Value("event", output_field=CharField())).values(title=F("event_date"), date=F("time_from"), source=F("source"),)
+    #closed_date_union_query = ClosedDate.objects.annotate(source=Value("closed", output_field=CharField())).values(date=F("time_from"), source=F("closed_date_from"),)
+    #combined = event_union_query.union(closed_date_union_query)
+
     s_events_qs = Event.objects.filter(repeats__isnull=True).live()
     r_events_qs = Event.objects.filter(repeats__isnull=False).live()
+    closed_date_qs = ClosedDate.objects.all()
+    closed_page_url_qs = BranchInfo.objects.all()
+
     featured_event = Event.objects.live().filter(
         Q(event_date=today, time_to__gt=time_today, until__isnull=True, featured_on_home_page=True) | \
         Q(until=today, time_to__gt=time_today, until__isnull=False, featured_on_home_page=True) | \
         Q(event_date__gt=today, until__isnull=True, featured_on_home_page=True) | \
         Q(until__gt=today, until__isnull=False, featured_on_home_page=True))
     full_calendar_link = FullCalendarLink.objects.all()
-    return today, events_qs, s_events_qs, r_events_qs, featured_event, full_calendar_link
+    return today, events_qs, s_events_qs, r_events_qs, featured_event, full_calendar_link, closed_date_qs, closed_page_url_qs
 
 @register.inclusion_tag('library_programs/events_calendar.html', takes_context=True)
 def events_calendar(context):
-    today, events_qs, s_events_qs, r_events_qs, featured_event, full_calendar_link = db_queries()
+    today, events_qs, s_events_qs, r_events_qs, featured_event, full_calendar_link, closed_date_qs, closed_page_url_qs = db_queries()
     from library_programs.event_base import EventQueries
     eq = EventQueries()
-    all_events = eq.all_events(s_events_qs, r_events_qs)
+    all_events = eq.all_events(s_events_qs, r_events_qs, closed_date_qs, closed_page_url_qs)
 
     return {
         'request': context['request'],
         'all_events': all_events,
         'events_qs': events_qs,
+        'closed_date_qs': closed_date_qs,
+        'closed_page_url_qs': closed_page_url_qs,
         }
 
 @register.inclusion_tag('library_programs/all_upcoming_events.html', takes_context=True)
 def all_upcoming_events(context):
-    today, events_qs, s_events_qs, r_events_qs, featured_event, full_calendar_link = db_queries()
+    today, events_qs, s_events_qs, r_events_qs, featured_event, full_calendar_link, closed_date_qs, closed_page_url_qs = db_queries()
     from library_programs.event_base import EventQueries
     eq = EventQueries()
-    all_events = eq.all_events(s_events_qs, r_events_qs)
+    all_events = eq.all_events(s_events_qs, r_events_qs, closed_date_qs, closed_page_url_qs)
     upcoming_events = eq.all_upcoming_events(all_events)
 
     return {
@@ -56,10 +68,10 @@ def all_upcoming_events(context):
 
 @register.inclusion_tag('library_programs/next_four_events_list.html', takes_context=True)
 def next_four_events_list(context):
-    today, events_qs, s_events_qs, r_events_qs, featured_event, full_calendar_link = db_queries()
+    today, events_qs, s_events_qs, r_events_qs, featured_event, full_calendar_link, closed_date_qs, closed_page_url_qs = db_queries()
     from library_programs.event_base import EventQueries
     eq = EventQueries()
-    all_events = eq.all_events(s_events_qs, r_events_qs)
+    all_events = eq.all_events(s_events_qs, r_events_qs, closed_date_qs, closed_page_url_qs)
     upcoming_events = eq.all_upcoming_events(all_events)
     next_four_events_list = upcoming_events[0:4]
 
@@ -71,7 +83,7 @@ def next_four_events_list(context):
 
 @register.inclusion_tag('library_programs/next_three_events_feature.html', takes_context=True)
 def next_three_events_feature(context):
-    today, events_qs, s_events_qs, r_events_qs, featured_event, full_calendar_link = db_queries()
+    today, events_qs, s_events_qs, r_events_qs, featured_event, full_calendar_link, closed_date_qs, closed_page_url_qs = db_queries()
     from library_programs.event_base import EventQueries
     eq = EventQueries()
     next_events = eq.next_upcoming_events(featured_event)
@@ -119,10 +131,10 @@ def filtered_upcoming_events_by_audience(context, filter_by):
 @register.inclusion_tag('library_programs/add_google_calendar.html', takes_context=True)
 def add_google_calendar(context, page_id):
     current_event_qs = Event.objects.filter(id=page_id).live()
-    today, events_qs, s_events_qs, r_events_qs, featured_event, full_calendar_link = db_queries()
+    today, events_qs, s_events_qs, r_events_qs, featured_event, full_calendar_link, closed_date_qs, closed_page_url_qs = db_queries()
     from library_programs.event_base import EventQueries
     eq = EventQueries()
-    all_events = eq.all_events(s_events_qs, r_events_qs)
+    all_events = eq.all_events(s_events_qs, r_events_qs, closed_date_qs, closed_page_url_qs)
     upcoming_events = eq.all_upcoming_events(all_events)
 
     repeating_dates_per_event = []
@@ -138,10 +150,10 @@ def add_google_calendar(context, page_id):
 @register.inclusion_tag('library_programs/add_yahoo_calendar.html', takes_context=True)
 def add_yahoo_calendar(context, page_id):
     current_event_qs = Event.objects.filter(id=page_id).live()
-    today, events_qs, s_events_qs, r_events_qs, featured_event, full_calendar_link = db_queries()
+    today, events_qs, s_events_qs, r_events_qs, featured_event, full_calendar_link, closed_date_qs, closed_page_url_qs = db_queries()
     from library_programs.event_base import EventQueries
     eq = EventQueries()
-    all_events = eq.all_events(s_events_qs, r_events_qs)
+    all_events = eq.all_events(s_events_qs, r_events_qs, closed_date_qs, closed_page_url_qs)
     upcoming_events = eq.all_upcoming_events(all_events)
 
     #yahoo calendar uses a duration url query string instead of an end date, so we must calculate the difference of start and end date in minutes

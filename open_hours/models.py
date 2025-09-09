@@ -122,6 +122,7 @@ class ClosedDate(models.Model):
     time_from = models.TimeField(auto_now=False, auto_now_add=False, null=True, blank=True, help_text="only takes effect if All Day is unchecked")
     time_to = models.TimeField(auto_now=False, auto_now_add=False, null=True, blank=True, help_text="only takes effect if All Day is unchecked")
     closed_dates_label = 'Exception Dates and Hours'
+    closed_image = models.ForeignKey('wagtailimages.Image', null=True, blank=True, on_delete=models.SET_NULL,related_name='+')
 
     panels = [
         FieldPanel('branch_info'),
@@ -137,6 +138,7 @@ class ClosedDate(models.Model):
         heading = "Exception Hours",
         classname = "collapsible collapsed"
         ),
+        FieldPanel('closed_image'),
         ]
     def __str__(self):
         return self.closed_dates_label

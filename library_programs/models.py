@@ -6,13 +6,13 @@ from wagtail.admin.panels import FieldPanel, MultiFieldPanel, InlinePanel, Field
 from wagtail.fields import RichTextField
 from wagtail.admin.forms import WagtailAdminPageForm
 import datetime, json, pytz
-from datetime import timedelta
+from datetime import time, timedelta
 from django import forms
 from dateutil.rrule import *
 from dateutil.parser import *
 from django.utils.html import strip_tags
 from django.http import HttpResponse
-from icalendar import Calendar, Event, Alarm
+from icalendar import Calendar, Event, Alarm, vDate
 from icalendar import Event as icsEvent, vDatetime, vText
 #registration imports
 from wagtail.contrib.forms.models import AbstractFormField, AbstractForm, AbstractEmailForm, AbstractFormSubmission
@@ -126,8 +126,6 @@ class EventEditExtraValidation(WagtailAdminPageForm):
         if enable_registration == 1 and success_page is None:
             self.add_error('success_page', 'Success page must be chosen to enable registration')
 
-        return cleaned_data
-
     def save(self, commit=True):
         page = super().save(commit=False)
         #needed for the if statement to evaluate to True or False
@@ -231,8 +229,9 @@ class Event(Page, Orderable):
     event_category = ParentalKey(EventCategory, on_delete=models.SET_NULL, related_name='event_category', null=True, blank=True)
     age_range = ParentalManyToManyField("EventAge", blank=True)
     event_date = models.DateField(null=True,blank=True)
-    time_from = models.TimeField(null=True)
-    time_to = models.TimeField(null=True)
+    time_from = models.TimeField(null=True, blank=True)
+    time_to = models.TimeField(null=True, blank=True)
+    all_day = models.BooleanField(default=False, help_text="Check if this event is all day")
     description = RichTextField(max_length=1500,null=True,blank=True)
     repeats = models.CharField(max_length = 20, choices = REPEAT_CHOICE, null=True, blank=True)
     until = models.DateField(null=True,blank=True)
@@ -254,6 +253,26 @@ class Event(Page, Orderable):
     waitlist_email_msg = models.CharField(max_length=2000, blank=True, null=True, verbose_name="Body of the waitlist email")
     success_page = models.ForeignKey('wagtailcore.Page', blank=True, on_delete=models.SET_NULL, null=True, related_name="registration_success")
 
+    def clean(self):
+        super().clean()
+
+        # If not all-day, require both time_from and time_to
+        if not self.all_day:
+            if not self.time_from:
+                raise ValidationError({'time_from': "This field is required if 'All day' is not checked."})
+            if not self.time_to:
+                raise ValidationError({'time_to': "This field is required if 'All day' is not checked."})
+
+            # Ensure time_from < time_to
+            if self.time_from and self.time_to and self.time_from >= self.time_to:
+                raise ValidationError({'time_to': "End time must be after start time."})
+
+    def save(self, *args, **kwargs):
+        if self.all_day:
+            self.time_from = time(0, 0)      # 00:00
+            self.time_to = time(23, 59)      # 23:59
+        super().save(*args, **kwargs)
+
     def show_registered_events():
         return self.Event.objects.get(enable_registration=1)
 
@@ -263,7 +282,6 @@ class Event(Page, Orderable):
         reg_spots_remaining = self.spots_available - registered
         wait_list_remaining = self.wait_list_spots - wait_listed
         event_id = Event.objects.get(id=self.page_ptr_id)
-        
       
         event_date_time_to = datetime.datetime.combine(self.event_date, self.time_to)
         if self.until is not None: 
@@ -271,7 +289,7 @@ class Event(Page, Orderable):
         else:
             until_date_time_to = ''
         #function to generate .ics files for integration into calendars
-        def create_ical(title, desc, start, end, until, curr_date, repeats, ics_week_interval, ics_weekday, time_from, exdate, location):
+        def create_ical(title, desc, start, end, until, curr_date, repeats, ics_week_interval, ics_weekday, time_from, exdate, location, all_day, event_date):
             cal = Calendar()
             cal.add('prodid', '-//Events at the Penticton Public Library//NONSGML v1.0//EN')
             cal.add('version', '2.0')
@@ -283,8 +301,12 @@ class Event(Page, Orderable):
             ics_event.add('summary', title)
             ics_event.add('description', desc)
             ics_event.add_component(alarm)
-            dtstart = vDatetime(start)
-            dtend = vDatetime(end)
+            if all_day:
+                dtstart = vDate(event_date)
+                dtend = vDate(event_date)
+            else:    
+                dtstart = vDatetime(start)
+                dtend = vDatetime(end)
             dtstart.params['TZID'] = 'PACIFIC STANDARD TIME'
             dtend.params['TZID'] = 'PACIFIC STANDARD TIME'
             ics_event.add('dtstart', dtstart)
@@ -328,7 +350,10 @@ class Event(Page, Orderable):
         desc = strip_tags(self.description)
         start = datetime.datetime.combine(self.event_date, self.time_from)
         end = datetime.datetime.combine(self.event_date, self.time_to)
+        event_date = self.event_date
+        all_day = self.all_day
         time_from = self.time_from
+        all_day = self.all_day
         curr_date = datetime.datetime.now()
         if self.until is not None:
             until = datetime.datetime.combine(self.until, self.time_to).astimezone(pytz.UTC)
@@ -344,7 +369,7 @@ class Event(Page, Orderable):
             if request.GET['format'] == 'ical':
                 #show the current url plus /ics
                 response = HttpResponse(
-                create_ical(title, desc, start, end, until, curr_date, repeats, ics_week_interval, ics_weekday, time_from, exdate, location),
+                create_ical(title, desc, start, end, until, curr_date, repeats, ics_week_interval, ics_weekday, time_from, exdate, location, all_day, event_date),
                 content_type='text/calendar',
                 )
                 response['Content-Disposition'] = 'attachment; filename=' + self.slug + '.ics'
@@ -416,6 +441,7 @@ class Event(Page, Orderable):
         ObjectList([
             FieldPanel('title'),
             FieldPanel('event_date'),
+            FieldPanel('all_day'),
             FieldPanel('time_from'),
             FieldPanel('time_to'),
             FieldPanel('repeats'),

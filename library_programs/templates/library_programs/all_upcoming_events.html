@@ -19,7 +19,13 @@
     </div>
     <div class="col-9 col-md-10 event-info">
       <div class="card-title event-title"><h2><a href="{{ events_qs.url }}" title="{{ events_qs.title }}">{{ events_qs.title }}</a></h2></div>
-      <div class="time">{{ events_qs.time_from|date:"g:i A"  }} - {{ events_qs.time_to|date:"g:i A"  }}</div>
+      <div class="time">
+        {% if events_qs.all_day == True %}
+        All Day
+        {% elif events_qs.all_day == False %}
+      {{ events_qs.time_from|date:"g:i A"  }} - {{ events_qs.time_to|date:"g:i A"  }}
+      {% endif %}
+    </div>
     </div>
   </div>
   </li>

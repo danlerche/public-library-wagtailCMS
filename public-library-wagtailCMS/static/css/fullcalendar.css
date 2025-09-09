@@ -1,13 +1,8 @@
 #calendar button {background-color: #019FE2;font-weight: bold; text-transform: capitalize;}
 #calendar .button-group, #calendar .btn-primary {border-color: rgba(0, 0, 0, 0.71); }
 .fc-day-past.fc-day-other {background: var(--fc-non-business-color, rgba(215, 215, 215, 0.3));}
-h2.fc-toolbar-title {color: #4E4C4F; fo}
-
-.fc-daygrid-event {
-  display: block;
-  padding-top: 7px;
-  margin-left: 13px;
-}
+h2.fc-toolbar-title {color: #4E4C4F;}
+.fc-daygrid-event {display: block; padding-top: 7px; margin-left: 13px;}
 .fc-daygrid-event-dot {border: none;}
 a.fc-daygrid-event {font-size: .9em;}
 .fc-event .fc-event-title {color: #0066B3; font-weight: bold; white-space: break-spaces;}
@@ -19,6 +14,10 @@ a.fc-daygrid-event {font-size: .9em;}
 .fc-direction-ltr .fc-daygrid-event.fc-event-start, .fc-direction-rtl .fc-daygrid-event.fc-event-end {
   margin-left: 10px !important;
 }
-.fc .fc-daygrid-day.fc-day-today {border: 4px solid #feb700; background-color: #fff;}
-.fc-timegrid-body .fc-event-title, .fc-timegrid-body .fc-event-time {color: #fff !important;}
 .fc-timegrid-body .fc-v-event {background-color: #0066B3;}
+.fc-h-event .fc-event-title {color:#fff; background-color:#019FE2 !important;}
+
+
+.fc-h-event {
+  background-color: #019FE2;
+}

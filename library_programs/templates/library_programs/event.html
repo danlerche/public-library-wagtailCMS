@@ -57,7 +57,12 @@
   {% else %}
   <div class="event-date">{{ page.event_date|date:"F d, o " }}</div>
   {% endif %}
-  <div class="event-time">{{ page.time_from|date:"g:i A" }} - {{ page.time_to|date:"g:i A" }}</div>
+  <div class="event-time">{% if page.all_day == 0 %}
+  {{ page.time_from|date:"g:i A" }} - {{ page.time_to|date:"g:i A" }}
+  {% elif page.all_day == 1 %}
+  All Day
+  </div>
+  {% endif %}
   {# If there are no repeating dates it's assumed there are no exception dates either #}
   {% if page.repeats != None %}
   <div class="exception-dates">

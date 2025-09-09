@@ -17,7 +17,7 @@
   </div>
   <div class="col-7 event-info">
     <div class="event-title"><strong><a href="{{ events_qs.url }}">{{ events_qs.title }}</a></strong></div>
-    <div class="time">{{ events_qs.time_from|date:"g:i A"  }} - {{ events_qs.time_to|date:"g:i A"  }}</div>
+    <div class="time">{% if events_qs.all_day == True %}All Day{% elif events_qs.all_day == False %}{{ events_qs.time_from|date:"g:i A"  }} - {{ events_qs.time_to|date:"g:i A"  }}{% endif %}</div>
   </div>
 </div>
 </div>
