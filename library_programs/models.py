@@ -128,6 +128,11 @@ class EventEditExtraValidation(WagtailAdminPageForm):
 
     def save(self, commit=True):
         page = super().save(commit=False)
+        #sets the time from midnight to 11:59pm if all day is checked in the admin
+        if page.all_day:
+            page.time_from = time(0, 0)      # 00:00
+            page.time_to = time(23, 59)      # 23:59
+        #repeat rule logic starts here
         #needed for the if statement to evaluate to True or False
         event_repeats = str(page.repeats)
         week_interval = page.week_interval
@@ -266,12 +271,6 @@ class Event(Page, Orderable):
             # Ensure time_from < time_to
             if self.time_from and self.time_to and self.time_from >= self.time_to:
                 raise ValidationError({'time_to': "End time must be after start time."})
-
-    def save(self, *args, **kwargs):
-        if self.all_day:
-            self.time_from = time(0, 0)      # 00:00
-            self.time_to = time(23, 59)      # 23:59
-        super().save(*args, **kwargs)
 
     def show_registered_events():
         return self.Event.objects.get(enable_registration=1)
