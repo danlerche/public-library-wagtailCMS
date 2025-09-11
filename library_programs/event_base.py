@@ -31,12 +31,12 @@ class EventQueries:
 
     def all_upcoming_events(self, all_events):
         all_upcoming_events = []
-        today = datetime.datetime.now()
+        today = datetime.datetime.now().date()
+        #print(today)
         for event_index in range(len(all_events)):
             event_dates = all_events[event_index]['event_date']
-            if all_events[event_index]['event_date'] >= today:
+            if all_events[event_index]['event_date'].date() >= today:
                 all_upcoming_events.append(all_events[event_index])
-                all_upcoming_events
         return all_upcoming_events
 
     #displays single and recurring events with the next date of the recurrence showing

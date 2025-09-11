@@ -2,7 +2,7 @@
 <div id="allUpcomingEvents">
 <div class="event-list-container">
 {% for upcoming_events in upcoming_events %}
-{% for events_qs in events_qs|dictsort:"time_from" %}
+{% for events_qs in events_qs %}
 {% if events_qs.id == upcoming_events.id %}
 <div class="card mb-3" style="max-width: 991px;">
   <a href="{{ events_qs.url }}">

@@ -1,4 +1,7 @@
 {% load wagtailcore_tags %}
+
+{{ all_events }}
+
 <div id="nextFourEventsList">
   {% for cl in full_calendar_link %}
   <h2 class="view-all-events"><a class="btn btn-primary" href="{{ cl.link_to_calendar.url }}">View All Events</a></h2>
