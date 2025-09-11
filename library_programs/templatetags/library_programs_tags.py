@@ -74,7 +74,7 @@ def next_three_events_feature(context):
     from library_programs.event_base import EventQueries
     eq = EventQueries()
     next_events = eq.next_upcoming_events(featured_event)
-    next_three_events = sorted(next_events, key=lambda x: x['next_date'])[:4]
+    next_three_events = sorted(next_events, key=lambda x: x['next_date'])[:3]
 
     return {
     'request': context['request'],
