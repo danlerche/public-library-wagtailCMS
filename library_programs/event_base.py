@@ -23,7 +23,7 @@ class EventQueries:
             repeating_dates.append(json_dates_to_list)
             for occur in range(len(json_dates_to_list)):
                 py_dt_format = datetime.datetime.strptime(json_dates_to_list[occur], '%Y-%m-%d %H:%M')
-                ind_event = {'id': rd.id, 'title':se.title, 'event_date':py_dt_format, 'description':se.description, 'all_day': se.all_day,'url':se.url }
+                ind_event = {'id': rd.id, 'title':rd.title, 'event_date':py_dt_format, 'description':rd.description, 'all_day': rd.all_day,'url':rd.url }
                 repeating_events.append(ind_event)
         all_events = single_events + repeating_events
         all_events.sort(key=lambda item: item.get('event_date'))
