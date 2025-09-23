@@ -14,7 +14,6 @@
 </div>
 <h3 class="col-xl-11"><a href="{{ events.url }}">{{ events.title }}</a></h3>
 </div>
-
 <div class="col-xl-11 offset-xl-1">
   <div class="date">{{ events.time_from|date:"g:i A" }} - {{ events.time_to|date:"g:i A" }} | {{ events.start_date }}</div>
 {% if events.repeats != None %} <div class="rule mb-1">Repeats {{ events.repeats|lower }} through {{ events.until }}</div>{% endif %}

@@ -11,12 +11,12 @@ a.fc-daygrid-event {font-size: .9em;}
 #calendar a.for-adults .fc-event-title {color: #0066B3;}
 #calendar a.for-teens .fc-event-title {color: #019FE2;}
 #calendar a.for-tweens .fc-event-title {color: #A6CE39;}
+
 .fc-direction-ltr .fc-daygrid-event.fc-event-start, .fc-direction-rtl .fc-daygrid-event.fc-event-end {
   margin-left: 10px !important;
 }
 .fc-timegrid-body .fc-v-event {background-color: #0066B3;}
 .fc-h-event .fc-event-title {color:#fff; background-color:#019FE2 !important;}
-
 
 .fc-h-event {
   background-color: #019FE2;

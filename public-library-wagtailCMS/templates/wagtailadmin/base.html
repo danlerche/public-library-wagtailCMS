@@ -84,12 +84,36 @@
   (function($) {
     $(document).ready(function() {
       function toggleTimePanels() {
-        if ($("#id_all_day").is(":checked")) {
+        if ($("#tab-program_info #id_all_day").is(":checked")) {
           $("#panel-child-program_info-time_from-section").hide();
           $("#panel-child-program_info-time_to-section").hide();
         } else {
           $("#panel-child-program_info-time_from-section").show();
           $("#panel-child-program_info-time_to-section").show();
+        }
+      }
+
+      // Run on load
+      toggleTimePanels();
+
+      // Run on change
+      $("#id_all_day").on("change", toggleTimePanels);
+    });
+  })(jQuery);
+  (function($) {
+    $(document).ready(function() {
+      function toggleTimePanels() {
+        if ($("#panel-exception_hours-section #id_all_day").is(":checked")) {
+            console.log("exception hours");
+          $("#panel-exception_hours-content #id_time_from-label").hide();
+          $("#panel-exception_hours-content #panel-child-exception_hours-child-time_from-wrapper").hide();
+          $("#panel-exception_hours-content #id_time_to-label").hide();
+          $("#panel-exception_hours-content #panel-child-exception_hours-child-time_to-wrapper").hide();
+        } else {
+          $("#panel-exception_hours-content #id_time_from-label").show();
+          $("#panel-exception_hours-content #panel-child-exception_hours-child-time_from-wrapper").show();
+          $("#panel-exception_hours-content #id_time_to-label").show();
+          $("#panel-exception_hours-content #panel-child-exception_hours-child-time_to-wrapper").show();
         }
       }
 

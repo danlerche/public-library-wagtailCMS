@@ -44,25 +44,45 @@ eventTimeFormat: {
             },
       initialView: 'dayGridMonth',
       events: [
-            {% for all_events in all_events %}
-            {% for events_qs in events_qs %}
-            {% if events_qs.id == all_events.id %}
-            {
-                title: decoded_event_title_{{ events_qs.id }},
-                {% if events_qs.all_day == False %}
-                start: '{{ all_events.event_date|date:"Y-m-d"}}T{{ events_qs.time_from|date:"H:i:s" }}',
-                end: '{{ all_events.event_date|date:"Y-m-d"}}T{{ events_qs.time_to|date:"H:i:s" }}',
-                {% elif events_qs.all_day == True %}
-                start: '{{ all_events.event_date|date:"Y-m-d"}}',
-                end: '{{ all_events.event_date|date:"Y-m-d"}}',
-                {% endif %}
-                url: '{{ events_qs.url }}',
-                className: '{% for age in events_qs.age_range.all %}{% if forloop is not None %}{% if forloop.first == forloop.last %}{{ age.audience_name|slugify }}{% elif forloop.counter > 1 %}all-ages{% endif %}{% endif %}{% endfor %}',
-            },
-            {% endif %}
-            {% endfor %}
-            {% endfor %}
 
+        {% for all_events in all_events %}
+        {% for events_qs in events_qs %}
+        {% if events_qs.id == all_events.id %}
+          {
+              title: decoded_event_title_{{ events_qs.id }},
+              {% if events_qs.all_day == False %}
+              start: '{{ all_events.event_date|date:"Y-m-d"}}T{{ events_qs.time_from|date:"H:i:s" }}',
+              end: '{{ all_events.event_date|date:"Y-m-d"}}T{{ events_qs.time_to|date:"H:i:s" }}',
+              {% elif events_qs.all_day == True %}
+              start: '{{ all_events.event_date|date:"Y-m-d"}}',
+              end: '{{ all_events.event_date|date:"Y-m-d"}}',
+              {% endif %}
+              url: '{{ events_qs.url }}',
+              className: '{% for age in events_qs.age_range.all %}{% if forloop is not None %}{% if forloop.first == forloop.last %}{{ age.audience_name|slugify }}{% elif forloop.counter > 1 %}all-ages{% endif %}{% endif %}{% endfor %}',
+          },
+        {% endif %}
+        {% endfor %}
+        {% endfor %}
+
+        {% for cd in all_events %}
+        {% if cd.source == 'closed' %}
+        {
+        title  : '{{ cd.title }}',
+        {% if cd.all_day == True %}
+        start: '{{ cd.event_date|date:"Y-m-d"}}',
+        end: '{{ cd.event_date|date:"Y-m-d"}}',
+        className: 'closed-all-day',
+        
+        {% elif cd.all_day == False %}
+        title  : '{{ cd.title }}',
+        start: '{{ cd.event_date|date:"Y-m-d"}}T{{ cd.time_from|date:"H:i:s" }}',
+        end: '{{ cd.event_date|date:"Y-m-d"}}T{{ cd.time_to|date:"H:i:s" }}',
+        className: 'limited-hours',
+        {% endif %}
+        url: '{{ cd.url }}',
+      },
+        {% endif %}
+        {% endfor %}
         ]
     });
     calendar.render();

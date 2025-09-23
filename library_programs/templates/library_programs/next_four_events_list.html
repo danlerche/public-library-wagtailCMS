@@ -1,15 +1,10 @@
 {% load wagtailcore_tags %}
-
-{{ all_events }}
-
 <div id="nextFourEventsList">
   {% for cl in full_calendar_link %}
   <h2 class="view-all-events"><a class="btn btn-primary" href="{{ cl.link_to_calendar.url }}">View All Events</a></h2>
   {% endfor %}
 <div aria-label="mini calendar showing the next four upcoming events" class="event-list-container card">
-{% for next_events in next_four_events_list %}
-{% for events_qs in events_qs|dictsort:"time_from" %}
-{% if events_qs.id == next_events.id %}
+{% for next_events in next_four_events %}
 <div class="event-list">
   <div class="event-item row mt-3 pb-2 g-0">
   <div class="col-xl-3 col-1">
@@ -19,13 +14,17 @@
   </div>
   </div>
   <div class="col-7 event-info">
-    <div class="event-title"><strong><a href="{{ events_qs.url }}">{{ events_qs.title }}</a></strong></div>
-    <div class="time">{% if events_qs.all_day == True %}All Day{% elif events_qs.all_day == False %}{{ events_qs.time_from|date:"g:i A"  }} - {{ events_qs.time_to|date:"g:i A"  }}{% endif %}</div>
+    <div class="event-title"><strong><a href="{{ next_events.url }}">{{ next_events.title }}</a></strong></div>
+    <div class="time">
+    {% if next_events.all_day == True and next_events.source == 'event' %}All Day
+    {% elif next_events.all_day == True and next_events.source == 'closed' %}Closed
+    {% elif next_events.all_day == False and next_events.source == 'event' %}{{ next_events.time_from|date:"g:i A"  }} - {{ next_events.time_to|date:"g:i A"  }}
+    {% elif next_events.all_day == False and next_events.source == 'closed' %}{{ next_events.time_from|date:"g:i A"  }} - {{ next_events.time_to|date:"g:i A"  }}
+    {% endif %}
+    </div>
   </div>
 </div>
 </div>
-{% endif %}
-{% endfor %}
 {% endfor %}
 </div>
 </div>

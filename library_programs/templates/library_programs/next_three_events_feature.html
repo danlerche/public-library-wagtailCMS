@@ -1,5 +1,7 @@
 {% load wagtailcore_tags wagtailimages_tags %}
+
 {% for next_events in next_three_events %}
+{% if next_events.featured_on_home_page == True %}
 <div class="col-md-4 col-12 mb-2">
 <div class="card">
   <a href="{{ next_events.url }}" title="{{ next_events.title }}">
@@ -7,17 +9,23 @@
   <div class="event-info row mt-3">
   <div class="col-12 col-md-4 col-lg-1 col-xl-2">
   <div class="date-icon" aria-label="month and date of the event">
-  <div class="date-icon-day" aria-label="the {{ next_events.next_date|date:'dS' }}">{{ next_events.next_date|date:"d" }}</div>
-  <div class="date-icon-month" aria-label="of {{ next_events.next_date|date:'F' }}">{{ next_events.next_date|date:"M"|upper  }}</div>
+  <div class="date-icon-day" aria-label="the {{ next_events.event_date|date:'dS' }}">{{ next_events.event_date|date:"d" }}</div>
+  <div class="date-icon-month" aria-label="of {{ next_events.event_date|date:'F' }}">{{ next_events.event_date|date:"M"|upper  }}</div>
   </div>
   </div>
 
   <div class="col-8 col-md-8 title-time">
     <div class="card-title"><strong>{{ next_events.title|truncatechars:30 }}</strong></div>
-    <div class="time">{% if next_events.all_day == True %}All Day{% elif next_events.all_day == False %}{{ next_events.time_from|date:"g:i A"  }} - {{ next_events.time_to|date:"g:i A"  }}{% endif %}</div>
+    <div class="time">{% if next_events.all_day == True and next_events.source == 'event' %}All Day
+    {% elif next_events.all_day == True and next_events.source == 'closed' %}Closed
+    {% elif next_events.all_day == False and next_events.source == 'event' %}{{ next_events.time_from|date:"g:i A"  }} - {{ next_events.time_to|date:"g:i A"  }}
+    {% elif next_events.all_day == False and next_events.source == 'closed' %}Limited Hours
+    {% endif %}
+    </div>
 </div>
 </div>
 </a>
 </div>
 </div>
+{% endif %}
 {% endfor %}

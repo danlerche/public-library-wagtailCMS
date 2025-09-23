@@ -3,6 +3,8 @@ from wagtail.snippets.models import register_snippet
 from django import forms
 from wagtail.admin.forms import WagtailAdminPageForm
 from wagtail.admin.panels import FieldPanel, MultiFieldPanel
+from wagtail.fields import RichTextField
+
 import datetime
 
 class EnableMessageDisplay(models.Model):
@@ -115,20 +117,23 @@ class OpenHour(models.Model):
 
 class ClosedDate(models.Model):
     branch_info = models.ForeignKey(BranchInfo, on_delete=models.SET_NULL, null=True, default=1)
-    closed_date_name = models.TextField(default="holiday")
+    closed_date_name = models.TextField(default="Holiday")
     closed_date_from = models.DateField(default=datetime.date.today)
     closed_date_to = models.DateField(default=datetime.date.today)
     all_day = models.BooleanField(default=True, help_text="Default is checked. uncheck to have special holiday hours")
+    description = RichTextField(max_length=1500,null=True,blank=True)
     time_from = models.TimeField(auto_now=False, auto_now_add=False, null=True, blank=True, help_text="only takes effect if All Day is unchecked")
     time_to = models.TimeField(auto_now=False, auto_now_add=False, null=True, blank=True, help_text="only takes effect if All Day is unchecked")
     closed_dates_label = 'Exception Dates and Hours'
-    closed_image = models.ForeignKey('wagtailimages.Image', null=True, blank=True, on_delete=models.SET_NULL,related_name='+')
+    closed_image = models.ForeignKey('wagtailimages.Image', null=True, blank=False, on_delete=models.SET_NULL,related_name='+')
+    featured_on_home_page = models.BooleanField(default=True)
 
     panels = [
         FieldPanel('branch_info'),
         FieldPanel('closed_date_name'),
         FieldPanel('closed_date_from'),
         FieldPanel('closed_date_to'),
+        FieldPanel('description'),
         MultiFieldPanel(
         [
         FieldPanel('all_day'),
@@ -136,9 +141,10 @@ class ClosedDate(models.Model):
         FieldPanel('time_to'),
         ],
         heading = "Exception Hours",
-        classname = "collapsible collapsed"
+        classname = "collapsible"
         ),
         FieldPanel('closed_image'),
+        FieldPanel('featured_on_home_page'),
         ]
     def __str__(self):
         return self.closed_dates_label

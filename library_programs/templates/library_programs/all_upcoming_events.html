@@ -1,41 +1,41 @@
 {% load wagtailcore_tags wagtailimages_tags %}
 <div id="allUpcomingEvents">
 <div class="event-list-container">
-{% for upcoming_events in upcoming_events %}
-{% for events_qs in events_qs %}
-{% if events_qs.id == upcoming_events.id %}
+{% for ue in upcoming_events %}
 <div class="card mb-3" style="max-width: 991px;">
-  <a href="{{ events_qs.url }}">
-  {% image events_qs.event_image class="card-img-top img-fluid" fill-215x130-c100 %}
+  <a href="{{ ue.url }}">
+  {% image ue.event_image class="card-img-top img-fluid" fill-215x130-c100 %}
   </a>
   <ul class="list-group list-group-flush">
   <li class="list-group-item mt-2">
   <div class="row">
     <div class="col-3 col-md-2">
     <div class="date-icon">
-    <div class="date-icon-day">{{ upcoming_events.event_date|date:"d" }}</div>
-    <div class="date-icon-month">{{ upcoming_events.event_date|date:"M" }}</div>
+    <div class="date-icon-day">{{ ue.event_date|date:"d" }}</div>
+    <div class="date-icon-month">{{ ue.event_date|date:"M" }}</div>
     </div>
     </div>
     <div class="col-9 col-md-10 event-info">
-      <div class="card-title event-title"><h2><a href="{{ events_qs.url }}" title="{{ events_qs.title }}">{{ events_qs.title }}</a></h2></div>
+      <div class="card-title event-title"><h2><a href="{{ ue.url }}" title="{{ ue.title }}">{{ ue.title }}</a></h2></div>
       <div class="time">
-        {% if events_qs.all_day == True %}
-        All Day
-        {% elif events_qs.all_day == False %}
-      {{ events_qs.time_from|date:"g:i A"  }} - {{ events_qs.time_to|date:"g:i A"  }}
+        {% if ue.all_day == False and ue.source == 'event' %}
+      {{ ue.time_from|date:"g:i A"  }} - {{ ue.time_to|date:"g:i A"  }}
+      {% elif ue.all_day == True and ue.source == 'event' %}
+      All Day
+      {% elif ue.all_day == True and ue.source == 'closed' %}
+      Closed
+      {% elif ue.all_day == False and ue.source == 'closed' %}
+      Limited Hours: {{ ue.time_from|date:"g:i A"  }} - {{ ue.time_to|date:"g:i A"  }}
       {% endif %}
     </div>
     </div>
   </div>
   </li>
   <li class="list-group-item">
-    <div class="card-text">{{ events_qs.description|richtext|truncatewords_html:12 }}</div>
+    <div class="card-text">{{ ue.description|richtext|truncatewords_html:12 }}</div>
   </li>
   </ul>
 </div>
-{% endif %}
-{% endfor %}
 {% endfor %}
 </div>
 </div>
