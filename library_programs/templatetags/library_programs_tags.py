@@ -66,7 +66,8 @@ def next_three_events_feature(context):
     from library_programs.event_base import EventQueries
     eq = EventQueries()
     all_events = eq.all_events(s_events_qs, r_events_qs, closed_dates_qs)
-    next_three_events = eq.all_upcoming_events(all_events)[:3]
+    upcoming_events = eq.all_upcoming_events(all_events)
+    next_three_events = [event for event in upcoming_events if event.get("featured_on_home_page")][:3]
 
     return {
         'request': context['request'],

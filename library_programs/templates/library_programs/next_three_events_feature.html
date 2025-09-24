@@ -1,7 +1,6 @@
 {% load wagtailcore_tags wagtailimages_tags %}
 
 {% for next_events in next_three_events %}
-{% if next_events.featured_on_home_page == True %}
 <div class="col-md-4 col-12 mb-2">
 <div class="card">
   <a href="{{ next_events.url }}" title="{{ next_events.title }}">
@@ -27,5 +26,4 @@
 </a>
 </div>
 </div>
-{% endif %}
 {% endfor %}
