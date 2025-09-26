@@ -61,7 +61,7 @@ class FilterByEvent(WagtailFilterSet):
 
 class RegistrationAdmin(SnippetViewSet):
     model = Registration
-    menu_label = 'Registrations' 
+    menu_label = 'Registration' 
     #icon = 'doc-full'
     base_url_path = 'library-programs/registration'
     list_display = ('name','email', 'event_name', 'registration_date' ,'wait_listed')
@@ -69,10 +69,14 @@ class RegistrationAdmin(SnippetViewSet):
     filterset_class = FilterByEvent
     edit_template_name = 'library_programs/registration/admin_snippet/edit.html'
 
-    edit_handler = TabbedInterface([
-        ObjectList([FieldPanel("registration_date", read_only=True), FieldPanel("user_info", read_only=True), FieldPanel("wait_list")], 
-            heading="Registrant"),
-    ])
+class UserInfoAdmin(SnippetViewSet):
+    model = RegistrationUserFormBuilder
+    menu_label = 'User Info'
+    base_url_path = "library-programs/user-info"
+    # Override templates
+    index_template_name = "library_programs/registration/user_info/index.html"
+    edit_template_name = "library_programs/registration/user_info/edit.html"
+    list_display = ["id", "parsed_form_data"]  # instead of raw form_data
 
 #deletes the registration form entry when the registration is deleted
     @hooks.register('after_delete_snippet')
@@ -166,7 +170,7 @@ class EventAdminGroup(SnippetViewSetGroup):
     menu_icon = 'date'
     menu_order = 200
     items = (EventAdmin, EventCategoryAdmin, EventAudienceAdmin, EventAgeAdmin, LinkToCalendarAdmin, 
-        RegistrationFormAdmin, RegistrationAdmin)
+        RegistrationFormAdmin, RegistrationAdmin, UserInfoAdmin)
 
 #this would normally create a Programs & Events Menu Item, but it's been hidden with the following contstruct_main_menu hook below
 #this will register the snippet URLs
@@ -196,6 +200,7 @@ def register_event_reg_menu_item():
         MenuItem('Events w/ Registrations', reverse('event_regisitration'), icon_name="calendar-alt"),
         MenuItem('Registration Forms', '/admin/library-programs/registration-form/', icon_name="form"),
         MenuItem('Registrations', '/admin/library-programs/registration/', icon_name="clipboard-list"),
+        MenuItem('User Info', '/admin/library-programs/user-info', icon_name="clipboard-list")
     ])
     #could we also get the library programs menu and append the sub menu?
     return SubmenuMenuItem('Programs & Events', submenu, icon_name='date')

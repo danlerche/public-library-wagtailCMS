@@ -28,6 +28,7 @@ from wagtail.snippets.views.snippets import DeleteView
 from wagtail_honeypot.models import (
     HoneypotFormMixin, HoneypotFormSubmissionMixin
 )
+from django.utils.html import format_html, format_html_join
 
 class EventAudience(ClusterableModel):
     audience_name = models.CharField(max_length=300, null=True, blank=True)
@@ -584,7 +585,28 @@ class RegistrationFormPage(HoneypotFormMixin, HoneypotFormSubmissionMixin):
         verbose_name = "Registration Form Builder"
 
 class RegistrationUserFormBuilder(AbstractFormSubmission):
-    pass
+    def parsed_form_data(self):
+        try:
+            data = super().get_data()
+            print(data)
+            def pretty_label(label):
+                return label.replace("_", " ").capitalize()
+        
+            return format_html(
+                "<ul>{}</ul>",
+                format_html_join(
+                    "",
+                    "<li><strong>{}</strong>: {}</li>",
+                    (
+                        (pretty_label(k), v)
+                        for k, v in data.items()
+                        ),
+                    ),
+                )
+        except Exception as e:
+            return f"Invalid data ({e})"
+
+    parsed_form_data.short_description = "Form Data"
 
 class Registration(models.Model):
     user_info = models.ForeignKey('RegistrationUserFormBuilder', default=1, on_delete=models.CASCADE)
