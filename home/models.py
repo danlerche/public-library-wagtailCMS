@@ -8,6 +8,46 @@ from wagtail.images.blocks import ImageChooserBlock
 from wagtail.blocks import BooleanBlock
 from wagtail.blocks import PageChooserBlock
 from wagtail.documents.blocks import DocumentChooserBlock
+from wagtailmedia.blocks import AbstractMediaChooserBlock
+from wagtail.models.media import Collection
+from django.forms.utils import flatatt
+from django.utils.html import format_html, format_html_join
+
+
+class AudioVideoBlock(AbstractMediaChooserBlock):
+    def render_basic(self, value, context=None):
+        if not value:
+            return ""
+
+        if value.type == "video":
+            player_code = """
+            <div class="ratio ratio-16x9">
+                <video width="{1}" height="{2}" controls poster="{3}">
+                    {0}
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            """
+        else:
+            player_code = """
+            <div>
+                <audio controls>
+                    {0}
+                    Your browser does not support the audio element.
+                </audio>
+            </div>
+            """
+
+        return format_html(
+            player_code,
+            format_html_join(
+                "\n", "<source{0}>", [[flatatt(s)] for s in value.sources]
+            ),
+            value.width,
+            value.height,
+            value.thumbnail.url if value.thumbnail else "", 
+        )
+
 
 class HomePage(Page):
     content = StreamField([
@@ -21,6 +61,7 @@ class HomePage(Page):
             ('page', blocks.PageChooserBlock(required=False, help_text="The internal page to link to")),
             ('single_feature_image', ImageChooserBlock(required=False)),
             ('single_feature_video_embed', blocks.RawHTMLBlock(required=False, help_text="Embed a video using an iframe tag provided by youTube, or another source instead of displaying the image.")),
+            ("single_feature_video_upload", AudioVideoBlock(icon="media", required=False)),
             ('single_feature_description', blocks.CharBlock(required=True, help_text="write a short description of the feature")),
             ('override_title', blocks.CharBlock(required=False, help_text="OPTIONAL, only use this if you'd like to override the name of the page you are linking to")),
             ('enabled', blocks.BooleanBlock(default=True, required=False))

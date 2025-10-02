@@ -1,31 +1,50 @@
 {% load wagtailcore_tags wagtailimages_tags %}
+
 {% if value.enabled %}
 <div id="singleFeature">
-<div class="row mb-1 mt-2">
-<div class="card">
-<div class="card-body row">
-<div class="col-md-5 col-12">
-  {% if value.single_feature_video_embed != '' %}
-  {{ value.single_feature_video_embed }}
-  {% elif value.single_feature_video_embed == '' %}
-  <a href="{{ value.page.url }}" aria-hidden="true" role="presentation" tabindex="-1">
-  {% image value.single_feature_image class="img-fluid" fill-540x350-c100 %}
-  </a>
- {% endif %}
-</div>
-<div class="col-md-7 col-12">
-<div class="card-body">
-<a href="{{ value.page.url }}">
-<h2>{% if value.override_title != '' %}{{ value.override_title }}
-  {% else %}{{ value.page }}{% endif %}</h2>
-</a>
-<p>{{ value.single_feature_description }}</p>
-<a href="{{ value.page.url }}" class="btn btn-primary">Read More</a>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
+    <div class="row mb-1 mt-2">
+        <div class="card">
+            <div class="card-body row">
+
+                <div class="col-md-5 col-12">
+                    
+                    {% with video_upload=value.single_feature_video_upload %}
+                    {% with video_embed=value.single_feature_video_embed %}
+                        
+                        {# 1. Check for the uploaded video first #}
+                        {% if video_upload %}
+                            {# **CRITICAL FIX:** Explicitly call the block's render_basic method, then apply |safe #}
+                            {# This ensures the custom HTML is generated before being outputted #}
+                            {{ self.bound_blocks.single_feature_video_upload.render|safe }}
+
+                        {# 2. Check for the video embed (RawHTMLBlock) #}
+                        {% elif video_embed %}
+                            {# RawHTMLBlock value is already a safe HTML string #}
+                            {{ video_embed }} 
+
+                        {# 3. Fallback to image (if no video is present) #}
+                        {% else %}
+                            <a href="{{ value.page.url }}" aria-hidden="true" role="presentation" tabindex="-1">
+                                {% image value.single_feature_image class="img-fluid" fill-540x350-c100 %}
+                            </a>
+                        {% endif %}
+
+                    {% endwith %}
+                    {% endwith %}
+                </div>
+
+                <div class="col-md-7 col-12">
+                    <div class="card-body">
+                        <a href="{{ value.page.url }}">
+                            <h2>{% if value.override_title %}{{ value.override_title }}
+                                {% else %}{{ value.page }}{% endif %}</h2>
+                        </a>
+                        <p>{{ value.single_feature_description }}</p>
+                        <a href="{{ value.page.url }}" class="btn btn-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endif %}
