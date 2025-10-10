@@ -258,10 +258,10 @@ class Event(Page, Orderable):
     success_email_msg = RichTextField(blank=True, null=True, verbose_name="Body of the success email")
     waitlist_email_msg = models.CharField(max_length=2000, blank=True, null=True, verbose_name="Body of the waitlist email")
     success_page = models.ForeignKey('wagtailcore.Page', blank=True, on_delete=models.SET_NULL, null=True, related_name="registration_success")
+    close_reg_date = models.DateTimeField(null=True, blank=True, verbose_name="Close Registration Form", help_text="Date the registration form will be removed from the page. Otherwise closes after the program ends.")
 
     def clean(self):
         super().clean()
-
         # If not all-day, require both time_from and time_to
         if not self.all_day:
             if not self.time_from:
@@ -272,6 +272,10 @@ class Event(Page, Orderable):
             # Ensure time_from < time_to
             if self.time_from and self.time_to and self.time_from >= self.time_to:
                 raise ValidationError({'time_to': "End time must be after start time."})
+
+        if self.close_reg_date is not None:
+            if self.close_reg_date.date() > self.event_date:
+                raise ValidationError({"Close Registration Form Field cannot be later than the event date."})
 
     def show_registered_events():
         return self.Event.objects.get(enable_registration=1)
@@ -473,6 +477,7 @@ class Event(Page, Orderable):
             FieldPanel('enable_registration'),
             FieldPanel('spots_available', classname="full"),
             FieldPanel('wait_list_spots', classname="full"),
+            FieldPanel('close_reg_date'),
             PageChooserPanel('registration_form_chooser', ['library_programs.RegistrationFormPage']),
             PageChooserPanel('success_page'),
             MultiFieldPanel([

@@ -23,10 +23,12 @@
   {% with today=today_dt %}
   {% if event_date_time_to|date:"c" > today and page.until == None or until_date_time_to|date:"c" > today and page.until != None %}
 {% if page.enable_registration == True  %}
-{% if reg_spots_remaining > 0 and page.registration_form_chooser != None %}
+{% if reg_spots_remaining > 0 and page.registration_form_chooser != None and page.close_reg_date is None %}
+{% elif reg_spots_remaining > 0 and page.registration_form_chooser != None and page.close_reg_date is not None and today < page.close_reg_date|date:"c" %}
 <div class="alert alert-success">Registration Is Open</div>
 {% endif %}
-{% if reg_spots_remaining == 0 and wait_list_remaining > 0 and page.registration_form_chooser != None %}
+{% if reg_spots_remaining == 0 and wait_list_remaining > 0 and page.registration_form_chooser != None and page.close_reg_date is None %}
+{% elif reg_spots_remaining == 0 and wait_list_remaining > 0 and page.registration_form_chooser != None and page.close_reg_date is not None and today < page.close_reg_date|date:"c" %}
 <div class="alert alert-warning">Wait List Registation Is Open</div>
 {% endif %}
 {% if reg_spots_remaining == 0 and wait_list_remaining == 0 %}
@@ -156,15 +158,40 @@
   </div>
   {% endif %}
 </div>
-
+{% now 'c' as today_dt %}
+{% with today=today_dt %}
 {% if page.enable_registration == 1 %}
- {% now 'c' as today_dt %}
-  {% with today=today_dt %}
-  {% if event_date_time_to|date:"c" > today and page.until == None or until_date_time_to|date:"c" > today and page.until != None %}
+
+{% if page.close_reg_date is not None %}
+{% if today > page.close_reg_date|date:"c" %}
+{% elif today < page.close_reg_date|date:"c" %}
+{% if reg_spots_remaining > 0 %}
 {% include "library_programs/registration/registration.html" %}
+{% elif wait_list_remaining > 0 %}
+{% include "library_programs/registration/wait_list_registration.html" %}
+{% endif %}
+{% endif %}
+{% endif %}
+
+{% if page.close_reg_date is None %}
+{% if today < event_date_time_to|date:"c" and page.until is None %}
+{% if reg_spots_remaining > 0 %}
+{% include "library_programs/registration/registration.html" %}
+{% elif wait_list_remaining > 0 %}
+{% include "library_programs/registration/wait_list_registration.html" %}
+{% endif %}
+{% elif today < page.until|date:"c" %}
+{% if reg_spots_remaining > 0 %}
+{% include "library_programs/registration/registration.html" %}
+{% elif wait_list_remaining > 0 %}
+{% include "library_programs/registration/wait_list_registration.html" %}
+{% endif %}
+{% endif %}
+{% endif %}
+
 {% endif %}
 {% endwith %}
-{% endif %}
+
 
 </div>
 </div>
