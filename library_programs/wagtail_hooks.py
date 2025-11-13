@@ -64,7 +64,7 @@ class RegistrationAdmin(SnippetViewSet):
     menu_label = 'Registration' 
     #icon = 'doc-full'
     base_url_path = 'library-programs/registration'
-    list_display = ('name','email', 'event_name', 'registration_date' ,'wait_listed')
+    list_display = ('email', 'event_name', 'registration_date' ,'wait_listed')
     index_template_name = 'library_programs/registration/index.html'
     filterset_class = FilterByEvent
     edit_template_name = 'library_programs/registration/admin_snippet/edit.html'

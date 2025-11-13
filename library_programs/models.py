@@ -519,7 +519,7 @@ class ExceptionDate(models.Model) :
     def __str__(self):
         return self.exception_date
 
-RESERVED_LABELS = ['Your Name', 'Email']
+RESERVED_LABELS = ['Email']
 
 def validate_label(value):
     if value in RESERVED_LABELS:
@@ -556,17 +556,11 @@ class RegistrationFormPage(HoneypotFormMixin, HoneypotFormSubmissionMixin):
 
             fields = list(super(RegistrationFormPage, self).get_form_fields())
 
-            fields.insert(0, RegistrationFormField(
+            fields.insert(-1, RegistrationFormField(
                 label='Email',
                 field_type='email',
                 required=True,
                 help_text="Your email address"))
-
-            fields.insert(0, RegistrationFormField(
-                label='Your Name',
-                field_type='singleline',
-                required=False,
-                help_text="Your First and Last Name"))
 
             return fields
 
@@ -618,10 +612,6 @@ class Registration(models.Model):
     event_name = models.ForeignKey('Event', default=1, on_delete=models.CASCADE)
     registration_date = models.DateTimeField(auto_now_add=True, blank=True)
     wait_list = models.BooleanField(default=0)
-
-    def name(self):
-        user_info = self.user_info.form_data
-        return user_info.get('your_name', None)
 
     def email(self):
         email = self.user_info.form_data
