@@ -5,7 +5,7 @@ icalendar
 python-dateutil
 django>=5.1
 pytz
-wagtail==7.2.1
+wagtail==7.3
 wagtail-honeypot
 wagtail-modeladmin
 wagtailmedia
