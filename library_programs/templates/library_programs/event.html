@@ -23,9 +23,6 @@
 {% with today=today_dt %}
 {% if event_date_time_to|date:"c" > today and page.until == None or page.until_date_time_to|date:"c" > today and page.until != None %}
 {% if page.enable_registration == True  %}
-{% if page.open_reg_date != None and page.open_reg_date|date:"c" >= today %}
-<div class="alert alert-success">Registration Opens on {{ page.open_reg_date|date:"l, F d" }} at {{ page.open_reg_date|date:"g:i a" }} </div>
-{% endif %}
 {% if reg_spots_remaining > 0 and page.registration_form_chooser != None and page.close_reg_date is None and page.open_reg_date is None %}
 {% elif reg_spots_remaining > 0 and page.registration_form_chooser != None and page.close_reg_date is not None and today < page.close_reg_date|date:"c" and page.open_reg_date is not None and today > page.open_reg_date|date:"c" %}
 <div class="alert alert-success">Registration Is Open</div>
@@ -43,6 +40,8 @@
 
 {% if page.enable_registration == True and page.close_reg_date|date:"c"  < today %}
 <div class="alert alert-danger">Registration has closed for this program</div>
+{% elif page.enable_registration == True and page.open_reg_date|date:"c" > today %}
+<div class="alert alert-success">Registration Opens on {{ page.open_reg_date|date:"l, F d" }} at {{ page.open_reg_date|date:"g:i a" }}</div>
 {% endif %}
 
 {% endwith %}
