@@ -3,6 +3,7 @@ from django.contrib.syndication.views import Feed
 from django.utils.html import strip_tags
 from django.urls import reverse
 from library_programs.models import Event
+from open_hours.models import ClosedDate
 import datetime
 
 class UpcomingEventsFeed(Feed):
@@ -17,9 +18,10 @@ class UpcomingEventsFeed(Feed):
         thirty_days = today + datetime.timedelta(30)
         s_events_qs = Event.objects.filter(repeats__isnull=True).live()
         r_events_qs = Event.objects.filter(repeats__isnull=False).live()
+        closed_dates_qs = ClosedDate.objects.select_related("branch_info__closed_holiday_page")
         from library_programs.event_base import EventQueries
         eq = EventQueries()
-        all_events = eq.all_events(s_events_qs, r_events_qs)
+        all_events = eq.all_events(s_events_qs, r_events_qs, closed_dates_qs)
         for event_index in range(len(all_events)):
             event_dates = all_events[event_index]['event_date']
             if all_events[event_index]['event_date'] >= today and all_events[event_index]['event_date'] <= thirty_days:

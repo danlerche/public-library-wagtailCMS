@@ -12,7 +12,22 @@ class EventQueries:
         #formats single events into a list of dictionaries so they can be combined with repeating dates
         for se in s_events_qs:
             se_dates = datetime.datetime.combine(se.event_date, se.time_from)
-            se_dict = {'id': se.id, 'title':se.title, 'event_date':se_dates, 'time_from': se.time_from,'time_to': se.time_to,'description':se.description, 'all_day': se.all_day, 'url':se.url,'event_image': se.event_image,'featured_on_home_page':se.featured_on_home_page, 'source':'event' }
+            se_dict = {
+                'id': se.id,
+                'title': se.title,
+                'event_date': se_dates,
+                'time_from': se.time_from,
+                'time_to': se.time_to,
+                'description': se.description,
+                'all_day': se.all_day,
+                'url': se.url,
+                'event_image': se.event_image,
+                'featured_on_home_page': se.featured_on_home_page,
+                'source': 'event',
+                'occur': 1,
+                'location': se.location,
+                'first_published_at': se.first_published_at,
+            }
             single_events.append(se_dict)
 
         for cd in closed_dates_qs:
@@ -26,19 +41,61 @@ class EventQueries:
                     cd_dates = datetime.datetime.combine(cd.closed_date_from, datetime.time(hour=00, minute=00))
                 elif cd.time_from is not None:
                     cd_dates = datetime.datetime.combine(cd.closed_date_from, cd.time_from)
-                cd_dict = {'id': cd.id, 'title':cd.closed_date_name, 'event_date':cd_dates, 'time_from':cd.time_from, 'time_to':cd.time_to,  'description':cd.description, 'all_day': cd.all_day, 'url':cd_url, 'event_image': cd.closed_image,'featured_on_home_page':cd.featured_on_home_page,'source':'closed' }
+                cd_dict = {
+                    'id': cd.id,
+                    'title': cd.closed_date_name,
+                    'event_date': cd_dates,
+                    'time_from': cd.time_from,
+                    'time_to': cd.time_to,
+                    'description': cd.description,
+                    'all_day': cd.all_day,
+                    'url': cd_url,
+                    'event_image': cd.closed_image,
+                    'featured_on_home_page': cd.featured_on_home_page,
+                    'source': 'closed',
+                    'occur': 1,
+                    'first_published_at': cd_dates,
+                }
                 single_events.append(cd_dict)
             #multiday closures
             elif cd.closed_date_to != cd.closed_date_from:
                 date_range = list(rrule(freq=DAILY, until=cd.closed_date_to, dtstart=cd.closed_date_from))
-                for cd_dates in date_range:
+                for count, cd_dates in enumerate(date_range, start=1):
                     #partial multiday closures
                     if cd.time_from is None:
-                        se_dict = {'id': cd.id, 'title':cd.closed_date_name, 'event_date':cd_dates, 'time_from': cd.time_from,'time_to': cd.time_to,'description':se.description, 'all_day': cd.all_day, 'url':cd_url,'event_image': cd.closed_image, 'featured_on_home_page':cd.featured_on_home_page,'source':'closed' } 
+                        se_dict = {
+                            'id': cd.id,
+                            'title': cd.closed_date_name,
+                            'event_date': cd_dates,
+                            'time_from': cd.time_from,
+                            'time_to': cd.time_to,
+                            'description': se.description,
+                            'all_day': cd.all_day,
+                            'url': cd_url,
+                            'event_image': cd.closed_image,
+                            'featured_on_home_page': cd.featured_on_home_page,
+                            'source': 'closed',
+                            'occur': count,
+                            'first_published_at': cd_dates,
+                        }
                         single_events.append(se_dict)
                     elif cd.time_from is not None:
                         part_clos = datetime.datetime.combine(cd_dates.date(), cd.time_from)
-                        se_dict = {'id': cd.id, 'title':cd.closed_date_name, 'event_date':part_clos, 'time_from': cd.time_from,'time_to': cd.time_to,'description':cd.description, 'all_day': cd.all_day, 'url':cd_url,'event_image': cd.closed_image,'featured_on_home_page':cd.featured_on_home_page,'source':'closed' }
+                        se_dict = {
+                            'id': cd.id,
+                            'title': cd.closed_date_name,
+                            'event_date': part_clos,
+                            'time_from': cd.time_from,
+                            'time_to': cd.time_to,
+                            'description': cd.description,
+                            'all_day': cd.all_day,
+                            'url': cd_url,
+                            'event_image': cd.closed_image,
+                            'featured_on_home_page': cd.featured_on_home_page,
+                            'source': 'closed',
+                            'occur': count,
+                            'first_published_at': cd_dates,
+                        }
                         single_events.append(se_dict)
 
         repeating_dates = []
@@ -50,7 +107,22 @@ class EventQueries:
             repeating_dates.append(json_dates_to_list)
             for occur in range(len(json_dates_to_list)):
                 py_dt_format = datetime.datetime.strptime(json_dates_to_list[occur], '%Y-%m-%d %H:%M')
-                ind_event = {'id': rd.id, 'title':rd.title, 'event_date':py_dt_format,'time_from':rd.time_from, 'time_to':rd.time_to,'description':rd.description, 'all_day': rd.all_day,'url':rd.url,'event_image': rd.event_image, 'featured_on_home_page':rd.featured_on_home_page,'source': 'event' }
+                ind_event = {
+                    'id': rd.id,
+                    'title': rd.title,
+                    'event_date': py_dt_format,
+                    'time_from': rd.time_from,
+                    'time_to': rd.time_to,
+                    'description': rd.description,
+                    'all_day': rd.all_day,
+                    'url': rd.url,
+                    'event_image': rd.event_image,
+                    'featured_on_home_page': rd.featured_on_home_page,
+                    'source': 'event',
+                    'occur': occur + 1,
+                    'location': rd.location,
+                    'first_published_at': rd.first_published_at,
+                }
                 repeating_events.append(ind_event)
         all_events = single_events + repeating_events
         all_events.sort(key=lambda item: item.get('event_date'))
@@ -95,17 +167,58 @@ class EventQueries:
                     rd_list.append(aev['repeating_dates'])
             #creates a dictionary with a list of repeating dates if the repeating dates list is not an empty list
             if rd_list != []:
-                gr_entry = {'id': upcoming_event_qs[rd].id, 'repeating_dates':rd_list, 'rd': True, 'time_from':upcoming_event_qs[rd].time_from, 'time_to':upcoming_event_qs[rd].time_to,'all_day':upcoming_event_qs[rd].all_day, 'title':upcoming_event_qs[rd].title, 'event_image':upcoming_event_qs[rd].event_image , 'url':upcoming_event_qs[rd].url }
+                gr_entry = {
+                    'id': upcoming_event_qs[rd].id,
+                    'repeating_dates': rd_list,
+                    'rd': True,
+                    'time_from': upcoming_event_qs[rd].time_from,
+                    'time_to': upcoming_event_qs[rd].time_to,
+                    'all_day': upcoming_event_qs[rd].all_day,
+                    'title': upcoming_event_qs[rd].title,
+                    'event_image': upcoming_event_qs[rd].event_image,
+                    'url': upcoming_event_qs[rd].url,
+                }
                 grouped_upcoming_events.append(gr_entry)
             #filters out single dates and uses the event_date and time_from  db field instead
             elif rd_list == []:
-                gr_entry = {'id': upcoming_event_qs[rd].id, 'repeating_dates':datetime.datetime.combine(upcoming_event_qs[rd].event_date, upcoming_event_qs[rd].time_from), 'rd': False, 'time_from':upcoming_event_qs[rd].time_from, 'time_to':upcoming_event_qs[rd].time_to, 'all_day':upcoming_event_qs[rd].all_day,'title':upcoming_event_qs[rd].title, 'event_image':upcoming_event_qs[rd].event_image , 'url':upcoming_event_qs[rd].url}
+                gr_entry = {
+                    'id': upcoming_event_qs[rd].id,
+                    'repeating_dates': datetime.datetime.combine(
+                        upcoming_event_qs[rd].event_date, 
+                        upcoming_event_qs[rd].time_from
+                    ),
+                    'rd': False,
+                    'time_from': upcoming_event_qs[rd].time_from,
+                    'time_to': upcoming_event_qs[rd].time_to,
+                    'all_day': upcoming_event_qs[rd].all_day,
+                    'title': upcoming_event_qs[rd].title,
+                    'event_image': upcoming_event_qs[rd].event_image,
+                    'url': upcoming_event_qs[rd].url,
+                }
                 grouped_upcoming_events.append(gr_entry)
         #grabs only the next upcoming event
         for gue in grouped_upcoming_events:
             if gue['rd'] == True:
-                next_date.append({'id': gue['id'],'next_date':gue['repeating_dates'][0],'time_from': gue['time_from'], 'time_to': gue['time_to'], 'all_day': gue['all_day'], 'title': gue['title'],'event_image': gue['event_image'] ,'url': gue['url']})
+                next_date.append({
+                    'id': gue['id'],
+                    'next_date': gue['repeating_dates'][0],
+                    'time_from': gue['time_from'],
+                    'time_to': gue['time_to'],
+                    'all_day': gue['all_day'],
+                    'title': gue['title'],
+                    'event_image': gue['event_image'],
+                    'url': gue['url'],
+                })
             #event_date db field is not a dictionary
             elif gue['rd'] == False:
-                next_date.append({'id': gue['id'],'next_date':gue['repeating_dates'], 'time_from': gue['time_from'], 'time_to': gue['time_to'], 'all_day': gue['all_day'], 'title': gue['title'],'event_image': gue['event_image'] ,'url': gue['url']})
+                next_date.append({
+                    'id': gue['id'],
+                    'next_date': gue['repeating_dates'],
+                    'time_from': gue['time_from'],
+                    'time_to': gue['time_to'],
+                    'all_day': gue['all_day'],
+                    'title': gue['title'],
+                    'event_image': gue['event_image'],
+                    'url': gue['url'],
+                })
         return next_date

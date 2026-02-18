@@ -1,0 +1,22 @@
+{% load tz %}
+
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//{{ site_name }}//NONSGML Event Calendar//EN
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+
+{% for all_events in all_events %}
+BEGIN:VEVENT
+UID:{{ all_events.id }}-{{ all_events.occur }}
+DTSTAMP:{{ all_events.first_published_at }}
+DTSTART{% if all_events.all_day == 1 %};VALUE=DATE:{{ all_events.event_date|date:"Ymd"}}{% elif all_events.all_day == 0 %}:{{ all_events.event_date|date:"Ymd"}}T{{ all_events.time_from|date:"His\Z" }}{% endif %}
+DTEND{% if all_events.all_day == 1 %};VALUE=DATE:{{ all_events.ics_end_date|date:"Ymd"}}{% elif all_events.all_day == 0 %}:{{ all_events.event_date|date:"Ymd"}}T{{ all_events.time_to|date:"His\Z" }}{% endif %}
+SUMMARY:{{ all_events.title }}
+DESCRIPTION:{{ all_events.description|striptags }}
+LOCATION: {% if all_events.location is not None %} {{ all_events.location }} {% else %}{{ site_name }} {% endif %}
+STATUS:CONFIRMED
+SEQUENCE:0
+END:VEVENT
+{% endfor %}
+END:VCALENDAR

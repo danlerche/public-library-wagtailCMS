@@ -11,6 +11,7 @@ from search import views as search_views
 
 from django.views.generic import TemplateView
 from library_programs.feeds import UpcomingEventsFeed
+from library_programs import views
 
 urlpatterns = [
     path('django-admin/', admin.site.urls),
@@ -19,7 +20,9 @@ urlpatterns = [
     path('documents/', include(wagtaildocs_urls)),
 
     path('search/', search_views.search, name='search'),
-    path('rss/', UpcomingEventsFeed()),
+    path('feeds/rss/', UpcomingEventsFeed()),
+
+    path('feeds/calendar-feed/', views.event_feed_view, name='calendar_feed'),
 ]
 
 

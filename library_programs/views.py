@@ -1,7 +1,11 @@
 #https://docs.wagtail.org/en/stable/extending/admin_views.html#using-base-viewset
+from django.shortcuts import render
 from django.db.models import Count
 from django.shortcuts import render
 from .models import Event, Registration
+from .calendar_feed import get_calendar_context
+#delete this line below later
+from django.template.loader import render_to_string
 
 def events_with_registration(request):
     event_qs = Event.objects.filter(enable_registration=True)
@@ -42,3 +46,37 @@ def events_with_registration(request):
         'library_programs/registration/admin_snippet/events_with_registration.html',
         {'registration_info': registration_info},
     )
+
+def event_feed_view(request):
+    context = get_calendar_context()
+    raw_name = context.get('site_name', 'calendar')
+    safe_name = raw_name.lower().replace(" ", "-")
+    filename = f"{safe_name}.ics"
+    
+    #uncomment this section to print the ics feed to the screen 
+    # 1. Render the response
+    #response = render(
+    #    request, 
+    #    'library_programs/calendar.ics', 
+    #    context, 
+    #    # Changed content_type to text/plain to prevent download
+    #    content_type='text/plain; charset=utf-8' 
+    #)
+
+    # 2. Print the results to your command line
+    #print("\n--- BEGIN ICS DEBUG ---")
+    #print(response.content.decode('utf-8'))
+    #print("--- END ICS DEBUG ---\n")
+
+    #return response
+
+    response = render(
+        request, 
+        'library_programs/calendar.ics', 
+        context, 
+        content_type='text/calendar; charset=utf-8'
+    )
+
+    response['Content-Disposition'] = f'attachment; filename="{filename}"'
+
+    return response
