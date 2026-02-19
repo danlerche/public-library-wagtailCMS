@@ -20,8 +20,8 @@ urlpatterns = [
     path('documents/', include(wagtaildocs_urls)),
 
     path('search/', search_views.search, name='search'),
+    
     path('feeds/rss/', UpcomingEventsFeed()),
-
     path('feeds/calendar-feed/', views.event_feed_view, name='calendar_feed'),
 ]
 
