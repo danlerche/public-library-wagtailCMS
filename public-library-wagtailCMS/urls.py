@@ -23,6 +23,7 @@ urlpatterns = [
     
     path('feeds/rss/', UpcomingEventsFeed()),
     path('feeds/calendar-feed/', views.event_feed_view, name='calendar_feed'),
+    path('feeds/json-calendar-feed/', views.event_json_feed, name='json-calendar_feed'),
 ]
 
 

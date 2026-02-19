@@ -4,8 +4,10 @@ from django.db.models import Count
 from django.shortcuts import render
 from .models import Event, Registration
 from .calendar_feed import get_calendar_context
-#delete this line below later
 from django.template.loader import render_to_string
+from django.http import JsonResponse
+import html
+from django.utils.html import strip_tags
 
 def events_with_registration(request):
     event_qs = Event.objects.filter(enable_registration=True)
@@ -80,3 +82,29 @@ def event_feed_view(request):
     response['Content-Disposition'] = f'attachment; filename="{filename}"'
 
     return response
+
+def event_json_feed(request):
+    context = get_calendar_context(request)
+    all_events = context.get('all_events', [])
+    
+    json_data = []
+    
+    for event in all_events:
+        # 1. Strip HTML tags from the description
+        raw_description = event.get('description', '')
+        clean_description = strip_tags(raw_description)
+        
+        # 2. Convert HTML entities (like &amp;) back to normal characters (&)
+        # This fixes the "Trying to replace..." issue in your sample
+        final_description = html.unescape(clean_description).strip()
+
+        json_data.append({
+            "Subject": event.get('title', 'No Title'),
+            "Start": event['ics_start'].isoformat(),
+            "End": event['ics_end'].isoformat(),
+            "Location": event.get('location', 'Library') or "Library", # Handle None values
+            "IsAllDay": event.get('all_day', False),
+            "Description": final_description
+        })
+    
+    return JsonResponse(json_data, safe=False)
