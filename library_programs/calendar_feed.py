@@ -32,7 +32,6 @@ def get_calendar_context(request=None):
             # Make the datetime "Aware" (uses America/Vancouver from settings.py)
             if timezone.is_naive(start_dt):
                 start_dt = timezone.make_aware(start_dt)
-                print(start_dt)
                 end_dt = timezone.make_aware(end_dt)
 
             # Convert to UTC for the ICS Z-suffix

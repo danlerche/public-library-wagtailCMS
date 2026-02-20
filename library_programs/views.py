@@ -8,6 +8,7 @@ from django.template.loader import render_to_string
 from django.http import JsonResponse
 import html
 from django.utils.html import strip_tags
+from datetime import datetime, time, timedelta
 
 def events_with_registration(request):
     event_qs = Event.objects.filter(enable_registration=True)
@@ -90,19 +91,27 @@ def event_json_feed(request):
     json_data = []
     
     for event in all_events:
-        # 1. Strip HTML tags from the description
+        # Get raw values from calendar_feed context
+        start_val = event['ics_start']
+        end_val = event['ics_end']
+
+        # Logic: If it's a date object (All Day), normalize to midnight UTC datetime
+        # If it's already a datetime, it's already UTC from calendar_feed.py
+        if not isinstance(start_val, datetime):
+            start_val = datetime.combine(start_val, time.min).replace(tzinfo=py_timezone.utc)
+            end_val = datetime.combine(end_val, time.min).replace(tzinfo=py_timezone.utc)
+
+        # 1. Clean up description
         raw_description = event.get('description', '')
         clean_description = strip_tags(raw_description)
-        
-        # 2. Convert HTML entities (like &amp;) back to normal characters (&)
-        # This fixes the "Trying to replace..." issue in your sample
         final_description = html.unescape(clean_description).strip()
 
+        # 2. Build the JSON object
         json_data.append({
             "Subject": event.get('title', 'No Title'),
-            "Start": event['ics_start'].isoformat(),
-            "End": event['ics_end'].isoformat(),
-            "Location": event.get('location', 'Library') or "Library", # Handle None values
+            "Start": start_val.isoformat(), 
+            "End": end_val.isoformat(),
+            "Location": event.get('location', 'Library') or "Library",
             "IsAllDay": event.get('all_day', False),
             "Description": final_description
         })
