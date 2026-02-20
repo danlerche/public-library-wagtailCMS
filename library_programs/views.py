@@ -8,7 +8,7 @@ from django.template.loader import render_to_string
 from django.http import JsonResponse
 import html
 from django.utils.html import strip_tags
-from datetime import datetime, time, timedelta
+from datetime import datetime, time, timedelta, timezone as py_timezone # Add 'as py_timezone'
 
 def events_with_registration(request):
     event_qs = Event.objects.filter(enable_registration=True)
@@ -91,23 +91,26 @@ def event_json_feed(request):
     json_data = []
     
     for event in all_events:
-        # Get raw values from calendar_feed context
         start_val = event['ics_start']
         end_val = event['ics_end']
 
-        # Logic: If it's a date object (All Day), normalize to midnight UTC datetime
-        # If it's already a datetime, it's already UTC from calendar_feed.py
+        # 1. If it's a date (All Day), make it a UTC datetime
         if not isinstance(start_val, datetime):
             start_val = datetime.combine(start_val, time.min).replace(tzinfo=py_timezone.utc)
             end_val = datetime.combine(end_val, time.min).replace(tzinfo=py_timezone.utc)
+        
+        # 2. If it's already a datetime but has no timezone (Naive), make it UTC
+        elif start_val.tzinfo is None or start_val.tzinfo.utcoffset(start_val) is None:
+            start_val = start_val.replace(tzinfo=py_timezone.utc)
+            end_val = end_val.replace(tzinfo=py_timezone.utc)
 
-        # 1. Clean up description
-        raw_description = event.get('description', '')
+        # Clean description
+        raw_description = event.get('description', '') or ''
         clean_description = strip_tags(raw_description)
         final_description = html.unescape(clean_description).strip()
 
-        # 2. Build the JSON object
         json_data.append({
+            "ID": event.get('id'), # ADDED: This is your unique key
             "Subject": event.get('title', 'No Title'),
             "Start": start_val.isoformat(), 
             "End": end_val.isoformat(),
