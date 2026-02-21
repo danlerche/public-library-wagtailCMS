@@ -84,39 +84,66 @@ def event_feed_view(request):
 
     return response
 
+
 def event_json_feed(request):
     context = get_calendar_context(request)
     all_events = context.get('all_events', [])
-    
+
     json_data = []
-    
+
     for event in all_events:
         start_val = event['ics_start']
         end_val = event['ics_end']
+        is_all_day = event.get('all_day', False)
 
-        # 1. If it's a date (All Day), make it a UTC datetime
-        if not isinstance(start_val, datetime):
-            start_val = datetime.combine(start_val, time.min).replace(tzinfo=py_timezone.utc)
-            end_val = datetime.combine(end_val, time.min).replace(tzinfo=py_timezone.utc)
-        
-        # 2. If it's already a datetime but has no timezone (Naive), make it UTC
-        elif start_val.tzinfo is None or start_val.tzinfo.utcoffset(start_val) is None:
-            start_val = start_val.replace(tzinfo=py_timezone.utc)
-            end_val = end_val.replace(tzinfo=py_timezone.utc)
+        # ----------------------------------
+        # Handle All-Day Events (Excel-safe)
+        # ----------------------------------
+        if is_all_day:
+            # start_val and end_val are dates (or midnight datetimes)
+            if isinstance(start_val, datetime):
+                start_date = start_val.date()
+            else:
+                start_date = start_val
 
-        # Clean description
+            if isinstance(end_val, datetime):
+                end_date = end_val.date()
+            else:
+                end_date = end_val
+
+            # Subtract 1 day because ICS stores all-day end as next day
+            end_date = end_date - timedelta(days=1)
+
+            start_out = start_date.strftime('%Y-%m-%d')
+            end_out = end_date.strftime('%Y-%m-%d')
+
+        # ----------------------------------
+        # Handle Timed Events (Keep UTC)
+        # ----------------------------------
+        else:
+            # Ensure timezone-aware UTC
+            if start_val.tzinfo is None or start_val.tzinfo.utcoffset(start_val) is None:
+                start_val = start_val.replace(tzinfo=py_timezone.utc)
+                end_val = end_val.replace(tzinfo=py_timezone.utc)
+
+            start_out = start_val.isoformat()
+            end_out = end_val.isoformat()
+
+        # ----------------------------------
+        # Clean Description
+        # ----------------------------------
         raw_description = event.get('description', '') or ''
         clean_description = strip_tags(raw_description)
         final_description = html.unescape(clean_description).strip()
 
         json_data.append({
-            "ID": event.get('id'), # ADDED: This is your unique key
+            "ID": event.get('id'),
             "Subject": event.get('title', 'No Title'),
-            "Start": start_val.isoformat(), 
-            "End": end_val.isoformat(),
+            "Start": start_out,
+            "End": end_out,
             "Location": event.get('location', 'Library') or "Library",
-            "IsAllDay": event.get('all_day', False),
+            "IsAllDay": is_all_day,
             "Description": final_description
         })
-    
+
     return JsonResponse(json_data, safe=False)
