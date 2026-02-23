@@ -137,7 +137,7 @@ def event_json_feed(request):
         final_description = html.unescape(clean_description).strip()
 
         json_data.append({
-            "ID": event.get('id'),
+            "ID": str(event.get('id')) + '-' + str(event.get('occur')),
             "Subject": event.get('title', 'No Title'),
             "Start": start_out,
             "End": end_out,
