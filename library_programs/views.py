@@ -136,8 +136,15 @@ def event_json_feed(request):
         clean_description = strip_tags(raw_description)
         final_description = html.unescape(clean_description).strip()
 
+        #set sources equal to a closed date equal to 1, and set sources equal to a library event as the value 2. Ensures uniqueness between the two in the JSON id.
+        event_type = []
+        if event.get('source') == 'closed':
+            event_type.append(1)
+        elif event.get('source') == 'event':
+            event_type.append(2)
+
         json_data.append({
-            "ID": str(event.get('id')) + '-' + str(event.get('occur')),
+            "ID": str(event_type[0]) + '-'  + str(event.get('id')) + '-' + str(event.get('occur')),
             "Subject": event.get('title', 'No Title'),
             "Start": start_out,
             "End": end_out,
