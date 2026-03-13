@@ -7,7 +7,7 @@ X-WR-CALNAME:{{ site_name }}
 
 {% for event in all_events %}
 BEGIN:VEVENT
-UID:{{ event.id }}-{{ event.occur }}@{{ site_name|slugify }}
+UID:{% if event.source == 'closed' %}1-{% elif event.source == 'event' %}2-{% endif %}{{ event.id }}-{{ event.occur }}@{{ site_name|slugify }}
 DTSTAMP:{{ now|utc|date:"Ymd\THis\Z" }}
 {% if event.all_day %}
 DTSTART;VALUE=DATE:{{ event.ics_start|date:"Ymd" }}
