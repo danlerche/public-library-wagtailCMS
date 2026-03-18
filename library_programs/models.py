@@ -238,7 +238,7 @@ class Event(Page, Orderable):
     time_from = models.TimeField(null=True, blank=True)
     time_to = models.TimeField(null=True, blank=True)
     all_day = models.BooleanField(default=False, help_text="Check if this event is all day")
-    description = RichTextField(max_length=1500,null=True,blank=True)
+    description = RichTextField(max_length=2500,null=True,blank=True)
     repeats = models.CharField(max_length = 20, choices = REPEAT_CHOICE, null=True, blank=True)
     until = models.DateField(null=True,blank=True)
     week_interval = models.IntegerField(choices = WEEK_INTERVAL_CHOICE, null=True, blank=True)
