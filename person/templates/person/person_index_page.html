@@ -14,6 +14,7 @@
 <div class="col-9">
 <div class="row">
 {% for person in person_entries %}
+{% if person.show_first %}
 <div class="col-xl-4 col-12 mb-2">
 <div class="person card">
    {% image person.specific.image class="img-fluid card-img-top blue-border" fill-304x291-c100 %}
@@ -25,6 +26,22 @@
   </div>
 </div>
 </div>
+{% endif %}
+{% endfor %}
+{% for person in person_entries %}
+{% if not person.show_first %}
+<div class="col-xl-4 col-12 mb-2">
+<div class="person card">
+   {% image person.specific.image class="img-fluid card-img-top blue-border" fill-304x291-c100 %}
+  <div class="card-body">
+    <h2 class="name card-title">{{ person.title }}</h2>
+    <div class="position card-title">{{ person.specific.position }}</div>
+    <p class="card-text">{{ person.specific.introduction }}</p>
+    <a href="{{ person.specific.url }}" class="btn btn-primary">Read More</a>
+  </div>
+</div>
+</div>
+{% endif %}
 {% endfor %}
 </div>
 </div>

@@ -30,15 +30,22 @@ class PersonIndexPage(Page):
     	FieldPanel('side_menu'),
     ]
 
+YES_NO_CHOICES = [
+    (True, 'Yes'),
+    (False, 'No'),
+]
+
 class personEntry(Page):
     image = models.ForeignKey('wagtailimages.Image', blank=False, null=True, help_text="upload an image for the bio", on_delete=models.SET_NULL,related_name='+')
     introduction = models.CharField(max_length=165)
     biography = RichTextField(blank=False)
     position = models.CharField(max_length=200, null=True)
+    show_first = models.BooleanField(default=False, choices=YES_NO_CHOICES)
 	
     content_panels = Page.content_panels + [
         FieldPanel('position'),
 		FieldPanel('image'),
 		FieldPanel('introduction'),
 		FieldPanel('biography'),
+        FieldPanel('show_first'),
 	]
