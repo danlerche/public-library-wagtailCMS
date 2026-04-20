@@ -6,7 +6,6 @@ python-dateutil
 django>=5.1
 pytz
 wagtail==7.3.1
-wagtail-honeypot
 wagtail-modeladmin
 wagtailmedia
 wagtailmenus

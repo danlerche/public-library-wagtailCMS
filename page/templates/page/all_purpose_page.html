@@ -1,12 +1,6 @@
 {% extends "base.html" %}
-{% load static wagtailcore_tags wagtailuserbar menu_tags wagtailimages_tags open_hours_tags library_programs_tags get_images_tags crispy_forms_tags honeypot_tags %}
+{% load static wagtailcore_tags wagtailuserbar menu_tags wagtailimages_tags open_hours_tags library_programs_tags get_images_tags crispy_forms_tags %}
 {% include_block page.content %}
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/honeypot.css' %}">
-{% endblock extra_css %}
-{% block extra_js %}
-<script src="{% static 'js/honeypot.js' %}"></script>
-{% endblock extra_js %}
 
 {% block content %}
 <div class="container">
@@ -144,7 +138,6 @@ $('#contentBody').addClass('col-xl-9');
   <div class="web-form mt-2">
   <h2 class="">{{ self.form_page.title }}</h2>
     <form action="{% pageurl self.form_page %}" method="POST" class="col-xl-6 mb-2">
-      {% honeypot_fields form_page.honeypot %}
         {% csrf_token %}
         {{ form|crispy }}
         <input type="submit" class="btn btn-primary mt-2" value="{% if form_page.submit_button_text == '' %}Submit{% else %}{{ form_page.submit_button_text }}{% endif %}">

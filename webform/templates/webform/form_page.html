@@ -1,11 +1,7 @@
 {% extends "base.html" %}
-{% load wagtailcore_tags static crispy_forms_tags honeypot_tags %}
+{% load wagtailcore_tags static crispy_forms_tags %}
 
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/honeypot.css' %}">
-{% endblock extra_css %}
 {% block extra_js %}
-<script src="{% static 'js/honeypot.js' %}"></script>
 {% endblock extra_js %}
 
 {% block content %}
@@ -17,7 +13,6 @@
   <p>{{ page.intro|richtext}}</p>
 
       <form action="{% pageurl page %}" method="POST" class="col-xl-6 mb-2">
-        {% honeypot_fields page.honeypot %}
             {% csrf_token %}
             {{ form|crispy }}
             <input type="submit" class="btn btn-primary mt-2" value="{% if page.submit_button_text == '' %}Submit{% else %}{{ page.submit_button_text }}{% endif %}">

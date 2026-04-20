@@ -61,7 +61,6 @@ INSTALLED_APPS = [
     'wagtail.contrib.table_block',
     'wagtail.contrib.typed_table_block',
     'wagtailmenus',
-    'wagtail_honeypot',
     'library_news',
     'page',
     'widget_tweaks',

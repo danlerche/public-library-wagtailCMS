@@ -1,11 +1,8 @@
 {% extends "base.html" %}
-{% load static wagtailcore_tags wagtailuserbar wagtailimages_tags humanize crispy_forms_tags honeypot_tags library_programs_tags tz %}
+{% load static wagtailcore_tags wagtailuserbar wagtailimages_tags humanize crispy_forms_tags library_programs_tags tz %}
 {% include_block page.content %}
-{% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/honeypot.css' %}">
-{% endblock extra_css %}
 {% block extra_js %}
-<script src="{% static 'js/honeypot.js' %}"></script>
+<!--<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>-->
 <script async src="https://my.nicheacademy.com/api/widgets/pentictonlibrary"></script>
 {% endblock extra_js %}
 
@@ -158,12 +155,14 @@
   <hr>
   <div class="web-form mt-2">
   <h2 class="">{{ self.form_page.title }}</h2>
-    <form action="{% pageurl self.form_page %}" method="POST" class="col-xl-6 mb-2">
-      {% honeypot_fields form_page.honeypot %}
-        {% csrf_token %}
-        {{ form|crispy }}
-        <input type="submit" class="btn btn-primary mt-2" value="{% if form_page.submit_button_text == '' %}Submit{% else %}{{ form_page.submit_button_text }}{% endif %}">
-    </form>
+<form action="{% pageurl self %}" method="POST" class="col-xl-6 mb-2">
+    {% csrf_token %}
+    {{ form|crispy }}
+    
+    <!--<div class="cf-turnstile mt-3" data-sitekey="YOUR_SITE_KEY"></div>-->
+    
+    <input type="submit" class="btn btn-primary mt-2" value="...">
+</form>
   </div>
   {% endif %}
 </div>

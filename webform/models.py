@@ -15,15 +15,11 @@ from django.utils.html import strip_tags
 from wagtail.admin.panels import TabbedInterface, ObjectList
 from wagtail.models import Page
 
-from wagtail_honeypot.models import (
-    HoneypotFormMixin, HoneypotFormSubmissionMixin
-)
-
 class FormField(AbstractFormField):
     page = ParentalKey('FormPage', on_delete=models.CASCADE, related_name='form_fields')
 
 
-class FormPage(HoneypotFormMixin, HoneypotFormSubmissionMixin):
+class FormPage(AbstractEmailForm):
     intro = RichTextField(blank=True)
     send_copy = models.BooleanField(default=False)
     thank_you_text = RichTextField(blank=True)
@@ -54,16 +50,9 @@ class FormPage(HoneypotFormMixin, HoneypotFormSubmissionMixin):
         ], "Email"),
     ]
 
-    honeypot_panels = [
-        MultiFieldPanel(
-            [FieldPanel("honeypot")], heading="Reduce Form Spam",
-        )
-    ]
-
     edit_handler = TabbedInterface(
         [
             ObjectList(content_panels, heading="Content"),
-            ObjectList(honeypot_panels, heading="Honeypot"),
             ObjectList(Page.promote_panels, heading="Promote"),
             ObjectList(Page.settings_panels, heading="Settings", classname="settings"),
         ]
