@@ -20,6 +20,7 @@
     {% for block in page.content %}
     {% if block.block_type == 'paragraph' and forloop.first %}
     {% include_block block %}
+    <a class="btn btn-primary" href="{{ page.get_parent.url }}">See all library news</a>
   </div>
   <div class="row">
   <div id="newsItemBlockQuote" class="col-md-12 mt-4">

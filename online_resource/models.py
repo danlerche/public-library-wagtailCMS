@@ -24,7 +24,6 @@ class OnlineResourceCategory(models.Model):
     class Meta:
         verbose_name_plural = 'online resource categories'
 
-
 class OnlineResourceIndexPage(Page):
     intro = RichTextField(blank=True)
     niche_academy = models.CharField(max_length=250, blank=True)
@@ -48,7 +47,6 @@ class OnlineResourceIndexPage(Page):
         FieldPanel('intro', classname="full"),
         FieldPanel('niche_academy', classname="full"),
     ]
-
 
 class OnlineResourcePage(Page):
     online_resource_url = models.CharField(max_length=400, blank=True)

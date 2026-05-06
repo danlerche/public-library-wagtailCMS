@@ -1,6 +1,7 @@
 {% load wagtailcore_tags wagtailimages_tags %}
 <div class="card">
-  <a href="{% if value.feature_document is not None %}{{ value.feature_document.url }}{% else %}{{ value.page.url }}{% endif %}"
+  <a href="{% if value.feature_document is not None %}{{ value.feature_document.url }}{% else %}
+  {{ value.page.url }}{% endif %}"
   title="{% if value.feature_document is not None %}{{ value.feature_document }}
   {% else %}{{ value.page }}{% endif %}">
   <div class="feature-image">

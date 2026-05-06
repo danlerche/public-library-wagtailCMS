@@ -1,0 +1,54 @@
+{% load static wagtailcore_tags wagtailimages_tags library_news_tags %}
+<h2 class="mb-4">{{ value.bottom_feature_row_title }}</h2>
+{% for block in self.bottom_feature_body %}
+
+    {% if block.block_type == 'resource_item' %}
+    {% with resource=block.value.featured_resource.specific custom_image=block.value.featured_resource_image %}
+<div class="col-xl-6 col-md-12">  
+<div class="card">
+<div class="card-body">
+<h3 class="card-title">Featured Resource</h3>
+
+{% if custom_image %}
+    {% image custom_image width-500 as feat_res_img %}
+    <a href="{{ resource.url }}" aria-label="Access {{ resource.title }}"><img src="{{ feat_res_img.url }}" class="img-fluid"></a>
+{% endif %}
+
+<div class="mt-1 card-text">
+    {{ block.value.featured_resource_text|richtext }}
+</div>
+
+<a href="{{ resource.online_resource_url }}" class="btn btn-primary">
+    Access {{ resource.title }}
+</a>
+        </div>
+    </div>
+</div>     
+{% endwith %}
+{% endif %}
+
+{% if block.block_type == 'enable_blog_post' %}
+{% if block.value %}
+<div class="col-xl-6 col-md-12">
+<div class="card">
+<div class="card-body">
+<h3 class="card-title">Library News: {{ blog.title }}</h3>
+<a href="{{ blog.url }}" aria-label="Go to {{ blog.title }}">{% image blog.news_image class="img-fluid" max-500x260 %}</a>
+{% for block in blog.content %}
+{% if block.block_type == 'paragraph' and forloop.first %}
+<p class="mt-2">{{ block|striptags|first_sentence }}.</p>
+{% endif %}
+
+<a href="{{ blog.url }}" class="btn btn-primary">
+    Read More
+</a>
+
+{% endfor %}
+
+</div>
+</div>
+
+</div>    
+{% endif %}
+{% endif %}
+{% endfor %}

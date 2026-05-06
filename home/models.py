@@ -7,12 +7,13 @@ from wagtail.fields import StreamField
 from wagtail.images.blocks import ImageChooserBlock
 from wagtail.blocks import BooleanBlock
 from wagtail.blocks import PageChooserBlock
+from wagtail.blocks import RichTextBlock
 from wagtail.documents.blocks import DocumentChooserBlock
 from wagtailmedia.blocks import AbstractMediaChooserBlock
 from wagtail.models.media import Collection
 from django.forms.utils import flatatt
 from django.utils.html import format_html, format_html_join
-
+from library_news.models import newsItem
 
 class AudioVideoBlock(AbstractMediaChooserBlock):
     def render_basic(self, value, context=None):
@@ -48,8 +49,15 @@ class AudioVideoBlock(AbstractMediaChooserBlock):
             value.thumbnail.url if value.thumbnail else "", 
         )
 
-
 class HomePage(Page):
+
+    def get_context(self, request, *args, **kwargs):
+        context = context = super().get_context(request, *args, **kwargs)
+        blog = newsItem.objects.live().order_by('-news_date').first()
+
+        context['blog'] = blog
+        return context
+
     content = StreamField([
         ('background_image_w_searchbar', ImageChooserBlock(template='home/blocks/background_image_w_searchbar.html', icon='collapse-down')),
         ('aspen_carousel', blocks.StructBlock([
@@ -78,6 +86,33 @@ class HomePage(Page):
                 ], template='home/blocks/feature.html', icon='openquote')),
             ]))
             ], template='home/blocks/feature_row.html', icon='image')),
+        
+        ('bottom_feature_row', blocks.StructBlock([
+            ('bottom_feature_row_title', blocks.CharBlock(
+                required=True, 
+                help_text="Pick a title for the bottom features"
+            )),
+            ('bottom_feature_body', blocks.StreamBlock([
+                ('resource_item', blocks.StructBlock([
+                    ('featured_resource', blocks.PageChooserBlock(
+                        target_model='online_resource.OnlineResourcePage', 
+                        required=True, 
+                        help_text="The featured digital resource to link to."
+                    )),
+                    ('featured_resource_image', ImageChooserBlock(
+                        required=False, 
+                        help_text="Override the resource's default image"
+                    )),
+                     ('featured_resource_text', blocks.RichTextBlock(
+                        required=True, 
+                        help_text="A description of the featured resource"
+                    )),
+                ], icon='link-external')),
+                
+                ('enable_blog_post', blocks.BooleanBlock(default=True, required=False))
+            ]))
+        ], template='home/blocks/bottom_feature_row.html', icon='image')),
+
     ], use_json_field=True, blank=True)
 
     content_panels = Page.content_panels + [

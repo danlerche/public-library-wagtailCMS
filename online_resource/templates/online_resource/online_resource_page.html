@@ -19,7 +19,6 @@
 {% with categories=page.categories.all %}
     {% if categories %}
   <ul><h2>Categories</h2>
-
         {% for category in categories %}
             <li>{{ category.name }}</li>
           {% endfor %}
