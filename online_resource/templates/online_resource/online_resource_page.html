@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load wagtailcore_tags %}
+{% load wagtailcore_tags wagtailimages_tags %}
 {% block body_class %}template-online_resourcepage{% endblock %}
 
 {% block content %}
@@ -14,19 +14,33 @@
 
 <div class="intro">{{ page.intro }}</div>
 
-{{ page.online_resource_description|richtext }}
+{% image page.resource_image class="img-fluid" width-150 %}
 
+<div class="mt-2">
+{{ page.online_resource_description|richtext }}
+</div>
+
+<div class="col-3 mt-2">
 {% with categories=page.categories.all %}
     {% if categories %}
-  <ul><h2>Categories</h2>
-        {% for category in categories %}
-            <li>{{ category.name }}</li>
-          {% endfor %}
+    <strong>Resource Categories</strong>
+  <ul>
+  {% for category in categories %}
+  <li>{{ category.name }}</li>
+  {% endfor %}
   </ul>
     {% endif %}
 {% endwith %}
+</div>
 
-     <p><a href="{{ page.get_parent.url }}">Return to online resources</a></p>
+
+<div class="mt-2">
+<a href="{{ page.online_resource_url }}" class="btn btn-primary">
+    Access Now
+</a>
+</div>
+
+<div class="mt-2"><a href="{{ page.get_parent.url }}">See All Resources</a></div>
 
 </div>
 </div><!--content area-->
