@@ -70,7 +70,7 @@ class HomePage(Page):
             ('single_feature_image', ImageChooserBlock(required=False)),
             ('single_feature_video_embed', blocks.RawHTMLBlock(required=False, help_text="Embed a video using an iframe tag provided by youTube, or another source instead of displaying the image.")),
             ("single_feature_video_upload", AudioVideoBlock(icon="media", required=False)),
-            ('single_feature_description', blocks.CharBlock(required=True, help_text="write a short description of the feature")),
+            ('single_feature_description', blocks.TextBlock(required=True, help_text="write a short description of the feature")),
             ('override_title', blocks.CharBlock(required=False, help_text="OPTIONAL, only use this if you'd like to override the name of the page you are linking to")),
             ('enabled', blocks.BooleanBlock(default=True, required=False))
             ], template='home/blocks/single_feature.html', icon='image'),),
