@@ -1,5 +1,5 @@
 # public-library-wagtailCMS
-This is an example public library website using wagtail CMS, originally created for the Penticton Public Library, in Penticton, British Columbia, Canada. You can view their website at https://pentictonlibrary.ca
+This is an example public library website using wagtail CMS.
 
 Some features: 
 1) Displaying single and recurring events
