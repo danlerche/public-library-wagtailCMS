@@ -16,8 +16,12 @@ from wagtail.admin.panels import TabbedInterface, ObjectList
 from wagtail.models import Page
 
 class FormField(AbstractFormField):
-    page = ParentalKey('FormPage', on_delete=models.CASCADE, related_name='form_fields')
 
+    page = ParentalKey('FormPage', on_delete=models.CASCADE, related_name='form_fields')
+    help_text = models.TextField(
+        verbose_name="help text",
+        blank=True,
+    )
 
 class FormPage(AbstractEmailForm):
     intro = RichTextField(blank=True)
