@@ -534,6 +534,10 @@ def validate_label(value):
 
 class RegistrationFormField(AbstractFormField):
     form_builder_page = ParentalKey('RegistrationFormPage', on_delete=models.CASCADE, related_name='form_fields')
+    help_text = models.TextField(
+        verbose_name="help text",
+        blank=True,
+    )
     label = models.CharField(
         verbose_name='label',
         max_length=255,
