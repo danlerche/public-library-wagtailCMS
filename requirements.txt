@@ -39,7 +39,7 @@ typing_extensions==4.16.0
 tzdata==2026.4
 Unidecode==1.4.0
 urllib3==2.8.0
-wagtail==7.4.2
+wagtail==7.4.3
 wagtail-modeladmin==2.4.0
 wagtailmedia==0.19.1
 wagtailmenus==4.0.6
