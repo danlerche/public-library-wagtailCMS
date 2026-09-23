@@ -71,20 +71,19 @@ MEDIA_CHOOSER_MODAL_ONLOAD_HANDLERS = {
 
         function search() {
             const query = searchInput.val();
-            const collection_id = collectionChooser.val()
-            if (query !== '' || collection_id !== '') {
-                /* Searching causes currentTag to be cleared - otherwise there's
-                no way to de-select a tag */
+            const collectionId = collectionChooser.val();
+            if (query !== '' || collectionId !== '') {
+                /* Searching causes currentTag to be cleared - otherwise there's no way to de-select a tag */
                 currentTag = null;
                 request = fetchResults({
                     q: query,
-                    collection_id: collection_id
+                    collection_id: collectionId
                 });
             }
             else {
                 /* search box is empty - restore original page browser HTML */
                 resultsContainer.html(initialPageResultsHtml);
-                ajaxifyLinks();
+                ajaxifyLinks(resultsContainer);
             }
             return false;
         }
@@ -126,7 +125,7 @@ MEDIA_CHOOSER_MODAL_ONLOAD_HANDLERS = {
                     dataType: 'text',
                     success: modal.loadResponseText,
                     error: function(response, textStatus, errorThrown) {
-                        message = jsonData['error_message'] + '<br />' + errorThrown + ' - ' + response.status;
+                        const message = jsonData['error_message'] + '<br />' + errorThrown + ' - ' + response.status;
                         $('#upload').append(
                             '<div class="help-block help-critical">' +
                             '<strong>' + jsonData['error_label'] + ': </strong>' + message + '</div>');
@@ -186,10 +185,7 @@ MEDIA_CHOOSER_MODAL_ONLOAD_HANDLERS = {
     },
     'select_format': function(modal) {
         $('form', modal.body).on('submit', function() {
-            var formdata = new FormData(this);
-
             $.post(this.action, $(this).serialize(), modal.loadResponseText, 'text');
-
             return false;
         });
     }
