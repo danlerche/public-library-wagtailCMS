@@ -28,6 +28,7 @@ from django.conf import settings
 from django.forms.utils import flatatt
 from django.utils.html import format_html, format_html_join
 from wagtailmedia.blocks import AbstractMediaChooserBlock
+from urllib.parse import urlparse
 
 class groupPage(Page):
     pass
@@ -335,11 +336,8 @@ class RedirectorPage(Page):
     base_form_class = RedirectValidationForm
 
     def get_admin_display_title(self):
-        if self.redirect_to is not None:
-            return format_html(f"{self.draft_title}<br/>➡️ {self.redirect_to}")
-        else:
-            return format_html(f"{self.draft_title}<br/>Redirects to: ➡️ {self.redirect_to_page}")
-
+        return self.draft_title or self.title
+        
     class Meta:
         verbose_name = 'Redirector'
 
