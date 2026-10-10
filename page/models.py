@@ -77,7 +77,7 @@ class PolicyCategory(models.Model):
 class PolicyIndexPage(Page):
     additional_text = RichTextField(blank=True)
 
-    def get_context(self, request):
+    def get_context(self, request, parent_context=None):
         context = super().get_context(request)
         policy_pages = self.get_children().live()
         context['policy_pages'] = policy_pages

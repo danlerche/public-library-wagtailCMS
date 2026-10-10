@@ -60,7 +60,7 @@ class EmailBlock(blocks.StructBlock):
             template = 'header_footer/blocks/email.html'
 
 class BranchInfoBlock(blocks.StaticBlock):
-        def get_context(self, request):
+        def get_context(self, request, parent_context=None):
             context = super().get_context(request)
             branch_info = BranchInfo.objects.all()
             context['branch_info'] = branch_info
@@ -69,7 +69,7 @@ class BranchInfoBlock(blocks.StaticBlock):
             template = 'open_hours/branch_info.html' 
 
 class SocialIconsBlock(blocks.StaticBlock):
-        def get_context(self, request):
+        def get_context(self, request, parent_context=None):
             context = super().get_context(request)
             social_media = SocialMedia.objects.all()
             context['social_media'] = social_media
@@ -78,7 +78,7 @@ class SocialIconsBlock(blocks.StaticBlock):
             template = 'open_hours/social_icons.html' 
 
 class BusinessHourBlock(blocks.StaticBlock):
-        def get_context(self, request):
+        def get_context(self, request, parent_context=None):
             context = super().get_context(request)
             business_hour = OpenHour.objects.all().order_by('day_of_the_week')
             branch_info = BranchInfo.objects.all()
