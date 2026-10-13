@@ -1,39 +1,47 @@
 {% extends "wagtailadmin/base.html" %}
 {% load wagtailadmin_tags i18n %}
+
 {% block titletag %}{% blocktrans trimmed with snippet_type_name=model_opts.verbose_name %}Editing {{ snippet_type_name }} - {{ object }}{% endblocktrans %}{% endblock %}
+
 {% block bodyclass %}{% if locked_for_user %}content-locked{% endif %}{% endblock %}
+
 {% block content %}
     {% include 'wagtailadmin/shared/headers/slim_header.html' %}
 
     {% include "wagtailadmin/shared/header.html" with title=object icon=header_icon merged=1 only %}
 
     <div class="row row-flush">
-
         <div class="{% if uc_enabled %}col10 divider-after{% else %}col12{% endif %}">
             <form action="{{ action_url }}" method="POST" novalidate{% if form.is_multipart %} enctype="multipart/form-data"{% endif %} data-edit-form>
                 {% csrf_token %}
                 <div class="nice-padding">
                     {{ panel.render_form_content }}
                     <script> 
-                    var user_info_selector = $('#id_user_info-title')
-                    var user_info = $(user_info_selector).text();
-                    var parse_user_info = JSON.parse(user_info.replace(/'/g, '"'));
-                    var $table = $("<table class='listing'></table>");
+                        $(function() {
+                            var user_info_selector = $('#id_user_info-title');
+                            var user_info = user_info_selector.text();
+                            if (user_info) {
+                                try {
+                                    var parse_user_info = JSON.parse(user_info.replace(/'/g, '"'));
+                                    var $table = $("<table class='listing'></table>");
 
-                    $.each(parse_user_info, function(key, value) {
-                    // Format key: underscores -> spaces, first letter capitalized
-                    var label = key.replace(/_/g, " ");
-                    label = label.charAt(0).toUpperCase() + label.slice(1);
+                                    $.each(parse_user_info, function(key, value) {
+                                        var label = key.replace(/_/g, " ");
+                                        label = label.charAt(0).toUpperCase() + label.slice(1);
 
-                    var $row = $("<tr></tr>");
-                    $row.append($("<td><strong>" + label + "</strong></td>"));
-                    $row.append($("<td>" + value + "</td>"));
-                    $table.append($row);
-                  });
-                //user_info_selector.hide(); 
-                  // Step 4: Replace the original text with the table
-                $("#id_user_info-title").html($table);
-                </script>
+                                        var $row = $("<tr></tr>");
+                                        $row.append($("<td><strong>" + label + "</strong></td>"));
+                                        $row.append($("<td>" + value + "</td>"));
+                                        $table.append($row);
+                                    });
+
+                                    user_info_selector.html($table);
+                                } catch (e) {
+                                    console.error("Failed to parse JSON for user_info:", e);
+                                }
+                            }
+                        });
+                    </script>
                 </div>
                 <footer class="footer">
                     <nav aria-label="{% trans 'Actions' %}">
@@ -55,14 +63,13 @@
     {{ block.super }}
     {{ media.css }}
 {% endblock %}
+
 {% block extra_js %}
     {{ block.super }}
-    {% include "wagtailadmin/pages/_editor_js.html" %}
     {{ media.js }}
 
     <script>
         // Set wagtailConfig.ACTIVE_CONTENT_LOCALE if this is a translated page
-        // This value may be used by JS widgets on the form
         {% if locale %}
             window.wagtailConfig = window.wagtailConfig || {};
             window.wagtailConfig.ACTIVE_CONTENT_LOCALE = '{{ locale.language_code|escapejs }}';
