@@ -56,7 +56,7 @@ class OpenStreetMapBlock(blocks.StructBlock):
     place_name = blocks.CharBlock(label="Place Name", required=True)
     latitude = blocks.FloatBlock()
     longitude = blocks.FloatBlock()
-    zoom = blocks.IntegerBlock(label="Zoom Level", default=19)
+    zoom = blocks.IntegerBlock(label="Zoom Level", default=17)
 
     class Meta:
         icon = 'map' 

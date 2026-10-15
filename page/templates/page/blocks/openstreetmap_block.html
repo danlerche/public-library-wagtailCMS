@@ -1,15 +1,109 @@
 {% load leaflet_tags %}
 
-    {% leaflet_js %}
-    {% leaflet_css %}
-<div id="map" style="height: 300px;" class="mt-2"></div>
+{% leaflet_js %}
+{% leaflet_css %}
+
+<!-- Leaflet Routing Machine CSS & JS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+<script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+
+<style> 
+/* Background color while tiles load */
+.leaflet-container {
+    background-color: #f4f4f4; 
+}
+
+/* Custom CSS to shift yellow roads to greys on NRCan tiles */
+.leaflet-tile-pane {
+    filter: grayscale(80%) contrast(1.1) brightness(1.02);
+}
+.map-title-box {
+    background-color: #0066B3;
+    height: 60px;
+}
+.map-title-text {
+  margin-left: 20px;
+}
+.map-title-text h2, .map-title-text a {
+color: #fff;    
+}
+
+.map-title-text h2 {
+ font-size: 16px;   
+}
+
+.map-title-text a {
+font-size: 12px;
+position: relative;
+top: -10px;    
+}
+
+.leaflet-control-attribution a {
+    pointer-events: none;
+    cursor: default;
+    text-decoration: none;
+    color: #333;
+}
+
+/* Aggressively hide the attribution flag icon */
+.leaflet-control-attribution svg,
+.leaflet-control-attribution img,
+.leaflet-attribution-flag,
+a[href*="openstreetmap.ua"],
+a[href*="ukraine"] {
+    display: none !important;
+}
+
+</style>
+
+{% with map_id="ppl-"|add:block.id func_id=block.id|cut:"-" %}
+<div class="map-title-box mt-1">
+<div class="map-title-text pt-3">
+<h2>{{ self.place_name }}</h2>
+<a href="https://www.openstreetmap.org/directions?to={{ self.latitude }}%2C{{ self.longitude }}" 
+       title="Get Directions">
+        Get Directions
+    </a> 
+</div>
+</div>  
 
 <script>
-    var map = L.map("map").setView([{{ self.latitude }}, {{ self.longitude }}], {{ self.zoom }});
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        maxZoom: {{ self.zoom }},
-    }).addTo(map);
+    // Unique function name using the sanitized block ID
+    function map_init_{{ func_id }} (map, options) {
+        var lat = {{ self.latitude }};
+        var lng = {{ self.longitude }};
+        var zoom = {{ self.zoom }};
 
-    var marker = L.marker([{{ self.latitude }}, {{ self.longitude }}]).addTo(map);
-    marker.bindPopup("{{ self.place_name }}").openPopup();
+        map.setView([lat, lng], zoom);
+
+        // Add Natural Resources Canada (NRCan) Base Map Tile Layer (CBMT)
+        // Free, open, and optimized for Canadian topography and urban labeling
+        L.tileLayer('https://services.maps.canada.ca/arcgis/rest/services/BaseMaps/CBMT_CBCT_3857/MapServer/tile/{z}/{y}/{x}', {
+            attribution: '&copy; <a href="https://natural-resources.canada.ca">Natural Resources Canada</a>',
+            maxZoom: 18,
+            minZoom: 1
+        }).addTo(map);
+
+        // OpenStreetMap directions URL structure
+        var directionsUrl = "https://www.openstreetmap.org/directions?to=" + lat + "," + lng;
+
+        // Build HTML content for the popup
+        var popupContent = `
+            <div style="text-align: center;">
+                <strong>Location</strong><br>
+                <a href="${directionsUrl}" target="_blank" rel="noopener noreferrer" style="display: inline-block; margin-top: 6px; font-weight: bold;">
+                    Get Directions &rarr;
+                </a>
+            </div>
+        `;
+
+        // Create a single marker and attach the popup
+        L.marker([lat, lng])
+            .addTo(map)
+            .bindPopup(popupContent);
+    }
 </script>
+
+<!-- Renders a unique map name and binds it to its specific initialization function -->
+<div class="mt-2 mb-2">{% leaflet_map map_id callback="window.map_init_"|add:func_id %}</div>
+{% endwith %}
